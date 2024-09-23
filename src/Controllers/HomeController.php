@@ -4,6 +4,6 @@
     class HomeController extends BaseController
     {
         function index(){
-            echo $this->twig->render("HomeView.twig", ["name" => "World"]);
+            $this->render("HomeView.twig");
         }
     }

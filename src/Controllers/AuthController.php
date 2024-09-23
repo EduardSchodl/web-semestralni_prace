@@ -4,6 +4,6 @@
     class AuthController extends BaseController
     {
         function index(){
-            echo $this->twig->render("AuthView.twig", ["name" => "Auth"]);
+            $this->render("AuthView.twig");
         }
     }

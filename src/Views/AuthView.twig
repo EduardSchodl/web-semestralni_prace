@@ -3,47 +3,41 @@
 {% block title %} Auth {% endblock %}
 
 {% block content %}
-    {{ name }}
-    <form>
-        <div class="form-row">
-            <div class="form-group col-md-6">
-                <label for="fname">First name</label>
-                <input type="text" class="form-control" id="fname" placeholder="enter firstname">
+    <div id="bodyDiv">
+        <form id="authForm" class="row g-2">
+            <div class="col-md-6">
+                <label for="fname" class="form-label">First name</label>
+                <input type="text" class="form-control" id="fname" placeholder="John">
             </div>
-            <div class="form-group col-md-6">
-                <label for="lname">Last name</label>
-                <input type="text" class="form-control" id="lname" placeholder="enter lastname">
+            <div class="col-md-6">
+                <label for="lname" class="form-label">Last name</label>
+                <input type="text" class="form-control" id="lname" placeholder="Doe">
             </div>
-        </div>
+            <div class="col-12">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" class="form-control" id="email" placeholder="John.Doe@gmail.com">
+            </div>
+            <div class="col-12">
+                <label for="psswd" class="form-label">Password</label>
+                <input type="password" class="form-control" id="psswd">
+            </div>
+            <div class="col-12">
+                <button type="submit" class="btn btn-primary">Sign up</button>
+            </div>
+        </form>
 
-        <div class="form-group col-md-12">
-            <label for="inputEmail4">Email</label>
-            <input type="email" class="form-control" id="inputEmail4" placeholder="Email">
-        </div>
-
-        <div class="form-group col-md-12">
-            <label for="inputPassword4">Password</label>
-            <input type="password" class="form-control" id="inputPassword4" placeholder="Password">
-        </div>
-
-        <div class="col-sm-10">
-            <button type="submit" class="btn btn-primary">Sign up</button>
-        </div>
-    </form>
-
-    <form>
-        <div class="form-group col-md-12">
-            <label for="inputEmail5">Email</label>
-            <input type="email" class="form-control" id="inputEmail5" placeholder="Email">
-        </div>
-
-        <div class="form-group col-md-12">
-            <label for="inputPassword5">Password</label>
-            <input type="password" class="form-control" id="inputPassword5" placeholder="Password">
-        </div>
-
-        <div class="col-sm-10">
-            <button type="submit" class="btn btn-primary">Sign in</button>
-        </div>
-    </form>
+        <form id="authForm" class="row g-2">
+            <div class="mb-8">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" class="form-control" id="email" placeholder="john.doe@gmail.com">
+            </div>
+            <div class="mb-8">
+                <label for="psswd" class="form-label">Password</label>
+                <input type="password" class="form-control" id="psswd">
+            </div>
+            <div class="col-8">
+                <button type="submit" class="btn btn-primary">Sign in</button>
+            </div>
+        </form>
+    </div>
 {% endblock %}
