@@ -1,9 +1,6 @@
 <?php
     namespace Web\Project\Controllers;
 
-    use Twig\Environment;
-    use Twig\Loader\FilesystemLoader;
-
     class HomeController extends BaseController
     {
         function index(){
