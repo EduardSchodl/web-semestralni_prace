@@ -10,6 +10,9 @@
         }
 
         function match($httpMethod, $path){
+            $scriptName = dirname($_SERVER["SCRIPT_NAME"]);
+            $path = str_replace($scriptName, "", $path);
+
             if(isset($this->routes[$httpMethod][$path])){
                 return $this->routes[$httpMethod][$path];
             }
@@ -23,11 +26,20 @@
             if($handler){
                 list($controllerName, $action) = explode("@", $handler);
 
-                $controller = __NAMESPACE__."\\Controllers\\$controllerName";
+                $controllerClass = __NAMESPACE__."\\Controllers\\$controllerName";
+                if(class_exists($controllerClass)){
+                    $controller = new $controllerClass();
 
-                $controller = new $controller();
-
-                $controller->$action();
+                    if(method_exists($controller, $action)){
+                        $controller->$action();
+                    }
+                    else{
+                        echo "Method $action not found in controller $controllerClass. <br>";
+                    }
+                }
+                else {
+                    echo "Controller $controllerClass not found. <br>";
+                }
             }
 
             http_response_code(404);

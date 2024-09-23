@@ -1,4 +1,9 @@
 RewriteEngine On
+
+# Set the base URL dynamically (optional but helps in complex scenarios)
+RewriteBase /web-semestralni_prace/src
+
+# Redirect all requests to index.php, ignoring real files and directories
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^ index.php [L]
