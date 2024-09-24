@@ -2,7 +2,8 @@
     "name": "web/project",
     "type": "project",
     "require": {
-        "twig/twig": "^3.14"
+        "twig/twig": "^3.14",
+      "ext-pdo": "*"
     },
     "autoload": {
         "psr-4": {
