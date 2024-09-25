@@ -46,7 +46,7 @@
                     $controller = new $controller_class_name();
 
                     if(method_exists($controller, $function_name)){
-                        $controller->$function_name();
+                        $controller->$function_name(["title" => $title]);
                     }
                     else{
                         echo "Method $function_name not found in controller $controller_class_name. <br>";

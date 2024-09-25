@@ -11,12 +11,18 @@
         <title>{% block title %}My Application{% endblock %}</title>
         <base href="http://localhost/web-semestralni_prace/src/">
     </head>
-    <body>
+    <body id="body">
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <div class="container-fluid" id="navbarNavAltMarkup">
                 <div class="navbar-nav">
                     <a class="nav-item nav-link {% if current_path == '/' %}active{% endif %}" href="">Home</a>
-                    <a class="nav-item nav-link {% if current_path == '/auth' %}active{% endif %}" href="auth">Log In</a>
+                    {% if not app.user %}
+                        {% if current_path != '/login' and current_path != '/register' %}
+                            <a class="nav-item nav-link" href="login">Log In</a>
+                        {% endif %}
+                    {% else %}
+                        <a class="nav-item nav-link" href="">Log Out</a>
+                    {% endif %}
                 </div>
             </div>
         </nav>

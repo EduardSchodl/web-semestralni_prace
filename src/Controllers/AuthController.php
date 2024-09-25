@@ -1,16 +1,15 @@
 <?php
     namespace Web\Project\Controllers;
 
-    use Web\Project\Models\UserModel;
-
     class AuthController extends BaseController
     {
-        function index(){
-            $db = new UserModel();
-            $users = $db->getAllUsers();
+        function index($data = []){
+            //$db = new UserModel();
+            //$users = $db->getAllUsers();
+            $this->render("AuthView.twig", ["title" => $data["title"]]);
+        }
 
-            echo $users;
-
-            $this->render("AuthView.twig");
+        function auth(){
+            echo ($_POST["password"]);
         }
     }

@@ -21,9 +21,21 @@
                 "function_name" => "index"
             ),
         ),
-        "/auth" => array(
+        "/login" => array(
             "GET" => array(
-                "title" => "Auth page",
+                "title" => "Sign in page",
+                "controller_class_name" => Web\Project\Controllers\AuthController::class,
+                "function_name" => "index"
+            ),
+            "POST" => array(
+                "title" => "Sign in page",
+                "controller_class_name" => Web\Project\Controllers\AuthController::class,
+                "function_name" => "auth"
+            )
+        ),
+        "/register" => array(
+            "GET" => array(
+                "title" => "Sign up page",
                 "controller_class_name" => Web\Project\Controllers\AuthController::class,
                 "function_name" => "index"
             )

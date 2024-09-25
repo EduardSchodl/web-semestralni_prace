@@ -1,4 +1,50 @@
-#authForm{
+#body{
+    background-color: #CBD6EC;
+}
+
+#bodyDiv{
     width: 25%;
     margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 80vh;
+    flex-direction: column;
+}
+
+#authForm{
+    background-color: #75acfb;
+    padding: 50px;
+    border: 1px solid black;
+    border-radius: 20px;
+}
+
+#submitButton{
+    display: flex;
+    justify-content: space-around;
+}
+
+#submitButton button{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 7vw;
+}
+
+#noDecor{
+    text-decoration: none;
+}
+
+#noDecor:hover{
+    text-decoration: underline;
+}
+
+#inlineText{
+    margin-bottom: 0;
+    margin-right: 2vw;
+}
+
+#textDiv{
+    display: flex;
+    justify-content: center;
 }
