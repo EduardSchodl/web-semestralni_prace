@@ -38,6 +38,11 @@
                 "title" => "Sign up page",
                 "controller_class_name" => Web\Project\Controllers\AuthController::class,
                 "function_name" => "index"
+            ),
+            "POST" => array(
+                "title" => "Sign up page",
+                "controller_class_name" => Web\Project\Controllers\AuthController::class,
+                "function_name" => "register"
             )
         )
     );

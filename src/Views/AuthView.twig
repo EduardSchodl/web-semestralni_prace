@@ -8,11 +8,11 @@
             <form id="authForm" method="post" class="row g-2">
                 <div class="mb-8">
                     <label for="email" class="form-label">Email</label>
-                    <input type="email" class="form-control" id="email" placeholder="john.doe@gmail.com">
+                    <input type="email" name="email" class="form-control" id="email" placeholder="john.doe@gmail.com" required>
                 </div>
                 <div class="mb-8">
                     <label for="psswd" class="form-label">Password</label>
-                    <input type="password" class="form-control" id="psswd">
+                    <input type="password" name="password" class="form-control" id="psswd" required>
                 </div>
                 <div id="submitButton" class="mb-8">
                     <button type="submit" class="btn btn-success">
@@ -31,22 +31,22 @@
                 </div>
             </form>
         {% else %}
-            <form action="../Controllers/AuthController.php" method="post" id="authForm" class="row g-2">
+            <form method="post" id="authForm" class="row g-2">
                 <div class="col-md-6">
                     <label for="fname" class="form-label">First name</label>
-                    <input type="text" class="form-control" id="fname" placeholder="John">
+                    <input type="text" name="fname" class="form-control" id="fname" placeholder="John" required>
                 </div>
                 <div class="col-md-6">
                     <label for="lname" class="form-label">Last name</label>
-                    <input type="text" class="form-control" id="lname" placeholder="Doe">
+                    <input type="text" name="lname" class="form-control" id="lname" placeholder="Doe" required>
                 </div>
                 <div class="col-12">
                     <label for="email" class="form-label">Email</label>
-                    <input type="email" class="form-control" id="email" placeholder="John.Doe@gmail.com">
+                    <input type="email" name="email" class="form-control" id="email" placeholder="John.Doe@gmail.com" required>
                 </div>
                 <div class="col-12">
                     <label for="psswd" class="form-label">Password</label>
-                    <input type="password" class="form-control" id="psswd">
+                    <input type="password" name="password" class="form-control" id="psswd" required>
                 </div>
                 <div id="submitButton" class="col-12">
                     <button type="submit" class="btn btn-success">

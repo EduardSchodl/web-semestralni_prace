@@ -18,4 +18,8 @@
 
             return self::$pdo;
         }
+
+        protected static function closeConnection(){
+            self::$pdo = null;
+        }
     }
