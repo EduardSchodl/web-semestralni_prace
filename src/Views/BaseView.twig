@@ -21,12 +21,13 @@
                             <a class="nav-item nav-link" href="login">Log In</a>
                         {% endif %}
                     {% else %}
-                        <a class="nav-item nav-link" href="">Log Out</a>
+                        <a class="nav-item nav-link" href="profile">Profile</a>
+                        <a class="nav-item nav-link" href="logout">Log Out</a>
                     {% endif %}
                 </div>
             </div>
         </nav>
-
+        {{ app.user["id_user"] }}
         {%  block content %} {% endblock %}
     </body>
 </html>

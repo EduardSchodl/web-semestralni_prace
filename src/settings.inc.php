@@ -10,6 +10,9 @@
     /** Heslo uzivatele databaze */
     define("DB_PASS","");
 
+    //// Konstanty ////
+    define("ROLE_USER", 4);
+
     //// Tabulky ////
     define("TABLE_USERS", "users");
 
@@ -43,6 +46,13 @@
                 "title" => "Sign up page",
                 "controller_class_name" => Web\Project\Controllers\AuthController::class,
                 "function_name" => "register"
+            )
+        ),
+        "/logout" => array(
+            "GET" => array(
+                "title" => "",
+                "controller_class_name" => Web\Project\Controllers\AuthController::class,
+                "function_name" => "logout"
             )
         )
     );
