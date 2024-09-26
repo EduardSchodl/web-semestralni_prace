@@ -21,14 +21,14 @@
             "GET" => array(
                 "title" => "Home page",
                 "controller_class_name" => Web\Project\Controllers\HomeController::class,
-                "function_name" => "index"
+                "function_name" => "index",
             ),
         ),
         "/login" => array(
             "GET" => array(
                 "title" => "Sign in page",
                 "controller_class_name" => Web\Project\Controllers\AuthController::class,
-                "function_name" => "index"
+                "function_name" => "index",
             ),
             "POST" => array(
                 "title" => "Sign in page",
@@ -40,7 +40,7 @@
             "GET" => array(
                 "title" => "Sign up page",
                 "controller_class_name" => Web\Project\Controllers\AuthController::class,
-                "function_name" => "index"
+                "function_name" => "index",
             ),
             "POST" => array(
                 "title" => "Sign up page",
@@ -54,5 +54,19 @@
                 "controller_class_name" => Web\Project\Controllers\AuthController::class,
                 "function_name" => "logout"
             )
-        )
+        ),
+        "/profile" => array(
+            "GET" => array(
+                "title" => "Profile page",
+                "controller_class_name" => Web\Project\Controllers\ProfileController::class,
+                "function_name" => "index",
+            )
+        ),
+        "/profile/edit" => array(
+            "GET" => array(
+                "title" => "Edit Profile",
+                "controller_class_name" => Web\Project\Controllers\ProfileController::class,
+                "function_name" => "index",
+            )
+        ),
     );

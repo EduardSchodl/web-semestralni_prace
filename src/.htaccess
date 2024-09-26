@@ -3,7 +3,12 @@ RewriteEngine On
 # Set the base URL dynamically (optional but helps in complex scenarios)
 RewriteBase /web-semestralni_prace/src
 
-# Redirect all requests to index.php, ignoring real files and directories
+# Allow access to existing files and directories (including .css files)
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^ index.php [L]
+
+# Allow direct access to certain file types (e.g., CSS, JS, images)
+<FilesMatch "\.(css|js|jpg|jpeg|png|gif|ico|svg)$">
+    RewriteEngine Off
+</FilesMatch>

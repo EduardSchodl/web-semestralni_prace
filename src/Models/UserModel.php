@@ -15,7 +15,7 @@
         function getUser($email){
             $pdo = self::getConnection();
 
-            $stmt = $pdo->prepare("SELECT * FROM users WHERE email = :email");
+            $stmt = $pdo->prepare("SELECT users.*, roles.name AS role_name FROM users INNER JOIN roles ON users.role_id = roles.id_role WHERE email = :email");
             $stmt->execute(["email" => $email]);
             return $stmt->fetch(\PDO::FETCH_ASSOC);
         }
