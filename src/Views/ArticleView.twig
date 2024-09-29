@@ -3,5 +3,52 @@
 {% block title %} {{ title }} {% endblock %}
 
 {% block content %}
+    <div class="container mt-5">
+        <!-- Article Header -->
+        <div class="article-header text-center">
+            <h1 class="display-4">{{ article.title }}</h1>
+            <p class="lead">Published on: {{ article.create_time|date('F j, Y') }}</p>
+        </div>
 
+        <!-- Article Content -->
+        <div class="row article-content">
+            <div class="col-md-8 offset-md-2">
+                <p class="text-justify">{{ article.article_content|nl2br }}</p>
+            </div>
+        </div>
+
+        <!-- Author Information -->
+        <div class="row mb-4">
+            <div class="col-md-4 offset-md-4">
+                <div class="author-info text-center">
+                    <h5>{{ article.first_name }} {{ article.last_name }}</h5>
+                    <p>Professor, Department of Computer Science, University XYZ</p>
+                    <p>Email: {{ article.email }}</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Review Section -->
+        <div class="review-section">
+            <h3 class="text-center">Reviews</h3>
+            <div class="row">
+                <div class="col-md-6 offset-md-3">
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <h5 class="card-title">Reviewer 1</h5>
+                            <p class="card-text">This is an insightful article that effectively highlights the impact of AI on conferences. However, more detail on data privacy concerns would have been helpful.</p>
+                            <p class="card-text"><small class="text-muted">Reviewed on: September 28, 2024</small></p>
+                        </div>
+                    </div>
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <h5 class="card-title">Reviewer 2</h5>
+                            <p class="card-text">Great topic! The future of conferences is indeed fascinating, and this paper presents some excellent examples of AI in action.</p>
+                            <p class="card-text"><small class="text-muted">Reviewed on: September 27, 2024</small></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}

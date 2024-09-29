@@ -20,7 +20,7 @@
                         <a href="articles/{{ article.id_article }}" class="btn btn-primary col-sm-4">Číst dále</a>
                         <footer class="blockquote-footer col-sm-6">
                             <small class="text-muted">
-                                {{ article.create_time }}
+                                {{ article.create_time|date('F j, Y') }}
                             </small>
                         </footer>
                     </div>
