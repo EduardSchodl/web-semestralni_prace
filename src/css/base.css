@@ -47,3 +47,9 @@
     margin: 0;
     text-align: right;
 }
+
+.profileEditButtons{
+    margin-top: 1vw;
+    display: flex;
+    gap: 2vw;
+}
