@@ -7,8 +7,3 @@ RewriteBase /web-semestralni_prace/src
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^ index.php [L]
-
-# Allow direct access to certain file types (e.g., CSS, JS, images)
-<FilesMatch "\.(css|js|jpg|jpeg|png|gif|ico|svg)$">
-    RewriteEngine Off
-</FilesMatch>
