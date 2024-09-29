@@ -17,16 +17,26 @@
             <div class="container-fluid" id="navbarNavAltMarkup">
                 <div class="navbar-nav">
                     <a class="nav-item nav-link {% if current_path == '/' %}active{% endif %}" href="">Home</a>
+                    {% if app.user %}
+                        <a class="nav-item nav-link {% if current_path == '/profile' %}active{% endif %}" href="profile">Profile</a>
+                        {% if app.user.role_id <= 2 %}
+                            <a class="nav-item nav-link {% if current_path == '/users' %}active{% endif %}" href="users">Users list</a>
+                        {% endif %}
+                    {% endif %}
+                </div>
+                <div id="rightAlign" class="navbar-nav ms-auto">
                     {% if not app.user %}
                         {% if current_path != '/login' and current_path != '/register' %}
                             <a class="nav-item nav-link {% if current_path == '/login' or current_path == '/register' %}active{% endif %}" href="login">Log In</a>
                         {% endif %}
                     {% else %}
-                        <a class="nav-item nav-link {% if current_path == '/profile' %}active{% endif %}" href="profile">Profile</a>
-                        {% if app.user.role_id <= 2 %}
-                            <a class="nav-item nav-link {% if current_path == '/users' %}active{% endif %}" href="users">Users list</a>
-                        {% endif %}
-                        <a class="nav-item nav-link" href="logout">Log Out</a>
+                        <p id="loggedUser">{{ app.user["first_name"] }} {{ app.user["last_name"] }}</p>
+                        <a id="logoutButton" class="nav-item nav-link" href="logout">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-door-open-fill" viewBox="0 0 16 16">
+                                <path d="M1.5 15a.5.5 0 0 0 0 1h13a.5.5 0 0 0 0-1H13V2.5A1.5 1.5 0 0 0 11.5 1H11V.5a.5.5 0 0 0-.57-.495l-7 1A.5.5 0 0 0 3 1.5V15zM11 2h.5a.5.5 0 0 1 .5.5V15h-1zm-2.5 8c-.276 0-.5-.448-.5-1s.224-1 .5-1 .5.448.5 1-.224 1-.5 1"/>
+                            </svg>
+                            Log Out
+                        </a>
                     {% endif %}
                 </div>
             </div>

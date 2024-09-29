@@ -77,5 +77,12 @@
                 "controller_class_name" => Web\Project\Controllers\UsersListController::class,
                 "function_name" => "index"
             )
+        ),
+        "/articles/{slug}" => array(
+            "GET" => array(
+                "title" => "Article Detail",
+                "controller_class_name" => Web\Project\Controllers\ArticleController::class,
+                "function_name" => "index"
+            )
         )
     );

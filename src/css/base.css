@@ -19,3 +19,31 @@
 .navbar{
     font-size: 1.3vw;
 }
+
+#rightAlign{
+    align-items: center;
+    gap: 1vw;
+}
+
+#loggedUser{
+    color: grey;
+    margin: 0;
+    font-size: 1vw;
+}
+
+#logoutButton{
+    display: flex;
+    align-items: center;
+    gap: 0.5vw;
+}
+
+.card-bottom{
+    align-items: center;
+    display: flex;
+    justify-content: space-around;
+}
+
+.card-bottom footer{
+    margin: 0;
+    text-align: right;
+}
