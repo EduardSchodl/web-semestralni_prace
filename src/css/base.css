@@ -10,3 +10,12 @@
     width: 70%;
     margin: 5vw auto auto;
 }
+
+#homeArticles{
+    display: flex;
+    margin: 2vw;
+}
+
+.navbar{
+    font-size: 1.3vw;
+}

@@ -2,4 +2,25 @@
 
 {% block title %} {{ title }} {% endblock %}
 
-{% block content %} <h1>Hello, {{ name }}</h1> {% endblock %}
+{% block content %}
+    <div id="homeArticles">
+    {% for article in articles %}
+        {% if loop.index is divisible by(3) %}
+            </div>
+            <div class="row">
+        {% elseif loop.index == 1 %}
+            <div class="row">
+        {% endif %}
+        <div class="col-sm-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">{{ article.title }}</h5>
+                    <p class="card-text">{{ article.article_content|length > 255 ? article.article_content|slice(0, 255) ~ '...' : article.article_content }}</p>
+                    <a href="articles/dat se id a pak nekde podle toho nahradit za nazev" class="btn btn-primary">Číst dále</a>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+            </div>
+    </div>
+{% endblock %}
