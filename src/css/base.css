@@ -5,3 +5,8 @@
 .label-text{
     font-weight: bold;
 }
+
+.table{
+    width: 70%;
+    margin: 5vw auto auto;
+}

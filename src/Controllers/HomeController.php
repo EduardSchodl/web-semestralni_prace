@@ -3,7 +3,7 @@
 
     class HomeController extends BaseController
     {
-        function index(){
-            $this->render("HomeView.twig");
+        function index($data = []){
+            $this->render("HomeView.twig", ["title" => $data["title"]]);
         }
     }

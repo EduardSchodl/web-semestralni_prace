@@ -6,10 +6,9 @@
         function getAllUsers(){
             $pdo = self::getConnection();
 
-            $stmt = $pdo->prepare("SELECT first_name FROM users WHERE id_user = :id");
-            $stmt->execute(["id" => 1]);
-
-            return $stmt->fetch(\PDO::FETCH_ASSOC);
+            $stmt = $pdo->prepare("SELECT users.*, roles.name AS role_name FROM users INNER JOIN roles ON users.role_id = roles.id_role");
+            $stmt->execute();
+            return $stmt->fetchAll(\PDO::FETCH_ASSOC);
         }
 
         function getUser($email){

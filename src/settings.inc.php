@@ -11,10 +11,12 @@
     define("DB_PASS","");
 
     //// Konstanty ////
+    define("ROLE_ADMIN", 2);
     define("ROLE_USER", 4);
 
     //// Tabulky ////
     define("TABLE_USERS", "users");
+    define("TABLE_ROLES", "roles");
 
     const WEB_PAGES = array(
         "/" => array(
@@ -69,4 +71,11 @@
                 "function_name" => "index",
             )
         ),
+        "/users" => array(
+            "GET" => array(
+                "title" => "Users List",
+                "controller_class_name" => Web\Project\Controllers\UsersListController::class,
+                "function_name" => "index"
+            )
+        )
     );

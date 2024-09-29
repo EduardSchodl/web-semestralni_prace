@@ -1,0 +1,36 @@
+{% extends "BaseView.twig" %}
+
+{% block title %} {{ title }} {% endblock %}
+
+{% block content %}
+    <table class="table table-striped table-hover">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+            <th scope="col">Email</th>
+            <th scope="col">Role</th>
+        </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+                <tr>
+                    <th scope="row">{{ loop.index }}</th>
+                    <td>{{ user["first_name"] }} {{ user["last_name"] }}</td>
+                    <td>{{ user["email"] }}</td>
+                    {% if app.user.role_id >= user["role_id"] %}
+                        <td>{{ user["role_name"] }}</td>
+                    {% else %}
+                        <td>
+                            <select name="roles" id="roles">
+                                {% for role in roles %}
+                                    <option value="{{ role.name }}">{{ role.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </td>
+                    {% endif %}
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
