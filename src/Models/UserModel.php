@@ -11,11 +11,13 @@
             return $stmt->fetchAll(\PDO::FETCH_ASSOC);
         }
 
-        function getUser($email){
+        function getUser($value, $byEmail = true) {
             $pdo = self::getConnection();
 
-            $stmt = $pdo->prepare("SELECT users.*, roles.name AS role_name FROM users INNER JOIN roles ON users.role_id = roles.id_role WHERE email = :email");
-            $stmt->execute(["email" => $email]);
+            $column = $byEmail ? 'email' : 'id_user';
+            $stmt = $pdo->prepare("SELECT users.*, roles.name AS role_name FROM users INNER JOIN roles ON users.role_id = roles.id_role WHERE $column = :value");
+            $stmt->execute(["value" => $value]);
+
             return $stmt->fetch(\PDO::FETCH_ASSOC);
         }
 

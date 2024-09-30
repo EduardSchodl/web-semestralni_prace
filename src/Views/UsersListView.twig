@@ -10,6 +10,7 @@
             <th scope="col">Name</th>
             <th scope="col">Email</th>
             <th scope="col">Role</th>
+            <th scope="col">Profile</th>
         </tr>
         </thead>
         <tbody>
@@ -28,6 +29,11 @@
                                 {% endfor %}
                             </select>
                         </td>
+                    {% endif %}
+                    {% if app.user["id_user"] == user.id_user %}
+                        <td><a class="btn btn-primary" href="profile">Profile</a></td>
+                    {% else %}
+                        <td><a class="btn btn-primary" href="users/{{ user["id_user"] }}">Profile</a></td>
                     {% endif %}
                 </tr>
             {% endfor %}

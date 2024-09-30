@@ -68,7 +68,7 @@
             "GET" => array(
                 "title" => "Edit Profile",
                 "controller_class_name" => Web\Project\Controllers\ProfileController::class,
-                "function_name" => "index",
+                "function_name" => "editProfile",
             )
         ),
         "/users" => array(
@@ -76,6 +76,13 @@
                 "title" => "Users List",
                 "controller_class_name" => Web\Project\Controllers\UsersListController::class,
                 "function_name" => "index"
+            )
+        ),
+        "/users/{id}" => array(
+            "GET" => array(
+                "title" => "User Profile",
+                "controller_class_name" => Web\Project\Controllers\ProfileController::class,
+                "function_name" => "showUserProfile"
             )
         ),
         "/articles/{slug}" => array(
