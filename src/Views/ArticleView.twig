@@ -3,12 +3,33 @@
 {% block title %} {{ title }} {% endblock %}
 
 {% block content %}
+    <textarea name="editor" id="editor">jasdhasiudhsi</textarea>
+
+    <script>
+        ClassicEditor
+            .create(document.querySelector('#editor'))
+            .then(editor => {
+                console.log('Editor initialized successfully:', editor);
+            })
+            .catch(error => {
+                console.error('Error initializing CKEditor:', error);
+            });
+
+        const editorInstance = ClassicEditor.instances['editor'];
+        const content = editorInstance.getData();
+        console.log('Editor Content:', content);
+    </script>
+
     <div class="container mt-5">
         <!-- Article Header -->
         <div class="article-header text-center">
             <h1 class="display-4">{{ article.title }}</h1>
             <p class="lead">Published on: {{ article.create_time|date('F j, Y') }}</p>
         </div>
+
+        {% if app.user.id_user == article.id_user %}
+            <button style="float: right" class="btn btn-success" type="button">Edit</button>
+        {% endif %}
 
         <!-- Article Content -->
         <div class="row article-content">
