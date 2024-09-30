@@ -30,7 +30,7 @@
                             </select>
                         </td>
                     {% endif %}
-                    {% if app.user["id_user"] == user.id_user %}
+                    {% if app.user.id_user == user.id_user %}
                         <td><a class="btn btn-primary" href="profile">Profile</a></td>
                     {% else %}
                         <td><a class="btn btn-primary" href="users/{{ user["id_user"] }}">Profile</a></td>
