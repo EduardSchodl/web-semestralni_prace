@@ -101,9 +101,18 @@
                 })
                 .then(editor => {
                     editorInstance = editor;
-                    let content = contentElement.getElementsByTagName("p")[0].innerHTML;
 
-                    editorInstance.setData('<h1>' + title + '</h1>' + '<p>' + content + '</p>'); // Set title + content in editor
+                    // Get all paragraphs in the content
+                    let paragraphs = contentElement.getElementsByTagName("p");
+                    let content = '';
+
+                    // Concatenate all paragraphs into a single string
+                    for (let i = 0; i < paragraphs.length; i++) {
+                        content += '<p>' + paragraphs[i].innerHTML + '</p>';
+                    }
+
+                    // Set title + content in editor
+                    editorInstance.setData('<h1>' + title + '</h1>' + content);
                     console.log('Editor initialized successfully:', editor);
                 })
                 .catch(error => {
@@ -122,10 +131,17 @@
             let tempDiv = document.createElement("div");
             tempDiv.innerHTML = data;
 
+            // Extract title
             let title = tempDiv.querySelector("h1") ? tempDiv.querySelector("h1").innerHTML : "";
-            let content = tempDiv.querySelector("p") ? tempDiv.querySelector("p").innerHTML : "";
-            alert(content);
-            /*
+
+            // Extract all paragraphs
+            let paragraphs = tempDiv.querySelectorAll("p");
+            let content = Array.from(paragraphs).map(p => p.innerHTML).join("\n\n");
+
+            // Log title and content for testing
+            alert(title)
+            alert(content)
+
             $.ajax({
                 url: 'articles/update',
                 method: 'POST',
@@ -144,7 +160,6 @@
                     alert("There was an error updating the article.");
                 }
             });
-            */
         }
     </script>
 {% endblock %}
