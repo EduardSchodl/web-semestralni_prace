@@ -18,7 +18,15 @@
         <!-- Article Content -->
         <div id="content" class="row article-content">
             <div class="col-md-8 offset-md-2">
-                <p class="text-justify">{{ article.article_content|nl2br }}</p>
+                <p class="text-justify">{{ article.abstract|nl2br }}</p>
+            </div>
+        </div>
+
+        <div class="row article-content">
+            <div class="col-md-8 offset-md-2">
+                <a href="" target="_blank" class="btn btn-primary">
+                    Open PDF
+                </a>
             </div>
         </div>
 

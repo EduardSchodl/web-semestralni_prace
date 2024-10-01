@@ -13,6 +13,8 @@
     //// Konstanty ////
     define("ROLE_ADMIN", 2);
     define("ROLE_USER", 4);
+    define("REVIEW_PROCESS", 1);
+    define("ACCEPTED_REVIEWED", 2);
 
     //// Tabulky ////
     define("TABLE_USERS", "users");
@@ -99,4 +101,16 @@
                 "function_name" => "updateArticle"
             )
         ),
+        "/publish" => array(
+            "GET" => array(
+                "title" => "Publish Article",
+                "controller_class_name" => Web\Project\Controllers\ArticleController::class,
+                "function_name" => "publishFormShow"
+            ),
+            "POST" => array(
+                "title" => "Publish Article",
+                "controller_class_name" => Web\Project\Controllers\ArticleController::class,
+                "function_name" => "publishArticle"
+            )
+        )
     );

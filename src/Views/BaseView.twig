@@ -13,6 +13,7 @@
         <link rel="stylesheet" href="/web-semestralni_prace/src/css/base.css">
         <link rel="stylesheet" href="/web-semestralni_prace/src/css/auth.css">
         <link rel="stylesheet" href="/web-semestralni_prace/src/css/articleDetail.css">
+        <link rel="stylesheet" href="/web-semestralni_prace/src/css/publishForm.css">
         <title>{% block title %}My Application{% endblock %}</title>
         <base href="http://localhost/web-semestralni_prace/src/">
     </head>
@@ -34,6 +35,7 @@
                             <a class="nav-item nav-link {% if current_path == '/login' or current_path == '/register' %}active{% endif %}" href="login">Log In</a>
                         {% endif %}
                     {% else %}
+                        <a href="publish" class="nav-item nav-link">Publish article</a>
                         <p id="loggedUser">{{ app.user["first_name"] }} {{ app.user["last_name"] }}</p>
                         <a id="logoutButton" class="nav-item nav-link" href="logout">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-door-open-fill" viewBox="0 0 16 16">

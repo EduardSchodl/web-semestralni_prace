@@ -1,0 +1,21 @@
+{% extends "BaseView.twig" %}
+
+{% block title %} {{ title }} {% endblock %}
+
+{% block content %}
+    <div id="publishForm">
+        <form class="row g-3" method="post" enctype="multipart/form-data">
+            <div class="col-12">
+                <label for="abstract" class="form-label">Abstract</label>
+                <textarea class="form-control" id="abstract" name="abstract" required></textarea>
+            </div>
+            <div class="col-md-5">
+                <label for="file" class="form-label">File</label>
+                <input type="file" class="form-control" id="file" name="file" required>
+            </div>
+            <div class="col-12">
+                <button id="submitArticle" type="submit" class="btn btn-success">Publish article</button>
+            </div>
+        </form>
+    </div>
+{% endblock %}
