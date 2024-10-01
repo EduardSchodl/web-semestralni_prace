@@ -6,7 +6,7 @@
         function getAllUsers(){
             $pdo = self::getConnection();
 
-            $stmt = $pdo->prepare("SELECT users.*, roles.name AS role_name FROM users INNER JOIN roles ON users.role_id = roles.id_role");
+            $stmt = $pdo->prepare("SELECT users.*, roles.name AS role_name FROM users INNER JOIN roles ON users.role_id = roles.id_role ORDER BY users.role_id ASC");
             $stmt->execute();
             return $stmt->fetchAll(\PDO::FETCH_ASSOC);
         }

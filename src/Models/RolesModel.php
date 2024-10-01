@@ -11,7 +11,7 @@
         function getRoles(){
             $pdo = self::getConnection();
 
-            $stmt = $pdo->prepare("SELECT name FROM roles WHERE roles.id_role > :loggedUserId");
+            $stmt = $pdo->prepare("SELECT * FROM roles WHERE roles.id_role > :loggedUserId");
             $stmt->execute(["loggedUserId" => $_SESSION["user"]["role_id"]]);
             return $stmt->fetchAll(\PDO::FETCH_ASSOC);
         }

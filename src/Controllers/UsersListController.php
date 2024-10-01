@@ -6,7 +6,7 @@
 
     class UsersListController extends BaseController{
         function index($data = []){
-            if(!isset($_SESSION["user"]) || $_SESSION["user"]["role_id"] >= ROLE_ADMIN)
+            if(!isset($_SESSION["user"]) || $_SESSION["user"]["role_id"] > ROLE_ADMIN)
             {
                 echo "Nedostatečné oprávnění";
                 exit;
