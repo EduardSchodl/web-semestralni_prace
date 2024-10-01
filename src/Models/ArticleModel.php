@@ -17,4 +17,12 @@
             $stmt->execute(["id" => $id]);
             return $stmt->fetch(\PDO::FETCH_ASSOC);
         }
+
+        function updateArticle($data){
+            $pdo = self::getConnection();
+
+            $stmt = $pdo->prepare("UPDATE articles SET title=:title, article_content=:content WHERE id_article=:id");
+            $stmt->execute(["title" => $data["title"], "content" => $data["content"],"id" => $data["article_id"]]);
+            return $stmt->fetch(\PDO::FETCH_ASSOC);
+        }
     }

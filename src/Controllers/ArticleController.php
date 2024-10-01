@@ -10,4 +10,9 @@
 
             $this->render("ArticleView.twig", ["title" => $data["title"], "article" => $article]);
         }
+
+        function updateArticle(){
+            $db = new ArticleModel();
+            $db->updateArticle($_POST);
+        }
     }

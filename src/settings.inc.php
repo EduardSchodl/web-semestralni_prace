@@ -91,5 +91,12 @@
                 "controller_class_name" => Web\Project\Controllers\ArticleController::class,
                 "function_name" => "index"
             )
-        )
+        ),
+        "/articles/update" => array(
+            "POST" => array(
+                "title" => "Article Detail",
+                "controller_class_name" => Web\Project\Controllers\ArticleController::class,
+                "function_name" => "updateArticle"
+            )
+        ),
     );

@@ -3,40 +3,28 @@
 {% block title %} {{ title }} {% endblock %}
 
 {% block content %}
-    <textarea name="editor" id="editor">jasdhasiudhsi</textarea>
-
-    <script>
-        ClassicEditor
-            .create(document.querySelector('#editor'))
-            .then(editor => {
-                console.log('Editor initialized successfully:', editor);
-            })
-            .catch(error => {
-                console.error('Error initializing CKEditor:', error);
-            });
-
-        const editorInstance = ClassicEditor.instances['editor'];
-        const content = editorInstance.getData();
-        console.log('Editor Content:', content);
-    </script>
+    <!-- CKEditor textarea initially hidden -->
+    <div id="editorWrapper" class="container mt-5">
+        <textarea name="editor" id="editor"></textarea>
+    </div>
 
     <div class="container mt-5">
         <!-- Article Header -->
-        <div class="article-header text-center">
-            <h1 class="display-4">{{ article.title }}</h1>
+        <div id="headerDiv" class="article-header text-center">
+            <h1 id="title" class="display-4">{{ article.title }}</h1>
             <p class="lead">Published on: {{ article.create_time|date('F j, Y') }}</p>
         </div>
 
-        {% if app.user.id_user == article.id_user %}
-            <button style="float: right" class="btn btn-success" type="button">Edit</button>
-        {% endif %}
-
         <!-- Article Content -->
-        <div class="row article-content">
+        <div id="content" class="row article-content">
             <div class="col-md-8 offset-md-2">
                 <p class="text-justify">{{ article.article_content|nl2br }}</p>
             </div>
         </div>
+
+        {% if app.user.id_user == article.id_user %}
+            <button id="editSave" onclick="editArticle()" class="btn btn-success" type="button">Edit</button>
+        {% endif %}
 
         <!-- Author Information -->
         <div class="row mb-4">
@@ -72,4 +60,91 @@
             </div>
         </div>
     </div>
+
+    <script>
+        document.getElementById("editor").style.display = "none";
+
+        let editorInstance = null;
+
+        // Get the article content and title
+        let contentElement = document.getElementById("content");
+        let titleElement = document.getElementById("headerDiv");
+        let title = document.getElementById("title").textContent;
+
+        function editArticle(){
+            if(editorInstance != null){
+                return;
+            }
+
+            // Switch button text to 'Save'
+            let editSaveButton = document.getElementById("editSave");
+            editSaveButton.innerText = "Save";
+            editSaveButton.addEventListener("click", saveChanges);
+
+            // Hide the current article content and title
+            contentElement.style.display = "none";
+            titleElement.style.display = "none";
+
+            // Show the CKEditor wrapper
+            document.getElementById("editorWrapper").style.display = "block";
+
+            ClassicEditor
+                .create(document.querySelector('#editor'), {
+                    heading: {
+                        options: [
+                            { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
+                            { model: 'heading1', view: 'h1', title: 'Heading 1', class: 'ck-heading_heading1' },
+                            { model: 'heading2', view: 'h2', title: 'Heading 2', class: 'ck-heading_heading2' },
+                            { model: 'heading3', view: 'h3', title: 'Heading 3', class: 'ck-heading_heading3' }
+                        ]
+                    }
+                })
+                .then(editor => {
+                    editorInstance = editor;
+                    let content = contentElement.getElementsByTagName("p")[0].innerHTML;
+
+                    editorInstance.setData('<h1>' + title + '</h1>' + '<p>' + content + '</p>'); // Set title + content in editor
+                    console.log('Editor initialized successfully:', editor);
+                })
+                .catch(error => {
+                    console.error('Error initializing CKEditor:', error);
+                });
+        }
+
+        function saveChanges(){
+            if(!editorInstance){
+                return;
+            }
+
+            let data = editorInstance.getData();
+            data = data.replace(/<br\s*\/?>/gi, '\n');
+
+            let tempDiv = document.createElement("div");
+            tempDiv.innerHTML = data;
+
+            let title = tempDiv.querySelector("h1") ? tempDiv.querySelector("h1").innerHTML : "";
+            let content = tempDiv.querySelector("p") ? tempDiv.querySelector("p").innerHTML : "";
+            alert(content);
+            /*
+            $.ajax({
+                url: 'articles/update',
+                method: 'POST',
+                data: {
+                    title: title,
+                    content: content,
+                    article_id: {{ article.id_article }}
+                },
+                success: function(response) {
+                    console.log("Article updated successfully.");
+                    alert("Article updated!");
+                    location.reload();
+                },
+                error: function(error) {
+                    console.error("Error updating article:", error);
+                    alert("There was an error updating the article.");
+                }
+            });
+            */
+        }
+    </script>
 {% endblock %}
