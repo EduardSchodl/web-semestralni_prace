@@ -10,11 +10,11 @@
             return $stmt->fetchAll(\PDO::FETCH_ASSOC);
         }
 
-        function getArticlesByUser(){
+        function getArticlesByUser($userId){
             $pdo = self::getConnection();
 
-            $stmt = $pdo->prepare("SELECT * FROM articles WHERE user");
-            $stmt->execute();
+            $stmt = $pdo->prepare("SELECT articles.*, status.status FROM articles INNER JOIN status ON articles.status_id = status.id_status WHERE author_id = :authorId");
+            $stmt->execute(["authorId" => $userId]);
             return $stmt->fetchAll(\PDO::FETCH_ASSOC);
         }
 

@@ -66,4 +66,16 @@
             header("Content-Disposition: inline; filename=\"" . $file['filename'] . "\"");
             echo $file['file'];
         }
+
+        function getUserArticles($data = []){
+            if(!isset($_SESSION["user"])){
+                echo "Nejste přihlášen";
+                exit;
+            }
+
+            $db = new ArticleModel();
+            $articles = $db->getArticlesByUser($_SESSION["user"]["id_user"]);
+
+            $this->render("ProfileArticlesView.twig", ["title" => $data["title"], "articles" => $articles]);
+        }
     }

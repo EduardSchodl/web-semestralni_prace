@@ -15,6 +15,7 @@
     define("ROLE_USER", 4);
     define("REVIEW_PROCESS", 1);
     define("ACCEPTED_REVIEWED", 2);
+    define("REJECTED_REVIEW", 3);
 
     //// Tabulky ////
     define("TABLE_USERS", "users");
@@ -64,6 +65,13 @@
                 "title" => "Profile page",
                 "controller_class_name" => Web\Project\Controllers\ProfileController::class,
                 "function_name" => "index",
+            )
+        ),
+        "/profile/articles" => array(
+            "GET" => array(
+                "title" => "My Articles",
+                "controller_class_name" => Web\Project\Controllers\ArticleController::class,
+                "function_name" => "getUserArticles",
             )
         ),
         "/profile/edit" => array(
