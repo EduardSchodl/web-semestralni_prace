@@ -10,6 +10,14 @@
             return $stmt->fetchAll(\PDO::FETCH_ASSOC);
         }
 
+        function getArticlesByUser(){
+            $pdo = self::getConnection();
+
+            $stmt = $pdo->prepare("SELECT * FROM articles WHERE user");
+            $stmt->execute();
+            return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        }
+
         function getArticle($slug){
             $pdo = self::getConnection();
 
@@ -34,17 +42,18 @@
             return $stmt->fetch(\PDO::FETCH_ASSOC);
         }
 
-        function insertArticle($abstract, $fileName, $fileContent, $user){
+        function insertArticle($abstract, $title, $fileName, $fileContent, $user){
             $pdo = self::getConnection();
 
             $date = date("Y-m-d");
             $statusId = REVIEW_PROCESS;
             $slug = $fileName."-".$this->generateUUIDv4()."-".$date;
 
-            $stmt = $pdo->prepare("INSERT INTO articles (title, slug, abstract, file, create_time, status_id, author_id) VALUES (:title, :slug, :abstract, :file, :create_time, :status_id, :author_id)");
-            $stmt->bindParam(":title", $fileName);
+            $stmt = $pdo->prepare("INSERT INTO articles (title, slug, abstract, filename, file, create_time, status_id, author_id) VALUES (:title, :slug, :abstract, :filename, :file, :create_time, :status_id, :author_id)");
+            $stmt->bindParam(":title", $title);
             $stmt->bindParam(":slug", $slug);
             $stmt->bindParam(":abstract", $abstract);
+            $stmt->bindParam(":filename", $fileName);
             $stmt->bindParam(":file", $fileContent, \PDO::PARAM_LOB);
             $stmt->bindParam(":create_time", $date);
             $stmt->bindParam(":status_id", $statusId);

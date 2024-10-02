@@ -31,7 +31,7 @@
         }
 
         function publishArticle(){
-            if (!isset($_POST["abstract"]) || !isset($_FILES["file"])) {
+            if (!isset($_POST["title"]) || !isset($_POST["abstract"]) || !isset($_FILES["file"])) {
                 echo "Chybně vyplněný formulář";
                 exit;
             }
@@ -48,7 +48,7 @@
             $file_content = file_get_contents($file_tmp);
 
             $db = new ArticleModel();
-            $slug = $db->insertArticle($_POST["abstract"], $file_name, $file_content, $_SESSION["user"]["id_user"]);
+            $slug = $db->insertArticle($_POST["abstract"], $_POST["title"], $file_name, $file_content, $_SESSION["user"]["id_user"]);
 
             if($slug == -1){
                 echo "Chyba";
@@ -63,7 +63,7 @@
             $file = $db->getArticle($data["params"][0]);
 
             header("Content-Type: application/pdf");
-            header("Content-Disposition: inline; filename=\"" . $file['title'] . "\"");
+            header("Content-Disposition: inline; filename=\"" . $file['filename'] . "\"");
             echo $file['file'];
         }
     }
