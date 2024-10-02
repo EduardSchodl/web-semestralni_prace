@@ -11,6 +11,7 @@
     define("DB_PASS","");
 
     //// Konstanty ////
+    define("SUPERADMIN", 1);
     define("ROLE_ADMIN", 2);
     define("ROLE_USER", 4);
     define("REVIEW_PROCESS", 1);

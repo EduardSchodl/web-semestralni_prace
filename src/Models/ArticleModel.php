@@ -1,13 +1,20 @@
 <?php
     namespace Web\Project\Models;
 
+    use PDO;
+
+    if(!isset($_SESSION))
+    {
+        session_start();
+    }
+
     class ArticleModel extends DatabaseModel{
         function getArticles(){
             $pdo = self::getConnection();
 
             $stmt = $pdo->prepare("SELECT * FROM articles WHERE articles.status_id = :status_id");
             $stmt->execute(["status_id" => ACCEPTED_REVIEWED]);
-            return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
         }
 
         function getArticlesByUser($userId){
@@ -15,7 +22,7 @@
 
             $stmt = $pdo->prepare("SELECT articles.*, status.status FROM articles INNER JOIN status ON articles.status_id = status.id_status WHERE author_id = :authorId");
             $stmt->execute(["authorId" => $userId]);
-            return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
         }
 
         function getArticle($slug){
@@ -26,20 +33,22 @@
                 "slug" => $slug
             ]);
 
+            $article = $stmt->fetch(PDO::FETCH_ASSOC);
+
             #$stmt = $pdo->prepare("SELECT articles.*, users.id_user, users.first_name, users.last_name, users.email FROM articles INNER JOIN users ON articles.author_id = users.id_user WHERE slug=:slug AND articles.status_id = :status");
             #$stmt->execute([
             #    "slug" => $slug,
             #    "status" => ACCEPTED_REVIEWED
             #]);
-            return $stmt->fetch(\PDO::FETCH_ASSOC);
+            return $article;
         }
 
         function updateArticle($data){
             $pdo = self::getConnection();
 
-            $stmt = $pdo->prepare("UPDATE articles SET title=:title, article_content=:content WHERE id_article=:id");
+            $stmt = $pdo->prepare("UPDATE articles SET title=:title, abstract=:content WHERE id_article=:id");
             $stmt->execute(["title" => $data["title"], "content" => $data["content"],"id" => $data["article_id"]]);
-            return $stmt->fetch(\PDO::FETCH_ASSOC);
+            return $stmt->fetch(PDO::FETCH_ASSOC);
         }
 
         function insertArticle($abstract, $title, $fileName, $fileContent, $user){
@@ -54,7 +63,7 @@
             $stmt->bindParam(":slug", $slug);
             $stmt->bindParam(":abstract", $abstract);
             $stmt->bindParam(":filename", $fileName);
-            $stmt->bindParam(":file", $fileContent, \PDO::PARAM_LOB);
+            $stmt->bindParam(":file", $fileContent, PDO::PARAM_LOB);
             $stmt->bindParam(":create_time", $date);
             $stmt->bindParam(":status_id", $statusId);
             $stmt->bindParam(":author_id", $user);
@@ -73,7 +82,7 @@
 
             $stmt = $pdo->prepare("DELETE FROM articles WHERE id_article=:id");
             $stmt->execute(["id" => $id]);
-            return $stmt->fetch(\PDO::FETCH_ASSOC);
+            return $stmt->fetch(PDO::FETCH_ASSOC);
         }
 
         function generateUUIDv4()

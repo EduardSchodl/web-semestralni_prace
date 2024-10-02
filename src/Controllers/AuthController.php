@@ -21,7 +21,6 @@
             if($user && password_verify($_POST["password"], $user["password"])){
                 //alert uspech
                 $_SESSION["user"] = $user;
-                echo "asdjas";
                 header('Location: ' . $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . '/web-semestralni_prace/src');
                 exit;
             }

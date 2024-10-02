@@ -14,6 +14,11 @@
                 exit;
             }
 
+            if($_SESSION["user"]["role_id"] == SUPERADMIN){
+                header('Location: ' . $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . '/web-semestralni_prace/src');
+                exit;
+            }
+
             $this->render("ProfileView.twig", ["title" => $data["title"]]);
         }
 
@@ -27,6 +32,11 @@
         function editProfile($data = []){
             if(!isset($_SESSION["user"])){
                 echo "Nejste přihlášen";
+                exit;
+            }
+
+            if($_SESSION["user"]["role_id"] == SUPERADMIN){
+                header('Location: ' . $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . '/web-semestralni_prace/src');
                 exit;
             }
 
