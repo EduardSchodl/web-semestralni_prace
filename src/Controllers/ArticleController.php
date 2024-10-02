@@ -13,7 +13,12 @@
             $db = new ArticleModel();
             $article = $db->getArticle($data["params"][0]);
 
-            $this->render("ArticleView.twig", ["title" => $data["title"], "article" => $article]);
+            if(!$article){
+                echo "Neexistující článek";
+                exit;
+            }
+
+            $this->render("ArticleView.twig", ["title" => $data["title"], "article" => $article, "statusConst" => REVIEW_PROCESS]);
         }
 
         function updateArticle(){
@@ -43,13 +48,22 @@
             $file_content = file_get_contents($file_tmp);
 
             $db = new ArticleModel();
-            $state = $db->insertArticle($_POST["abstract"], $file_name, $file_content, $_SESSION["user"]["id_user"]);
+            $slug = $db->insertArticle($_POST["abstract"], $file_name, $file_content, $_SESSION["user"]["id_user"]);
 
-            if($state == -1){
+            if($slug == -1){
                 echo "Chyba";
                 exit;
             }
 
-            header("Location: articles/$state");
+            header("Location: articles/$slug");
+        }
+
+        function showPDF($data = []){
+            $db = new ArticleModel();
+            $file = $db->getArticle($data["params"][0]);
+
+            header("Content-Type: application/pdf");
+            header("Content-Disposition: inline; filename=\"" . $file['title'] . "\"");
+            echo $file['file'];
         }
     }

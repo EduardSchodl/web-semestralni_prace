@@ -24,13 +24,13 @@
 
         <div class="row article-content">
             <div class="col-md-8 offset-md-2">
-                <a href="" target="_blank" class="btn btn-primary">
+                <a href="articles/pdf/{{ article.slug }}" target="_blank" class="btn btn-primary">
                     Open PDF
                 </a>
             </div>
         </div>
 
-        {% if app.user.id_user == article.id_user %}
+        {% if app.user.id_user == article.id_user and article.status_id == statusConst %}
             <button id="editSave" onclick="editArticle()" class="btn btn-success" type="button">Edit</button>
         {% endif %}
 

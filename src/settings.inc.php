@@ -101,6 +101,13 @@
                 "function_name" => "updateArticle"
             )
         ),
+        "/articles/pdf/{slug}" => array(
+            "GET" => array(
+                "title" => "Article Detail",
+                "controller_class_name" => Web\Project\Controllers\ArticleController::class,
+                "function_name" => "showPDF"
+            )
+        ),
         "/publish" => array(
             "GET" => array(
                 "title" => "Publish Article",

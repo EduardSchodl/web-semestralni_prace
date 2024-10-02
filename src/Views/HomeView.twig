@@ -17,7 +17,7 @@
                     <h5 class="card-title">{{ article.title }}</h5>
                     <p class="card-text">{{ article.abstract|length > 255 ? article.abstract|slice(0, 255) ~ '...' : article.abstract }}</p>
                     <div class="row card-bottom">
-                        <a href="articles/{{ article.id_article }}" class="btn btn-primary col-sm-4">Číst dále</a>
+                        <a href="articles/{{ article.slug }}" class="btn btn-primary col-sm-4">Číst dále</a>
                         <footer class="blockquote-footer col-sm-6">
                             <small class="text-muted">
                                 {{ article.create_time|date('F j, Y') }}
