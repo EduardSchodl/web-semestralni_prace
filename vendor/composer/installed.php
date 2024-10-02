@@ -3,13 +3,22 @@
         'name' => 'web/project',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => 'fa1ef16e1e6522b97cc7975c9d86bcf9d590bfeb',
+        'reference' => 'ec55d53a362b5748cc23ac743861906d6c7df6e4',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
         'dev' => true,
     ),
     'versions' => array(
+        'ckeditor/ckeditor' => array(
+            'pretty_version' => '4.25.0',
+            'version' => '4.25.0.0',
+            'reference' => 'acc0804803dcf44d452deee74363f66e617c0fc4',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../ckeditor/ckeditor',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
         'symfony/deprecation-contracts' => array(
             'pretty_version' => 'v3.5.0',
             'version' => '3.5.0.0',
@@ -46,6 +55,15 @@
             'aliases' => array(),
             'dev_requirement' => false,
         ),
+        'twbs/bootstrap' => array(
+            'pretty_version' => 'v5.3.3',
+            'version' => '5.3.3.0',
+            'reference' => '6e1f75f420f68e1d52733b8e407fc7c3766c9dba',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../twbs/bootstrap',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
         'twig/twig' => array(
             'pretty_version' => 'v3.14.0',
             'version' => '3.14.0.0',
@@ -55,10 +73,16 @@
             'aliases' => array(),
             'dev_requirement' => false,
         ),
+        'twitter/bootstrap' => array(
+            'dev_requirement' => false,
+            'replaced' => array(
+                0 => 'v5.3.3',
+            ),
+        ),
         'web/project' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => 'fa1ef16e1e6522b97cc7975c9d86bcf9d590bfeb',
+            'reference' => 'ec55d53a362b5748cc23ac743861906d6c7df6e4',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

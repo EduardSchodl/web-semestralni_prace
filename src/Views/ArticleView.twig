@@ -10,7 +10,7 @@
 
     <div class="container mt-5">
         <!-- Article Header -->
-        <div id="headerDiv" class="article-header text-center">
+        <div id="headerDiv" class="article-header text-center mb-4">
             <h1 id="title" class="display-4">{{ article.title }}</h1>
             <p class="lead">Published on: {{ article.create_time|date('F j, Y') }}</p>
         </div>
@@ -22,17 +22,18 @@
             </div>
         </div>
 
-        <div class="row article-content">
+        <!-- Button Row -->
+        <div class="row text-center mb-4">
             <div class="col-md-8 offset-md-2">
-                <a href="articles/pdf/{{ article.slug }}" target="_blank" class="btn btn-primary">
+                <a href="articles/pdf/{{ article.slug }}" target="_blank" class="btn btn-primary mx-1">
                     Open PDF
                 </a>
+                {% if app.user.id_user == article.id_user and article.status_id == statusConst %}
+                    <button id="editSave" onclick="editArticle()" class="btn btn-success mx-1" type="button">Edit</button>
+                    <button id="delete" onclick="deleteArticle()" class="btn btn-danger mx-1" type="button">Delete</button>
+                {% endif %}
             </div>
         </div>
-
-        {% if app.user.id_user == article.id_user and article.status_id == statusConst %}
-            <button id="editSave" onclick="editArticle()" class="btn btn-success" type="button">Edit</button>
-        {% endif %}
 
         <!-- Author Information -->
         <div class="row mb-4">
@@ -68,6 +69,7 @@
             </div>
         </div>
     </div>
+
 
     <script>
         document.getElementById("editor").style.display = "none";
@@ -166,6 +168,25 @@
                 error: function(error) {
                     console.error("Error updating article:", error);
                     alert("There was an error updating the article.");
+                }
+            });
+        }
+
+        function deleteArticle(){
+            alert("asdasd")
+            $.ajax({
+                url: 'articles/delete',
+                method: 'POST',
+                data: {
+                    article_id: {{ article.id_article }}
+                },
+                success: function(response) {
+                    console.log("Article deleted successfully.");
+                    alert("Article deleted!");
+                },
+                error: function(error) {
+                    console.error("Error deleting article:", error);
+                    alert("There was an error deleting the article.");
                 }
             });
         }

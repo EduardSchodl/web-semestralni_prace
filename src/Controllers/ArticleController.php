@@ -78,4 +78,11 @@
 
             $this->render("ProfileArticlesView.twig", ["title" => $data["title"], "articles" => $articles]);
         }
+
+        function deleteArticle(){
+            $db = new ArticleModel();
+            $db->deleteArticle($_POST["article_id"]);
+
+            header("Location: profile/articles");
+        }
     }

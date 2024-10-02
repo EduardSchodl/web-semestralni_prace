@@ -3,70 +3,74 @@
 {% block title %} {{ title }} {% endblock %}
 
 {% block content %}
-    <div id="bodyDiv">
-        {% if current_path == "/login" %}
-            <form id="authForm" method="post" class="row g-2">
-                <div class="mb-8">
-                    <label for="username" class="form-label">Username</label>
-                    <input type="text" name="username" class="form-control" id="username" required>
-                </div>
-                <div class="mb-8">
-                    <label for="psswd" class="form-label">Password</label>
-                    <input type="password" name="password" class="form-control" id="psswd" required>
-                </div>
-                <div id="submitButton" class="mb-8">
-                    <button type="submit" class="btn btn-success">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-in-right" viewBox="0 0 16 16">
-                            <path fill-rule="evenodd" d="M6 3.5a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-2a.5.5 0 0 0-1 0v2A1.5 1.5 0 0 0 6.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-8A1.5 1.5 0 0 0 5 3.5v2a.5.5 0 0 0 1 0z"/>
-                            <path fill-rule="evenodd" d="M11.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H1.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708z"/>
-                        </svg>
-                        Sign in
-                    </button>
-                </div>
+    <div id="bodyDiv" class="container mt-5">
+        <div class="col-lg-6 col-md-8 col-12 mx-auto"> <!-- Set a custom width for larger screens -->
+            {% if current_path == "/login" %}
+                <form id="authForm" method="post" class="row g-3">
+                    <div class="col-12">
+                        <label for="username" class="form-label">Username</label>
+                        <input type="text" name="username" class="form-control" id="username" required>
+                    </div>
+                    <div class="col-12">
+                        <label for="psswd" class="form-label">Password</label>
+                        <input type="password" name="password" class="form-control" id="psswd" required>
+                    </div>
+                    <div class="col-12 text-center">
+                        <button type="submit" class="btn btn-success">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-in-right" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M6 3.5a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-2a.5.5 0 0 0-1 0v2A1.5 1.5 0 0 0 6.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-8A1.5 1.5 0 0 0 5 3.5v2a.5.5 0 0 0 1 0z"/>
+                                <path fill-rule="evenodd" d="M11.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H1.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708z"/>
+                            </svg>
+                            Sign in
+                        </button>
+                    </div>
 
-                <hr>
+                    <hr>
 
-                <div id="textDiv" class="col-12">
-                    <p id="inlineText">Ještě nemáte účet?</p> <a id="noDecor" href="register">Register Now</a>
-                </div>
-            </form>
-        {% else %}
-            <form method="post" id="authForm" class="row g-2">
-                <div class="col-md-6">
-                    <label for="fname" class="form-label">First name</label>
-                    <input type="text" name="fname" class="form-control" id="fname" placeholder="John" required>
-                </div>
-                <div class="col-md-6">
-                    <label for="lname" class="form-label">Last name</label>
-                    <input type="text" name="lname" class="form-control" id="lname" placeholder="Doe" required>
-                </div>
-                <div class="col-12">
-                    <label for="username" class="form-label">Username</label>
-                    <input type="text" name="username" class="form-control" id="username" required>
-                </div>
-                <div class="col-12">
-                    <label for="email" class="form-label">Email</label>
-                    <input type="email" name="email" class="form-control" id="email" placeholder="John.Doe@gmail.com" required>
-                </div>
-                <div class="col-12">
-                    <label for="psswd" class="form-label">Password</label>
-                    <input type="password" name="password" class="form-control" id="psswd" required>
-                </div>
-                <div id="submitButton" class="col-12">
-                    <button type="submit" class="btn btn-success">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-plus-fill" viewBox="0 0 16 16">
-                            <path d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
-                            <path fill-rule="evenodd" d="M13.5 5a.5.5 0 0 1 .5.5V7h1.5a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0V8h-1.5a.5.5 0 0 1 0-1H13V5.5a.5.5 0 0 1 .5-.5"/>
-                        </svg>
-                        Sign up
-                    </button>
-                </div>
+                    <div id="textDiv" class="col-12 text-center">
+                        <p id="inlineText">Ještě nemáte účet?</p>
+                        <a id="noDecor" href="register">Register Now</a>
+                    </div>
+                </form>
+            {% else %}
+                <form method="post" id="authForm" class="row g-3">
+                    <div class="col-md-6 col-12">
+                        <label for="fname" class="form-label">First name</label>
+                        <input type="text" name="fname" class="form-control" id="fname" placeholder="John" required>
+                    </div>
+                    <div class="col-md-6 col-12">
+                        <label for="lname" class="form-label">Last name</label>
+                        <input type="text" name="lname" class="form-control" id="lname" placeholder="Doe" required>
+                    </div>
+                    <div class="col-12">
+                        <label for="username" class="form-label">Username</label>
+                        <input type="text" name="username" class="form-control" id="username" required>
+                    </div>
+                    <div class="col-12">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" name="email" class="form-control" id="email" placeholder="John.Doe@gmail.com" required>
+                    </div>
+                    <div class="col-12">
+                        <label for="psswd" class="form-label">Password</label>
+                        <input type="password" name="password" class="form-control" id="psswd" required>
+                    </div>
+                    <div id="submitButton" class="col-12 text-center">
+                        <button type="submit" class="btn btn-success">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-plus-fill" viewBox="0 0 16 16">
+                                <path d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
+                                <path fill-rule="evenodd" d="M13.5 5a.5.5 0 0 1 .5.5V7h1.5a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0V8h-1.5a.5.5 0 0 1 0-1H13V5.5a.5.5 0 0 1 .5-.5"/>
+                            </svg>
+                            Sign up
+                        </button>
+                    </div>
 
-                <hr>
-                <div id="textDiv" class="col-12">
-                    <p id="inlineText">Máte již účet?</p> <a id="noDecor" href="login">Log In</a>
-                </div>
-            </form>
-        {% endif %}
+                    <hr>
+                    <div id="textDiv" class="col-12 text-center">
+                        <p id="inlineText">Máte již účet?</p>
+                        <a id="noDecor" href="login">Log In</a>
+                    </div>
+                </form>
+            {% endif %}
+        </div> <!-- End of column for form -->
     </div>
 {% endblock %}

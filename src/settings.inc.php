@@ -109,6 +109,13 @@
                 "function_name" => "updateArticle"
             )
         ),
+        "/articles/delete" => array(
+            "POST" => array(
+                "title" => "Article Detail",
+                "controller_class_name" => Web\Project\Controllers\ArticleController::class,
+                "function_name" => "deleteArticle"
+            )
+        ),
         "/articles/pdf/{slug}" => array(
             "GET" => array(
                 "title" => "Article Detail",

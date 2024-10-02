@@ -3,7 +3,8 @@
     "type": "project",
     "require": {
         "twig/twig": "^3.14",
-      "ext-pdo": "*"
+      "ext-pdo": "*",
+        "twbs/bootstrap": "5.3.3"
     },
     "autoload": {
         "psr-4": {

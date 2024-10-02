@@ -68,6 +68,14 @@
             }
         }
 
+        function deleteArticle($id){
+            $pdo = self::getConnection();
+
+            $stmt = $pdo->prepare("DELETE FROM articles WHERE id_article=:id");
+            $stmt->execute(["id" => $id]);
+            return $stmt->fetch(\PDO::FETCH_ASSOC);
+        }
+
         function generateUUIDv4()
         {
             $data = random_bytes(16);
