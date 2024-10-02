@@ -173,7 +173,6 @@
         }
 
         function deleteArticle(){
-            alert("asdasd")
             $.ajax({
                 url: 'articles/delete',
                 method: 'POST',
@@ -183,6 +182,7 @@
                 success: function(response) {
                     console.log("Article deleted successfully.");
                     alert("Article deleted!");
+                    window.location.replace("profile/articles");
                 },
                 error: function(error) {
                     console.error("Error deleting article:", error);

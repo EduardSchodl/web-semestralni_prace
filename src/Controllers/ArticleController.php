@@ -82,7 +82,5 @@
         function deleteArticle(){
             $db = new ArticleModel();
             $db->deleteArticle($_POST["article_id"]);
-
-            header("Location: profile/articles");
         }
     }
