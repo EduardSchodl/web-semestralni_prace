@@ -7,8 +7,8 @@
         {% if current_path == "/login" %}
             <form id="authForm" method="post" class="row g-2">
                 <div class="mb-8">
-                    <label for="email" class="form-label">Email</label>
-                    <input type="email" name="email" class="form-control" id="email" placeholder="john.doe@gmail.com" required>
+                    <label for="username" class="form-label">Username</label>
+                    <input type="text" name="username" class="form-control" id="username" required>
                 </div>
                 <div class="mb-8">
                     <label for="psswd" class="form-label">Password</label>
@@ -39,6 +39,10 @@
                 <div class="col-md-6">
                     <label for="lname" class="form-label">Last name</label>
                     <input type="text" name="lname" class="form-control" id="lname" placeholder="Doe" required>
+                </div>
+                <div class="col-12">
+                    <label for="username" class="form-label">Username</label>
+                    <input type="text" name="username" class="form-control" id="username" required>
                 </div>
                 <div class="col-12">
                     <label for="email" class="form-label">Email</label>

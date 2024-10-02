@@ -16,7 +16,7 @@
 
         function auth(){
             $db = new UserModel();
-            $user = $db->getUser($_POST["email"]);
+            $user = $db->getUser($_POST["username"], true);
 
             if($user && password_verify($_POST["password"], $user["password"])){
                 //alert uspech
@@ -35,16 +35,23 @@
 
         function register(){
             $db = new UserModel();
-            $user = $db->getUser($_POST["email"]);
+            $exists =$db->checkUserExists($_POST["username"], $_POST["email"]);
 
-            if($user){
+            if($exists == -1){
+                //alert username je jiz zabrany
+                header("Location: register");
+                exit();
+            }
+            elseif($exists == -2){
                 //alert email je jiz zabrany
                 header("Location: register");
                 exit();
             }
 
-            if ($db->addUser($_POST) > 0) {
-                $_SESSION['user'] = $db->getUser($_POST["email"]);
+            $userId = $db->addUser($_POST);
+
+            if($userId) {
+                $_SESSION['user'] = $db->getUser($userId);
 
                 header('Location: ' . $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . '/web-semestralni_prace/src');
                 exit();
