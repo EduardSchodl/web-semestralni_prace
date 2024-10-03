@@ -18,18 +18,30 @@
             $db = new UserModel();
             $user = $db->getUser($_POST["username"], true);
 
-            if($user && password_verify($_POST["password"], $user["password"])){
-                //alert uspech
-                $_SESSION["user"] = $user;
-                header('Location: ' . $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . '/web-semestralni_prace/src');
-                exit;
+            if($user){
+                if($user["banned"] == BAN["BANNED"]){
+                    echo "zabanovan";
+                    header("Location: login");
+                    exit;
+                }
+
+                if(password_verify($_POST["password"], $user["password"])){
+                    //alert uspech
+                    $_SESSION["user"] = $user;
+                    header('Location: ' . $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . '/web-semestralni_prace/src');
+                }
+                else{
+                    echo "spatne heslo";
+                    header("Location: login");
+                }
+
             }
             else{
                 //alert spatne heslo nebo mail
                 echo "invalid";
                 header("Location: login");
-                exit();
             }
+            exit;
         }
 
         function register(){
