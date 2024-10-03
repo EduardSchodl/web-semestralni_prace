@@ -37,7 +37,7 @@
                 "username" => $postData["username"],
                 "email" => $postData["email"],
                 "password" => $hash_password,
-                "roleid" => ROLE_USER
+                "roleid" => ROLES["ROLE_USER"]
             ]);
 
             return $pdo->lastInsertId();

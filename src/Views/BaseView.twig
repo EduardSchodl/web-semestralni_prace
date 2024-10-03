@@ -21,13 +21,13 @@
             <div class="navbar-nav">
                 <a class="nav-item nav-link {% if current_path == '/' %}active{% endif %}" href="">Home</a>
                 {% if app.user %}
-                    {% if app.user.role_id != 1 %}
+                    {% if app.user.role_id != role.role_id.SUPERADMIN %}
                         <a class="nav-item nav-link {% if current_path == '/profile' or current_path == '/profile/edit' %}active{% endif %}" href="profile">Profile</a>
                     {% endif %}
-                    {% if app.user.role_id <= 2 %}
+                    {% if app.user.role_id <= role.role_id.ROLE_ADMIN %}
                         <a class="nav-item nav-link {% if current_path == '/users' %}active{% endif %}" href="users">Users list</a>
                     {% endif %}
-                    {% if app.user.role_id != 1 %}
+                    {% if app.user.role_id != role.role_id.SUPERADMIN %}
                         <a href="publish" class="nav-item nav-link">Publish article</a>
                     {% endif %}
                 {% endif %}
@@ -54,4 +54,4 @@
 
 <script src="/web-semestralni_prace/vendor/twbs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 <script src="/web-semestralni_prace/node_modules/@ckeditor/ckeditor5-build-classic/build/ckeditor.js"></script>
-<script src="/web-semestralni_prace/node_modules/jquery/dist/jquery.min.js"></script>
+<script src="/web-semestralni_prace/node_modules/jquery/dist/jquery.js"></script>

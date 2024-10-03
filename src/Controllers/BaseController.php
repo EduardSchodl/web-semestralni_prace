@@ -28,6 +28,8 @@
             $user = $_SESSION['user'] ?? null;
             $this->twig->addGlobal('app', ['user' => $user]);
             $this->twig->addGlobal('role', ['role_id' => ROLES]);
+            $this->twig->addGlobal('status', ['status_id' => STATUS]);
+            $this->twig->addGlobal('ban', ['status' => BAN]);
 
             $data['current_path'] = $path;
             echo $this->twig->render($view, $data);

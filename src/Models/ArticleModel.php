@@ -13,7 +13,7 @@
             $pdo = self::getConnection();
 
             $stmt = $pdo->prepare("SELECT * FROM articles WHERE articles.status_id = :status_id");
-            $stmt->execute(["status_id" => ACCEPTED_REVIEWED]);
+            $stmt->execute(["status_id" => STATUS["ACCEPTED_REVIEWED"]]);
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         }
 
@@ -61,7 +61,7 @@
             $pdo = self::getConnection();
 
             $date = date("Y-m-d");
-            $statusId = REVIEW_PROCESS;
+            $statusId = STATUS["REVIEW_PROCESS"];
             $slug = $fileName."-".$this->generateUUIDv4()."-".$date;
 
             $stmt = $pdo->prepare("INSERT INTO articles (title, slug, abstract, filename, file, create_time, status_id, author_id) VALUES (:title, :slug, :abstract, :filename, :file, :create_time, :status_id, :author_id)");

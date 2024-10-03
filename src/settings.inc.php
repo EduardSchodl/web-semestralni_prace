@@ -18,12 +18,16 @@
         "ROLE_USER" => 4
     );
 
-    define("REVIEW_PROCESS", 1);
-    define("ACCEPTED_REVIEWED", 2);
-    define("REJECTED_REVIEW", 3);
+    const STATUS = array(
+        "REVIEW_PROCESS" => 1,
+        "ACCEPTED_REVIEWED" => 2,
+        "REJECTED_REVIEW" => 3
+    );
 
-    define("BANNED", 1);
-    define("UNBANNED", 0);
+    const BAN = array(
+        "BANNED" => 1,
+        "UNBANNED" => 0
+    );
 
     //// Tabulky ////
     define("TABLE_USERS", "users");

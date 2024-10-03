@@ -66,10 +66,10 @@
                     $db->updateRole($_POST["id_user"], $_POST["id_role"]);
                     break;
                 case "ban":
-                    $db->userBanStatusUpdate($_POST["id_user"], BANNED);
+                    $db->userBanStatusUpdate($_POST["id_user"], BAN["BANNED"]);
                     break;
                 case "unban":
-                    $db->userBanStatusUpdate($_POST["id_user"], UNBANNED);
+                    $db->userBanStatusUpdate($_POST["id_user"], BAN["UNBANNED"]);
                     break;
                 case "delete":
                     $db->deleteUser($_POST["id_user"]);

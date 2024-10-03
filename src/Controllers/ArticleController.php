@@ -18,7 +18,7 @@
                 exit;
             }
 
-            $this->render("ArticleView.twig", ["title" => $data["title"], "article" => $article, "statusConst" => REVIEW_PROCESS]);
+            $this->render("ArticleView.twig", ["title" => $data["title"], "article" => $article]);
         }
 
         function updateArticle(){
@@ -32,7 +32,7 @@
                 exit;
             }
 
-            if($_SESSION["user"]["role_id"] == SUPERADMIN){
+            if($_SESSION["user"]["role_id"] == ROLES["SUPERADMIN"]){
                 header('Location: ' . $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . '/web-semestralni_prace/src');
                 exit;
             }
@@ -83,7 +83,7 @@
                 exit;
             }
 
-            if($_SESSION["user"]["role_id"] == SUPERADMIN){
+            if($_SESSION["user"]["role_id"] == ROLES["SUPERADMIN"]){
                 header('Location: ' . $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . '/web-semestralni_prace/src');
                 exit;
             }
@@ -95,7 +95,7 @@
         }
 
         function getUserArticles($data = []){
-            if(!isset($_SESSION["user"]) || $_SESSION["user"]["role_id"] > ROLE_ADMIN)
+            if(!isset($_SESSION["user"]) || $_SESSION["user"]["role_id"] > ROLES["ROLE_ADMIN"])
             {
                 echo "Nedostatečné oprávnění";
                 exit;

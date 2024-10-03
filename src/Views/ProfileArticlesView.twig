@@ -19,7 +19,7 @@
                 <th scope="row">{{ loop.index }}</th>
                 <td>{{ article.title }}</td>
                 <td>{{ article.create_time }}</td>
-                <td class="{% if article.status_id == 1 %}bg-secondary{% elseif article.status_id == 2 %}bg-success{% else %}bg-danger{% endif %}">{{ article.status }}</td>
+                <td class="{% if article.status_id == status.status_id.REVIEW_PROCESS %}bg-secondary{% elseif article.status_id == status.status_id.ACCEPTED_REVIEWED %}bg-success{% else %}bg-danger{% endif %}">{{ article.status }}</td>
                 <td>
                     <a class="btn btn-primary" href="articles/{{ article.slug }}">Link</a>
                 </td>
