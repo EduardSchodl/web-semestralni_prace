@@ -64,7 +64,7 @@
         "/profile" => array(
             "GET" => array(
                 "title" => "Profile page",
-                "controller_class_name" => Web\Project\Controllers\ProfileController::class,
+                "controller_class_name" => Web\Project\Controllers\UserController::class,
                 "function_name" => "index",
             )
         ),
@@ -72,28 +72,28 @@
             "GET" => array(
                 "title" => "My Articles",
                 "controller_class_name" => Web\Project\Controllers\ArticleController::class,
-                "function_name" => "getUserArticles",
-            )
-        ),
-        "/profile/edit" => array(
-            "GET" => array(
-                "title" => "Edit Profile",
-                "controller_class_name" => Web\Project\Controllers\ProfileController::class,
-                "function_name" => "editProfile",
+                "function_name" => "getProfileArticles",
             )
         ),
         "/users" => array(
             "GET" => array(
                 "title" => "Users List",
-                "controller_class_name" => Web\Project\Controllers\UsersListController::class,
-                "function_name" => "index"
+                "controller_class_name" => Web\Project\Controllers\UserController::class,
+                "function_name" => "showUsersList"
             )
         ),
-        "/users/{id}" => array(
+        "/users/{username}" => array(
             "GET" => array(
                 "title" => "User Profile",
-                "controller_class_name" => Web\Project\Controllers\ProfileController::class,
+                "controller_class_name" => Web\Project\Controllers\UserController::class,
                 "function_name" => "showUserProfile"
+            )
+        ),
+        "/users/{username}/articles" => array(
+            "GET" => array(
+                "title" => "User Profile",
+                "controller_class_name" => Web\Project\Controllers\ArticleController::class,
+                "function_name" => "getUserArticles"
             )
         ),
         "/articles/{slug}" => array(

@@ -77,7 +77,7 @@
             echo $file['file'];
         }
 
-        function getUserArticles($data = []){
+        function getProfileArticles($data = []){
             if(!isset($_SESSION["user"])){
                 echo "Nejste přihlášen";
                 exit;
@@ -89,7 +89,20 @@
             }
 
             $db = new ArticleModel();
-            $articles = $db->getArticlesByUser($_SESSION["user"]["id_user"]);
+            $articles = $db->getArticlesByUser("author_id", $_SESSION["user"]["id_user"]);
+
+            $this->render("ProfileArticlesView.twig", ["title" => $data["title"], "articles" => $articles]);
+        }
+
+        function getUserArticles($data = []){
+            if(!isset($_SESSION["user"]) || $_SESSION["user"]["role_id"] > ROLE_ADMIN)
+            {
+                echo "Nedostatečné oprávnění";
+                exit;
+            }
+
+            $db = new ArticleModel();
+            $articles = $db->getArticlesByUser("username", $data["params"][0]);
 
             $this->render("ProfileArticlesView.twig", ["title" => $data["title"], "articles" => $articles]);
         }

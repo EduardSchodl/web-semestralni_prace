@@ -17,11 +17,17 @@
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         }
 
-        function getArticlesByUser($userId){
+        function getArticlesByUser($column, $value){
             $pdo = self::getConnection();
 
-            $stmt = $pdo->prepare("SELECT articles.*, status.status FROM articles INNER JOIN status ON articles.status_id = status.id_status WHERE author_id = :authorId");
-            $stmt->execute(["authorId" => $userId]);
+            if($column == "username"){
+                $stmt = $pdo->prepare("SELECT id_user FROM users WHERE username = :username");
+                $stmt->execute(["username" => $value]);
+                $value = $stmt->fetch(PDO::FETCH_ASSOC)["id_user"];
+            }
+
+            $stmt = $pdo->prepare("SELECT articles.*, status.status FROM articles INNER JOIN status ON articles.status_id = status.id_status WHERE author_id = :author_id");
+            $stmt->execute(["author_id" => $value]);
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         }
 
