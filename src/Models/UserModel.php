@@ -62,4 +62,28 @@
 
             return 0;
         }
+
+        function updateRole($id_user, $id_role){
+            $pdo = self::getConnection();
+
+            $stmt = $pdo->prepare("UPDATE users SET role_id=:role_id WHERE id_user=:id");
+            $stmt->execute(["role_id" => $id_role , "id" => $id_user]);
+            return $stmt->fetch(\PDO::FETCH_ASSOC);
+        }
+
+        function userBanStatusUpdate($id_user, $banStatus){
+            $pdo = self::getConnection();
+
+            $stmt = $pdo->prepare("UPDATE users SET banned=:banned WHERE id_user=:id");
+            $stmt->execute(["banned" => $banStatus, "id" => $id_user]);
+            return $stmt->fetch(\PDO::FETCH_ASSOC);
+        }
+
+        function deleteUser($id_user){
+            $pdo = self::getConnection();
+
+            $stmt = $pdo->prepare("DELETE FROM users WHERE id_user=:id");
+            $stmt->execute(["id" => $id_user]);
+            return $stmt->fetch(\PDO::FETCH_ASSOC);
+        }
     }

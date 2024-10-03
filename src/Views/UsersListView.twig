@@ -10,12 +10,12 @@
             <th scope="col">Name</th>
             <th scope="col">Email</th>
             <th scope="col">Role</th>
-            <th scope="col">Profile</th>
+            <th scope="col">Actions</th>
         </tr>
         </thead>
         <tbody>
             {% for user in users %}
-                <tr>
+                <tr class="{% if user.banned == 1 %}table-danger{% endif %}">
                     <th scope="row">{{ loop.index }}</th>
                     <td>{{ user["first_name"] }} {{ user["last_name"] }}</td>
                     <td>{{ user["email"] }}</td>
@@ -23,20 +23,86 @@
                         <td>{{ user["role_name"] }}</td>
                     {% else %}
                         <td>
-                            <select name="roles" id="roles">
+                            <select name="roles" id="roles" onchange="updateRole({{ user.id_user }})">
                                 {% for role in roles %}
-                                    <option {% if user["role_id"] == role.id_role %} selected {% endif %} value="{{ role.name }}">{{ role.name }}</option>
+                                    <option {% if user["role_id"] == role.id_role %} selected {% endif %} value="{{ role.id_role }}">{{ role.name }}</option>
                                 {% endfor %}
                             </select>
                         </td>
                     {% endif %}
+                    <td>
                     {% if app.user.id_user == user.id_user %}
-                        <td><a class="btn btn-primary" href="profile">Profile</a></td>
+                        <a class="btn btn-primary" href="profile">Profile</a>
                     {% else %}
-                        <td><a class="btn btn-primary" href="users/{{ user["username"] }}">Profile</a></td>
+                        <a class="btn btn-primary" href="users/{{ user.username }}">Profile</a>
+
+                        {% if app.user.role_id < user.role_id %}
+                            {% if user.banned == 0 %}
+                                <button class="btn btn-danger" onclick="banUser({{ user.id_user }})">Ban</button>
+                            {% else %}
+                                <button class="btn btn-success" onclick="unBanUser({{ user.id_user }})">Unban</button>
+                            {% endif %}
+                            <button class="btn btn-danger" onclick="deleteUser({{ user.id_user }})">Delete</button>
+                        {% endif %}
                     {% endif %}
+                    </td>
                 </tr>
             {% endfor %}
         </tbody>
     </table>
+
+    <script>
+        function updateRole(id_user){
+            let roleVal = $('#roles').find(":selected").val();
+
+            $.ajax({
+                url: 'users',
+                method: 'POST',
+                data: {
+                    action: "update",
+                    id_user: id_user,
+                    id_role: roleVal
+                },
+                success: function(response) {
+                    console.log("Role updated successfully.");
+                    alert("Role updated!");
+                },
+                error: function(error) {
+                    console.error("Error updating role:", error);
+                    alert("There was an error updating the role.");
+                }
+            });
+        }
+
+        function updateUserAction(id_user, action) {
+            $.ajax({
+                url: 'users',
+                method: 'POST',
+                data: {
+                    action: action,
+                    id_user: id_user
+                },
+                success: function(response) {
+                    console.log("User " + action + " successfully.");
+                    alert("User " + action + " updated!");
+                },
+                error: function(error) {
+                    console.error("Error updating user " + action + ":", error);
+                    alert("There was an error updating the user " + action + ".");
+                }
+            });
+        }
+
+        function banUser(id_user){
+            updateUserAction(id_user, "ban")
+        }
+
+        function unBanUser(id_user){
+            updateUserAction(id_user, "unban")
+        }
+
+        function deleteUser(id_user){
+            updateUserAction(id_user, "delete")
+        }
+    </script>
 {% endblock %}

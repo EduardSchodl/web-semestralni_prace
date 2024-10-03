@@ -15,7 +15,7 @@
                 exit;
             }
 
-            if($_SESSION["user"]["role_id"] == SUPERADMIN){
+            if($_SESSION["user"]["role_id"] == ROLES["SUPERADMIN"]){
                 header('Location: ' . $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . '/web-semestralni_prace/src');
                 exit;
             }
@@ -24,7 +24,7 @@
         }
 
         function showUserProfile($data = []){
-            if(!isset($_SESSION["user"]) || $_SESSION["user"]["role_id"] > ROLE_ADMIN)
+            if(!isset($_SESSION["user"]) || $_SESSION["user"]["role_id"] > ROLES["ROLE_ADMIN"])
             {
                 echo "Nedostatečné oprávnění";
                 exit;
@@ -37,7 +37,7 @@
         }
 
         function showUsersList($data = []){
-            if(!isset($_SESSION["user"]) || $_SESSION["user"]["role_id"] > ROLE_ADMIN)
+            if(!isset($_SESSION["user"]) || $_SESSION["user"]["role_id"] > ROLES["ROLE_ADMIN"])
             {
                 echo "Nedostatečné oprávnění";
                 exit;
@@ -50,5 +50,31 @@
             $roles = $db->getRoles();
 
             $this->render("UsersListView.twig", ["title" => $data["title"], "users" => $users, "roles" => $roles]);
+        }
+
+        function updateUser($data = []){
+            if(!isset($_SESSION["user"]) || $_SESSION["user"]["role_id"] > ROLES["ROLE_ADMIN"])
+            {
+                echo "Nedostatečné oprávnění";
+                exit;
+            }
+
+            $db = new UserModel();
+
+            switch($_POST["action"]){
+                case "update":
+                    $db->updateRole($_POST["id_user"], $_POST["id_role"]);
+                    break;
+                case "ban":
+                    $db->userBanStatusUpdate($_POST["id_user"], BANNED);
+                    break;
+                case "unban":
+                    $db->userBanStatusUpdate($_POST["id_user"], UNBANNED);
+                    break;
+                case "delete":
+                    $db->deleteUser($_POST["id_user"]);
+                    break;
+            }
+
         }
     }

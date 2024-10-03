@@ -11,12 +11,19 @@
     define("DB_PASS","");
 
     //// Konstanty ////
-    define("SUPERADMIN", 1);
-    define("ROLE_ADMIN", 2);
-    define("ROLE_USER", 4);
+    const ROLES = array(
+        "SUPERADMIN" => 1,
+        "ROLE_ADMIN" => 2,
+        "ROLE_REVIEWER" => 3,
+        "ROLE_USER" => 4
+    );
+
     define("REVIEW_PROCESS", 1);
     define("ACCEPTED_REVIEWED", 2);
     define("REJECTED_REVIEW", 3);
+
+    define("BANNED", 1);
+    define("UNBANNED", 0);
 
     //// Tabulky ////
     define("TABLE_USERS", "users");
@@ -80,6 +87,11 @@
                 "title" => "Users List",
                 "controller_class_name" => Web\Project\Controllers\UserController::class,
                 "function_name" => "showUsersList"
+            ),
+            "POST" => array(
+                "title" => "Users List",
+                "controller_class_name" => Web\Project\Controllers\UserController::class,
+                "function_name" => "updateUser"
             )
         ),
         "/users/{username}" => array(

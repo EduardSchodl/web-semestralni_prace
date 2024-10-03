@@ -27,6 +27,7 @@
 
             $user = $_SESSION['user'] ?? null;
             $this->twig->addGlobal('app', ['user' => $user]);
+            $this->twig->addGlobal('role', ['role_id' => ROLES]);
 
             $data['current_path'] = $path;
             echo $this->twig->render($view, $data);
