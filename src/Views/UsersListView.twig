@@ -15,10 +15,10 @@
         </thead>
         <tbody>
             {% for user in users %}
-                <tr class="{% if user.banned == ban.status.BANNED %}table-danger{% endif %}">
-                    <th scope="row">{{ loop.index }}</th>
-                    <td>{{ user["first_name"] }} {{ user["last_name"] }}</td>
-                    <td>{{ user["email"] }}</td>
+                <tr class="{% if user.banned == ban.status.BANNED %}banned table-danger{% endif %}">
+                    <th class="strike" scope="row">{{ loop.index }}</th>
+                    <td class="strike">{{ user["first_name"] }} {{ user["last_name"] }}</td>
+                    <td class="strike">{{ user["email"] }}</td>
                     {% if app.user.role_id >= user["role_id"] %}
                         <td>{{ user["role_name"] }}</td>
                     {% else %}

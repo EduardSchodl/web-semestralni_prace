@@ -30,3 +30,8 @@
         margin-top: 3vw;
     }
 }
+
+.banned .strike{
+    text-decoration: line-through;
+    color: darkgrey;
+}
