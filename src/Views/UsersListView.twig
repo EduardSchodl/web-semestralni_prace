@@ -66,6 +66,7 @@
                 success: function(response) {
                     console.log("Role updated successfully.");
                     alert("Role updated!");
+                    location.reload();
                 },
                 error: function(error) {
                     console.error("Error updating role:", error);
@@ -85,6 +86,7 @@
                 success: function(response) {
                     console.log("User " + action + " successfully.");
                     alert("User " + action + " updated!");
+                    location.reload();
                 },
                 error: function(error) {
                     console.error("Error updating user " + action + ":", error);
