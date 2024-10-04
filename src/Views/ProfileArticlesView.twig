@@ -16,10 +16,10 @@
         <tbody>
         {% for article in articles %}
             <tr>
-                <th scope="row">{{ loop.index }}</th>
-                <td>{{ article.title }}</td>
-                <td>{{ article.create_time }}</td>
-                <td class="{% if article.status_id == status.status_id.REVIEW_PROCESS %}bg-secondary{% elseif article.status_id == status.status_id.ACCEPTED_REVIEWED %}bg-success{% else %}bg-danger{% endif %}">{{ article.status }}</td>
+                <th class="align-middle" scope="row">{{ loop.index }}</th>
+                <td class="align-middle">{{ article.title }}</td>
+                <td class="align-middle">{{ article.create_time }}</td>
+                <td class="align-middle {% if article.status_id == status.status_id.REVIEW_PROCESS %}bg-secondary{% elseif article.status_id == status.status_id.ACCEPTED_REVIEWED %}bg-success{% else %}bg-danger{% endif %}">{{ article.status }}</td>
                 <td>
                     <a class="btn btn-primary" href="articles/{{ article.slug }}">Link</a>
                 </td>

@@ -7,9 +7,18 @@
         <div class="col-sm-12">
             <div class="card">
                 <div class="card-body">
+                    <div class="float-end">
+                        <button type="button" class="btn btn-success">Accept</button>
+                        <button type="button" class="btn btn-danger">Reject</button>
+                    </div>
+                    {% if article.status_id == status.status_id.REVIEW_PROCESS %}
+                        <span class="badge bg-secondary mg-b">{{ article.status }}</span>
+                    {% elseif article.status_id == status.status_id.ACCEPTED_REVIEWED %}
+                        <span class="badge bg-success mg-b">{{ article.status }}</span>
+                    {% endif %}
                     <h5 class="card-title"><a id="noDecor" href="articles/{{ article.slug }}">{{ article.title }}, {{ article.user_first_name }} {{ article.user_last_name }}</a></h5>
                     <label for="users">Reviews:</label>
-                    <div class="input-group">
+                    <div class="input-group mg-b">
                         <div class="input-group-text">Add Reviewer</div>
                         <select name="users" id="users_{{ article.id_article }}">
                             <option value="" disabled selected>Select reviewer</option>
@@ -19,7 +28,7 @@
                         </select>
                         <button {% if assignedReviews[article.id_article] | length == min_reviewers.min_reviewers %}disabled{% endif %} type="button" class="btn btn-success" onclick="addReviewer({{ article.id_article }}, $('#users_{{ article.id_article }}').val())">Add</button>
                     </div>
-                    <table class="table table-striped table-hover table-bordered">
+                    <table class="table table-striped table-hover table-bordered w-50">
                         <thead>
                             <tr>
                                 <th scope="col">#</th>

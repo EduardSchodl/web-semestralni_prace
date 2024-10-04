@@ -122,7 +122,7 @@
             }
 
             $db = new ArticleModel();
-            $articles = $db->getArticles(STATUS["REVIEW_PROCESS"]);
+            $articles = $db->getArticles();
 
             $db = new UserModel();
             $reviewers = $db->getReviewers();

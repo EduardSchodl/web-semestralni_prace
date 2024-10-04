@@ -16,7 +16,7 @@
                 $stmt = $pdo->prepare("SELECT articles.*, users.first_name AS user_first_name, users.last_name AS user_last_name FROM articles INNER JOIN users ON articles.author_id=users.id_user WHERE articles.status_id = :status_id");
                 $stmt->execute(["status_id" => $status]);
             } else {
-                $stmt = $pdo->prepare("SELECT articles.*, users.first_name AS user_first_name, users.last_name AS user_last_name FROM articles INNER JOIN users ON articles.author_id=users.id_user");
+                $stmt = $pdo->prepare("SELECT articles.*, users.first_name AS user_first_name, users.last_name AS user_last_name, status.status FROM ((articles INNER JOIN users ON articles.author_id=users.id_user) INNER JOIN status ON articles.status_id=status.id_status)");
                 $stmt->execute();
             }
 

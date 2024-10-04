@@ -35,3 +35,7 @@
     text-decoration: line-through;
     color: darkgrey;
 }
+
+.mg-b{
+    margin-bottom: 1rem;
+}
