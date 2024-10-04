@@ -7,7 +7,7 @@
     {
         function index($data = []){
             $db = new ArticleModel();
-            $articles = $db->getArticles();
+            $articles = $db->getArticles(STATUS["ACCEPTED_REVIEWED"]);
 
             $this->render("HomeView.twig", ["title" => $data["title"], "articles" => $articles]);
         }

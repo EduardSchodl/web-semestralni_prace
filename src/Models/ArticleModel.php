@@ -9,11 +9,17 @@
     }
 
     class ArticleModel extends DatabaseModel{
-        function getArticles(){
+        function getArticles($status = null){
             $pdo = self::getConnection();
 
-            $stmt = $pdo->prepare("SELECT * FROM articles WHERE articles.status_id = :status_id");
-            $stmt->execute(["status_id" => STATUS["ACCEPTED_REVIEWED"]]);
+            if ($status !== null) {
+                $stmt = $pdo->prepare("SELECT articles.*, users.first_name AS user_first_name, users.last_name AS user_last_name FROM articles INNER JOIN users ON articles.author_id=users.id_user WHERE articles.status_id = :status_id");
+                $stmt->execute(["status_id" => $status]);
+            } else {
+                $stmt = $pdo->prepare("SELECT articles.*, users.first_name AS user_first_name, users.last_name AS user_last_name FROM articles INNER JOIN users ON articles.author_id=users.id_user");
+                $stmt->execute();
+            }
+
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         }
 

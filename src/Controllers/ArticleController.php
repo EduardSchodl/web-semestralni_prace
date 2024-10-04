@@ -2,6 +2,8 @@
     namespace Web\Project\Controllers;
 
     use Web\Project\Models\ArticleModel;
+    use Web\Project\Models\ReviewModel;
+    use Web\Project\Models\UserModel;
 
     if(!isset($_SESSION))
     {
@@ -110,5 +112,50 @@
         function deleteArticle(){
             $db = new ArticleModel();
             $db->deleteArticle($_POST["article_id"]);
+        }
+
+        function articlesManagementShow($data = []){
+            if(!isset($_SESSION["user"]) || $_SESSION["user"]["role_id"] > ROLES["ROLE_ADMIN"])
+            {
+                echo "Nedostatečné oprávnění";
+                exit;
+            }
+
+            $db = new ArticleModel();
+            $articles = $db->getArticles(STATUS["REVIEW_PROCESS"]);
+
+            $db = new UserModel();
+            $reviewers = $db->getReviewers();
+
+            $assignedReviews = [];
+            $db = new ReviewModel();
+            foreach ($articles as $article) {
+                $assignedReviews[$article['id_article']] = $db->getReviewsByArticleId($article['id_article']);
+            }
+
+            foreach ($articles as &$article) {
+                $assignedUserIds = array_map(function($review) {
+                    return $review['id_user'];
+                }, $assignedReviews[$article['id_article']] ?? []);
+
+                $article['available_reviewers'] = array_filter($reviewers, function($reviewer) use ($assignedUserIds) {
+                    return !in_array($reviewer['id_user'], $assignedUserIds);
+                });
+            }
+
+            $this->render("ArticlesManagementView.twig", ["title" => $data["title"], "articles" => $articles, "assignedReviews" => $assignedReviews]);
+        }
+
+        function reviewUpdate(){
+            $db = new ReviewModel();
+            $response = $db->addReview($_POST["id_article"], $_POST["id_user"]);
+
+            if ($response[0]) {
+                echo json_encode(["status" => "success", "message" => "Review added successfully."]);
+                http_response_code(200); // Success
+            } else {
+                echo json_encode(["status" => "error", "message" => "Error adding review: " . $response[1][2]]);
+                http_response_code(500); // Server error
+            }
         }
     }

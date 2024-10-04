@@ -30,6 +30,7 @@
             $this->twig->addGlobal('role', ['role_id' => ROLES]);
             $this->twig->addGlobal('status', ['status_id' => STATUS]);
             $this->twig->addGlobal('ban', ['status' => BAN]);
+            $this->twig->addGlobal('min_reviewers', ['min_reviewers' => MINIMAL_REVIEWERS]);
 
             $data['current_path'] = $path;
             echo $this->twig->render($view, $data);

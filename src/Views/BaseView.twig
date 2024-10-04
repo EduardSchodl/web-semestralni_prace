@@ -21,11 +21,9 @@
             <div class="navbar-nav">
                 <a class="nav-item nav-link {% if current_path == '/' %}active{% endif %}" href="">Home</a>
                 {% if app.user %}
-                    {% if app.user.role_id != role.role_id.SUPERADMIN %}
-                        <a class="nav-item nav-link {% if current_path == '/profile' or current_path == '/profile/edit' %}active{% endif %}" href="profile">Profile</a>
-                    {% endif %}
                     {% if app.user.role_id <= role.role_id.ROLE_ADMIN %}
                         <a class="nav-item nav-link {% if current_path == '/users' %}active{% endif %}" href="users">Users list</a>
+                        <a class="nav-item nav-link {% if current_path == '/articles-management' %}active{% endif %}" href="articles-management">Articles management</a>
                     {% endif %}
                     {% if app.user.role_id != role.role_id.SUPERADMIN %}
                         <a href="publish" class="nav-item nav-link">Publish article</a>
@@ -36,6 +34,9 @@
                 {% if not app.user %}
                     <a class="nav-item nav-link {% if current_path == '/login' or current_path == '/register' %}active{% endif %}" href="login">Log In</a>
                 {% else %}
+                {% if app.user.role_id != role.role_id.SUPERADMIN %}
+                    <a class="nav-item nav-link {% if current_path == '/profile' or current_path == '/profile/edit' %}active{% endif %}" href="profile">Profile</a>
+                {% endif %}
                     <p id="loggedUser">{{ app.user["first_name"] }} {{ app.user["last_name"] }}</p>
                     <a id="logoutButton" class="nav-item nav-link" href="logout">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-door-open-fill" viewBox="0 0 16 16">

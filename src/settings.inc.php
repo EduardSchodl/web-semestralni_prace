@@ -11,6 +11,8 @@
     define("DB_PASS","");
 
     //// Konstanty ////
+    define("MINIMAL_REVIEWERS", 3);
+
     const ROLES = array(
         "SUPERADMIN" => 1,
         "ROLE_ADMIN" => 2,
@@ -150,6 +152,18 @@
                 "title" => "Publish Article",
                 "controller_class_name" => Web\Project\Controllers\ArticleController::class,
                 "function_name" => "publishArticle"
+            )
+        ),
+        "/articles-management" => array(
+            "GET" => array(
+                "title" => "Article Management",
+                "controller_class_name" => Web\Project\Controllers\ArticleController::class,
+                "function_name" => "articlesManagementShow"
+            ),
+            "POST" => array(
+                "title" => "Article Management",
+                "controller_class_name" => Web\Project\Controllers\ArticleController::class,
+                "function_name" => "reviewUpdate"
             )
         )
     );

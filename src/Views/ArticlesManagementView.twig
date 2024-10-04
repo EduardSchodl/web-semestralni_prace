@@ -1,0 +1,99 @@
+{% extends "BaseView.twig" %}
+
+{% block title %} {{ title }} {% endblock %}
+
+{% block content %}
+    {% for article in articles %}
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title"><a id="noDecor" href="articles/{{ article.slug }}">{{ article.title }}, {{ article.user_first_name }} {{ article.user_last_name }}</a></h5>
+                    <label for="users">Reviews:</label>
+                    <div class="input-group">
+                        <div class="input-group-text">Add Reviewer</div>
+                        <select name="users" id="users_{{ article.id_article }}">
+                            <option value="" disabled selected>Select reviewer</option>
+                            {% for reviewer in article.available_reviewers %}
+                                <option value="{{ reviewer.id_user }}">{{ reviewer.first_name }} {{ reviewer.last_name }}</option>
+                            {% endfor %}
+                        </select>
+                        <button {% if assignedReviews[article.id_article] | length == min_reviewers.min_reviewers %}disabled{% endif %} type="button" class="btn btn-success" onclick="addReviewer({{ article.id_article }}, $('#users_{{ article.id_article }}').val())">Add</button>
+                    </div>
+                    <table class="table table-striped table-hover table-bordered">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Reviewer</th>
+                                <th scope="col">Content</th>
+                                <th scope="col">Formality</th>
+                                <th scope="col">Up-to-date</th>
+                                <th scope="col">Language</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% if assignedReviews[article.id_article] is not empty %}
+                                {% for review in assignedReviews[article.id_article] %}
+                                    <tr>
+                                        <th scope="row">{{ loop.index }}</th>
+                                        <td>{{ review.first_name }} {{ review.last_name }}</td>
+                                        <td>{{ review.content }}</td>
+                                        <td>{{ review.formality }}</td>
+                                        <td>{{ review.up_to_date }}</td>
+                                        <td>{{ review.language }}</td>
+                                    </tr>
+                                {% endfor %}
+                                {% if assignedReviews[article.id_article] | length < min_reviewers.min_reviewers %}
+                                    {% if min_reviewers.min_reviewers - (assignedReviews[article.id_article] | length) > 1 %}
+                                        <tr>
+                                            <td class="table-warning" colspan="6">Required another {{ min_reviewers.min_reviewers - (assignedReviews[article.id_article] | length) }} reviewers.</td>
+                                        </tr>
+                                    {% else %}
+                                        <tr>
+                                            <td class="table-warning" colspan="6">Required another {{ min_reviewers.min_reviewers - (assignedReviews[article.id_article] | length) }} reviewer.</td>
+                                        </tr>
+                                    {% endif %}
+                                {% endif %}
+                            {% else %}
+                                <tr>
+                                    <td class="table-warning" colspan="6">No reviews assigned</td>
+                                </tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+
+    <script>
+        function addReviewer(idArticle, idUser){
+            if (!idUser) {
+                alert("Please select a reviewer.");
+                return;
+            }
+
+            $.ajax({
+                url: 'articles-management',
+                method: 'POST',
+                data: {
+                    id_article: idArticle,
+                    id_user: idUser
+                },
+                success: function(response) {
+                    const jsonResponse = JSON.parse(response);
+                    if (jsonResponse.status === "success") {
+                        console.log("User assigned successfully.");
+                        alert("User assignment updated!");
+                        location.reload();
+                    } else {
+                        alert("Error: " + jsonResponse.message);
+                    }
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.error("Error assigning user: ", errorThrown);
+                    alert("There was an error assigning the user: " + errorThrown);
+                }
+            });
+        }
+    </script>
+{% endblock %}

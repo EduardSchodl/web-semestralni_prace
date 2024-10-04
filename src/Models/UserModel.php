@@ -86,4 +86,12 @@
             $stmt->execute(["id" => $id_user]);
             return $stmt->fetch(\PDO::FETCH_ASSOC);
         }
+
+        function getReviewers(){
+            $pdo = self::getConnection();
+
+            $stmt = $pdo->prepare("SELECT * FROM users WHERE users.role_id=:role_id AND users.banned = :ban");
+            $stmt->execute(["role_id" => ROLES["ROLE_REVIEWER"], "ban" => BAN["UNBANNED"]]);
+            return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        }
     }
