@@ -32,4 +32,13 @@
 
             return $stmt->fetchAll(\PDO::FETCH_ASSOC);
         }
+
+        function submitReview($data){
+            $pdo = self::getConnection();
+
+            $stmt = $pdo->prepare("");
+            $stmt->execute([]);
+
+            return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        }
     }

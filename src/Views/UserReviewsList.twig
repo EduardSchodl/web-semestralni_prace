@@ -7,122 +7,117 @@
         <div class="col-sm-12">
             <div class="card">
                 <div class="card-body">
-                    <div class="float-end">
-                        <button type="button" class="btn btn-primary review-button" onclick="toggleForm(this)">Review</button>
-                        <button type="button" class="btn btn-danger close-button" style="display: none;" onclick="closeForm(this)">Close</button>
-                        <button type="submit" class="btn btn-success submit-button" form="form-{{ loop.index }}" style="display: none;">Submit</button>
+                    <div class="float-end btn-div">
+                        <button type="button" class="btn btn-primary review-button" onclick="toggleForm(this, {{ loop.index }}, {{ review.id_review }})">Review</button>
+                        <button type="button" class="btn btn-danger close-button" style="display: none;" onclick="closeForm(this, {{ loop.index }})">Close</button>
                     </div>
                     <h5 id="noDecor" class="card-title"><a href="articles/{{ review.slug }}">{{ review.title }}, {{ review.first_name }} {{ review.last_name }}</a></h5>
                     <p class="card-text w-50 text-justify">{{ review.abstract|length > 255 ? review.abstract|slice(0, 255) ~ '...' : review.abstract }}</p>
 
                     <div class="container mt-5 review-form" style="display: none;">
-                        <form id="form-{{ loop.index }}" method="post">
-                            <div class="row">
-                                <div class="col-md-3">
-                                    <div class="input-group mg-b">
-                                        <div class="input-group-text w-50">Content</div>
-                                        <input type="number" class="form-control" max="5" min="0" step="0.5" value="0">
-                                    </div>
-                                </div>
-
-                                <div class="col-md-3">
-                                    <div class="input-group mg-b">
-                                        <div class="input-group-text w-50">Formality</div>
-                                        <input type="number" class="form-control" max="5" min="0" step="0.5" value="0">
-                                    </div>
-                                </div>
-
-                                <div class="col-md-3">
-                                    <div class="input-group mg-b">
-                                        <div class="input-group-text w-50">Up-to-date</div>
-                                        <input type="number" class="form-control" max="5" min="0" step="0.5" value="0">
-                                    </div>
-                                </div>
-
-                                <div class="col-md-3">
-                                    <div class="input-group mg-b">
-                                        <div class="input-group-text w-50">Language</div>
-                                        <input type="number" class="form-control" max="5" min="0" step="0.5" value="0">
-                                    </div>
-                                </div>
-                            </div>
-                            <div id="editorWrapper-{{ loop.index }}" class="container mt-5">
-                                <div class="editor"></div> <!-- Use a class for easier selection -->
-                            </div>
-                        </form>
                     </div>
                 </div>
             </div>
         </div>
 
         <script>
-            const initializedEditors = new Map();
+            const initializedEditors = new Map();  // Declare the map for CKEditor instances
 
-            function initEditor(editorElement) {
-                ClassicEditor
-                    .create(editorElement, {
-                        heading: {
-                            options: [
-                                { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
-                                { model: 'heading1', view: 'h1', title: 'Heading 1', class: 'ck-heading_heading1' },
-                                { model: 'heading2', view: 'h2', title: 'Heading 2', class: 'ck-heading_heading2' },
-                                { model: 'heading3', view: 'h3', title: 'Heading 3', class: 'ck-heading_heading3' }
-                            ]
-                        }
-                    })
-                    .then(editor => {
-                        initializedEditors.set(editorElement, editor)
-                        console.log('Editor initialized successfully:', editor);
-                    })
-                    .catch(error => {
-                        console.error('Error initializing CKEditor:', error);
-                    });
-            }
-
-            function toggleForm(button) {
+            function toggleForm(button, index, reviewId) {
                 const formContainer = button.closest('.card-body').querySelector('.review-form');
-                const submitButton = button.closest('.float-end').querySelector('.submit-button');
+                const buttonContainer = button.closest('.card-body').querySelector('.btn-div');
                 const closeButton = button.closest('.float-end').querySelector('.close-button');
-                const editorWrapper = formContainer.querySelector('.editor');
 
-                if (formContainer.style.display === 'none') {
+                // Toggle form visibility
+                if (formContainer.style.display === 'none' || formContainer.innerHTML === '') {
+                    const formHtml = `
+                        <form id="form-${index}" method="post">
+                            <input type="hidden" name="reviewId" value="${reviewId}">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="input-group mg-b">
+                                        <div class="input-group-text">Content</div>
+                                        <input type="number" class="form-control" name="content" max="5" min="0" step="0.5" value="0">
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="input-group mg-b">
+                                        <div class="input-group-text">Formality</div>
+                                        <input type="number" class="form-control" name="formality" max="5" min="0" step="0.5" value="0">
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="input-group mg-b">
+                                        <div class="input-group-text">Up-to-date</div>
+                                        <input type="number" class="form-control" name="up_to_date" max="5" min="0" step="0.5" value="0">
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="input-group mg-b">
+                                        <div class="input-group-text">Language</div>
+                                        <input type="number" class="form-control" name="language" max="5" min="0" step="0.5" value="0">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="container mt-5">
+                                <div id="editor-${index}" class="editor"></div>
+                            </div>
+                        </form>
+                    `;
+
+                    // Append the created form to the container
+                    formContainer.innerHTML = formHtml;
+
+                    // Dynamically create and append the "Submit" button
+                    const submitButtonHtml = `<button type="submit" class="btn btn-success submit-button" form="form-${index}">Submit</button>`;
+                    buttonContainer.insertAdjacentHTML('beforeend', submitButtonHtml);
+
+                    // Show the form and close button
                     formContainer.style.display = 'block';
-                    button.textContent = 'Submit';
-                    submitButton.style.display = 'inline-block';
-                    closeButton.style.display = 'inline-block';
+                    closeButton.style.display = 'inline-block';  // Show "Close" button
+                    button.style.display = 'none';  // Hide "Review" button
 
-                    initEditor(editorWrapper);
-                } else {
-                    formContainer.style.display = 'none';
-                    button.textContent = 'Review';
-                    submitButton.style.display = 'none';
-                    closeButton.style.display = 'none';
+                    // Initialize CKEditor for this specific editor
+                    const editorElement = formContainer.querySelector(`#editor-${index}`);
+                    if (!initializedEditors.has(editorElement)) {
+                        ClassicEditor
+                            .create(editorElement)
+                            .then(editor => {
+                                initializedEditors.set(editorElement, editor); // Track the editor instance
+                            })
+                            .catch(error => {
+                                console.error('Error initializing CKEditor:', error);
+                            });
+                    }
                 }
             }
 
-            function closeForm(button) {
+            function closeForm(button, index) {
                 const formContainer = button.closest('.card-body').querySelector('.review-form');
+                const submitButton = button.closest('.card-body').querySelector('.submit-button');
                 const reviewButton = button.closest('.float-end').querySelector('.review-button');
-                const submitButton = button.closest('.float-end').querySelector('.submit-button');
-                const editorWrapper = formContainer.querySelector('.editor');
+                const editorElement = formContainer.querySelector(`#editor-${index}`);
 
-                const editorInstance = initializedEditors.get(editorWrapper);
-                if (editorInstance) {
-                    editorInstance.destroy()
+                // Destroy CKEditor instance if it exists
+                if (initializedEditors.has(editorElement)) {
+                    initializedEditors.get(editorElement).destroy()
                         .then(() => {
+                            initializedEditors.delete(editorElement);  // Remove the editor from the map
                             console.log('Editor destroyed successfully');
-                            initializedEditors.delete(editorWrapper);
                         })
                         .catch(error => {
                             console.error('Error destroying CKEditor:', error);
                         });
                 }
 
-
+                // Clear and hide the form
+                formContainer.innerHTML = '';
                 formContainer.style.display = 'none';
-                reviewButton.textContent = 'Review';
-                submitButton.style.display = 'none';
-                button.style.display = 'none';
+                submitButton.remove();
+
+                // Reset buttons
+                reviewButton.style.display = 'inline-block';  // Show "Review" button
+                button.style.display = 'none';  // Hide "Close" button
             }
         </script>
     {% endfor %}

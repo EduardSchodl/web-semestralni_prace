@@ -171,6 +171,11 @@
                 "title" => "Reviews",
                 "controller_class_name" => Web\Project\Controllers\UserController::class,
                 "function_name" => "showUserReviews"
+            ),
+            "POST" => array(
+                "title" => "Reviews",
+                "controller_class_name" => Web\Project\Controllers\ReviewController::class,
+                "function_name" => "submitReview"
             )
         )
     );
