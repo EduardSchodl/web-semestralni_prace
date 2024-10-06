@@ -23,4 +23,13 @@
 
             return [true, null];
         }
+
+        function getReviewsByUserId($id){
+            $pdo = self::getConnection();
+
+            $stmt = $pdo->prepare("SELECT reviews.*, articles.slug, articles.title, articles.abstract, users.first_name, users.last_name FROM ((reviews INNER JOIN articles ON reviews.id_article = articles.id_article) INNER JOIN users ON articles.author_id = users.id_user) WHERE reviews.id_user=:id");
+            $stmt->execute(["id" => $id]);
+
+            return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        }
     }

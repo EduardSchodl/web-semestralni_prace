@@ -20,7 +20,7 @@
                     {% include 'partials/ProfileDetails.twig' with {'user': app.user} %}
                     <a class="btn btn-primary" href="profile/articles">Articles</a>
                     {% if app.user.role_id == role.role_id.ROLE_REVIEWER %}
-                        <a class="btn btn-info" href="">For review</a>
+                        <a class="btn btn-info" href="profile/reviews">For review</a>
                     {% endif %}
                 </div>
             </div>

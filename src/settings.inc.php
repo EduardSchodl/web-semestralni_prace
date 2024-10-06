@@ -165,5 +165,12 @@
                 "controller_class_name" => Web\Project\Controllers\ArticleController::class,
                 "function_name" => "reviewUpdate"
             )
+        ),
+        "/profile/reviews" => array(
+            "GET" => array(
+                "title" => "Reviews",
+                "controller_class_name" => Web\Project\Controllers\UserController::class,
+                "function_name" => "showUserReviews"
+            )
         )
     );

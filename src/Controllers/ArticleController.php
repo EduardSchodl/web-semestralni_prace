@@ -138,8 +138,8 @@
                     return $review['id_user'];
                 }, $assignedReviews[$article['id_article']] ?? []);
 
-                $article['available_reviewers'] = array_filter($reviewers, function($reviewer) use ($assignedUserIds) {
-                    return !in_array($reviewer['id_user'], $assignedUserIds);
+                $article['available_reviewers'] = array_filter($reviewers, function($reviewer) use ($article, $assignedUserIds) {
+                    return !in_array($reviewer['id_user'], $assignedUserIds) && $reviewer['id_user'] != $article['author_id'];
                 });
             }
 

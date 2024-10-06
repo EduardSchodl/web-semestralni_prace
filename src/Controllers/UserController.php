@@ -1,6 +1,7 @@
 <?php
     namespace Web\Project\Controllers;
 
+    use Web\Project\Models\ReviewModel;
     use Web\Project\Models\RolesModel;
     use Web\Project\Models\UserModel;
 
@@ -75,6 +76,18 @@
                     $db->deleteUser($_POST["id_user"]);
                     break;
             }
+        }
 
+        function showUserReviews($data = []){
+            if(!isset($_SESSION["user"]) || $_SESSION["user"]["role_id"] > ROLES["ROLE_REVIEWER"])
+            {
+                echo "Nedostatečné oprávnění";
+                exit;
+            }
+
+            $db = new ReviewModel();
+            $reviews = $db->getReviewsByUserId($_SESSION["user"]["id_user"]);
+
+            $this->render("UserReviewsList.twig", ["title" => $data["title"], "reviews" => $reviews]);
         }
     }

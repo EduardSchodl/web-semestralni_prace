@@ -39,3 +39,16 @@
 .mg-b{
     margin-bottom: 1rem;
 }
+
+.star {
+    font-size: 2rem;
+    color: lightgray;
+    cursor: pointer;
+}
+.star:hover,
+.star:hover ~ .star {
+    color: gold;
+}
+.rated {
+    color: gold;
+}
