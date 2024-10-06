@@ -20,7 +20,10 @@
                 exit;
             }
 
-            $this->render("ArticleView.twig", ["title" => $data["title"], "article" => $article]);
+            $db = new ReviewModel();
+            $reviews = $db->getReviewsByArticleSlug($data["params"][0]);
+
+            $this->render("ArticleView.twig", ["title" => $data["title"], "article" => $article, "reviews" => $reviews]);
         }
 
         function updateArticle(){
@@ -144,18 +147,5 @@
             }
 
             $this->render("ArticlesManagementView.twig", ["title" => $data["title"], "articles" => $articles, "assignedReviews" => $assignedReviews]);
-        }
-
-        function reviewUpdate(){
-            $db = new ReviewModel();
-            $response = $db->addReview($_POST["id_article"], $_POST["id_user"]);
-
-            if ($response[0]) {
-                echo json_encode(["status" => "success", "message" => "Review added successfully."]);
-                http_response_code(200); // Success
-            } else {
-                echo json_encode(["status" => "error", "message" => "Error adding review: " . $response[1][2]]);
-                http_response_code(500); // Server error
-            }
         }
     }

@@ -19,4 +19,17 @@
             $db = new ReviewModel();
             $db->submitReview($_POST);
         }
+
+        function reviewUpdate(){
+            $db = new ReviewModel();
+            $response = $db->addReview($_POST["id_article"], $_POST["id_user"]);
+
+            if ($response[0]) {
+                echo json_encode(["status" => "success", "message" => "Review added successfully."]);
+                http_response_code(200); // Success
+            } else {
+                echo json_encode(["status" => "error", "message" => "Error adding review: " . $response[1][2]]);
+                http_response_code(500); // Server error
+            }
+        }
     }

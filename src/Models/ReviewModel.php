@@ -10,10 +10,18 @@
             return $stmt->fetchAll(\PDO::FETCH_ASSOC);
         }
 
+        function getReviewsByArticleSlug($slug){
+            $pdo = self::getConnection();
+
+            $stmt = $pdo->prepare("SELECT reviews.*, users.first_name, users.last_name FROM ((reviews INNER JOIN users ON reviews.id_user = users.id_user) INNER JOIN articles ON reviews.id_article=articles.id_article) WHERE slug=:slug AND reviews.status=:status");
+            $stmt->execute(["slug" => $slug, "status" => 1]);
+            return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        }
+
         function addReview($idArticle, $idUser){
             $pdo = self::getConnection();
 
-            $stmt = $pdo->prepare("INSERT INTO reviews (id_user, id_article, content, formality, up_to_date, language) VALUES (:userId, :articleId, NULL, NULL, NULL, NULL)");
+            $stmt = $pdo->prepare("INSERT INTO reviews (id_user, id_article, content, formality, up_to_date, language, status) VALUES (:userId, :articleId, NULL, NULL, NULL, NULL, 0)");
             $success = $stmt->execute(["userId" => $idUser, "articleId" => $idArticle]);
 
             if (!$success) {
@@ -36,8 +44,9 @@
         function submitReview($data){
             $pdo = self::getConnection();
 
-            $stmt = $pdo->prepare("UPDATE reviews SET text=:text, content=:content, formality=:formality, up_to_date=:uptodate, language=:language WHERE id_review=:idReview");
-            $stmt->execute(["content" => $data["content"], "text" => $data["editorContent"], "formality" => $data["formality"], "uptodate" => $data["up_to_date"], "language" => $data["language"], "idReview" => $data["reviewId"]]);
+            $date = date("Y-m-d");
+            $stmt = $pdo->prepare("UPDATE reviews SET text=:text, content=:content, formality=:formality, up_to_date=:uptodate, language=:language, create_date=:date, status=:status WHERE id_review=:idReview");
+            $stmt->execute(["content" => $data["content"], "text" => $data["editorContent"], "formality" => $data["formality"], "uptodate" => $data["up_to_date"], "language" => $data["language"], "idReview" => $data["reviewId"], "date" => $date, "status" => 1]);
 
             return $stmt->fetchAll(\PDO::FETCH_ASSOC);
         }

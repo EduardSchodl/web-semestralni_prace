@@ -162,7 +162,7 @@
             ),
             "POST" => array(
                 "title" => "Article Management",
-                "controller_class_name" => Web\Project\Controllers\ArticleController::class,
+                "controller_class_name" => Web\Project\Controllers\ReviewController::class,
                 "function_name" => "reviewUpdate"
             )
         ),

@@ -51,20 +51,16 @@
             <h3 class="text-center">Reviews</h3>
             <div class="row">
                 <div class="col-md-6 offset-md-3">
-                    <div class="card mb-3">
-                        <div class="card-body">
-                            <h5 class="card-title">Reviewer 1</h5>
-                            <p class="card-text">This is an insightful article that effectively highlights the impact of AI on conferences. However, more detail on data privacy concerns would have been helpful.</p>
-                            <p class="card-text"><small class="text-muted">Reviewed on: September 28, 2024</small></p>
+                    {% for review in reviews %}
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ review.first_name }} {{ review.last_name }}</h5>
+                                <p class="card-text text-justify">{{ review.text }}</p>
+                                <p class="card-text"><small class="text-muted">Reviewed on: {{ review.create_date|date('F j, Y') }}</small></p>
+                                <p>{{ review.content }} {{ review.formality }} {{ review.up_to_date }} {{ review.language }}</p>
+                            </div>
                         </div>
-                    </div>
-                    <div class="card mb-3">
-                        <div class="card-body">
-                            <h5 class="card-title">Reviewer 2</h5>
-                            <p class="card-text">Great topic! The future of conferences is indeed fascinating, and this paper presents some excellent examples of AI in action.</p>
-                            <p class="card-text"><small class="text-muted">Reviewed on: September 27, 2024</small></p>
-                        </div>
-                    </div>
+                    {% endfor %}
                 </div>
             </div>
         </div>
