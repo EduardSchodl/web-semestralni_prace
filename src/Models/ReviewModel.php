@@ -32,6 +32,20 @@
             return [true, null];
         }
 
+        function removeReview($idReview){
+            $pdo = self::getConnection();
+
+            $stmt = $pdo->prepare("DELETE FROM reviews WHERE id_review=:idReview");
+            $success = $stmt->execute(["idReview" => $idReview]);
+
+            if (!$success) {
+                $errorInfo = $stmt->errorInfo();
+                return [false, $errorInfo];
+            }
+
+            return [true, null];
+        }
+
         function getReviewsByUserId($id){
             $pdo = self::getConnection();
 

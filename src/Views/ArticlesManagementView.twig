@@ -39,28 +39,37 @@
                                 <th scope="col">Formality</th>
                                 <th scope="col">Up-to-date</th>
                                 <th scope="col">Language</th>
+                                <th scope="col">Remove</th>
                             </tr>
                         </thead>
                         <tbody>
                             {% if assignedReviews[article.id_article] is not empty %}
                                 {% for review in assignedReviews[article.id_article] %}
                                     <tr>
-                                        <th scope="row">{{ loop.index }}</th>
-                                        <td>{{ review.first_name }} {{ review.last_name }}</td>
-                                        <td>{{ review.content }}</td>
-                                        <td>{{ review.formality }}</td>
-                                        <td>{{ review.up_to_date }}</td>
-                                        <td>{{ review.language }}</td>
+                                        <th class="align-middle" scope="row">{{ loop.index }}</th>
+                                        <td class="align-middle">{{ review.first_name }} {{ review.last_name }}</td>
+                                        <td class="align-middle">{{ review.content }}</td>
+                                        <td class="align-middle">{{ review.formality }}</td>
+                                        <td class="align-middle">{{ review.up_to_date }}</td>
+                                        <td class="align-middle">{{ review.language }}</td>
+                                        <td class="align-middle">
+                                            <button type="button" class="btn btn-danger p-0 dp-f" onclick="removeReview({{ review.id_review }})">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x-circle" viewBox="0 0 16 16">
+                                                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+                                                    <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
+                                                </svg>
+                                            </button>
+                                        </td>
                                     </tr>
                                 {% endfor %}
                                 {% if assignedReviews[article.id_article] | length < min_reviewers.min_reviewers %}
                                     {% if min_reviewers.min_reviewers - (assignedReviews[article.id_article] | length) > 1 %}
                                         <tr>
-                                            <td class="table-warning" colspan="6">Required another {{ min_reviewers.min_reviewers - (assignedReviews[article.id_article] | length) }} reviewers.</td>
+                                            <td class="table-warning" colspan="7">Required another {{ min_reviewers.min_reviewers - (assignedReviews[article.id_article] | length) }} reviewers.</td>
                                         </tr>
                                     {% else %}
                                         <tr>
-                                            <td class="table-warning" colspan="6">Required another {{ min_reviewers.min_reviewers - (assignedReviews[article.id_article] | length) }} reviewer.</td>
+                                            <td class="table-warning" colspan="7">Required another {{ min_reviewers.min_reviewers - (assignedReviews[article.id_article] | length) }} reviewer.</td>
                                         </tr>
                                     {% endif %}
                                 {% endif %}
@@ -77,8 +86,8 @@
     {% endfor %}
 
     <script>
-        function addReviewer(idArticle, idUser){
-            if (!idUser) {
+        function update(data, action){
+            if (action === "addReviewer" && !data["idUser"]) {
                 alert("Please select a reviewer.");
                 return;
             }
@@ -87,24 +96,32 @@
                 url: 'articles-management',
                 method: 'POST',
                 data: {
-                    id_article: idArticle,
-                    id_user: idUser
+                    values: data,
+                    action: action
                 },
                 success: function(response) {
                     const jsonResponse = JSON.parse(response);
                     if (jsonResponse.status === "success") {
-                        console.log("User assigned successfully.");
-                        alert("User assignment updated!");
+                        console.log("Action was successful.");
+                        alert("Action was successful!");
                         location.reload();
                     } else {
                         alert("Error: " + jsonResponse.message);
                     }
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
-                    console.error("Error assigning user: ", errorThrown);
-                    alert("There was an error assigning the user: " + errorThrown);
+                    console.error("Error performing action: ", errorThrown);
+                    alert("There was an error performing the action: " + errorThrown);
                 }
             });
+        }
+
+        function removeReview(idReview){
+            update({"idReview": idReview}, "removeReview")
+        }
+
+        function addReviewer(idArticle, idUser){
+            update({"idArticle": idArticle, "idUser": idUser}, "addReviewer")
         }
     </script>
 {% endblock %}

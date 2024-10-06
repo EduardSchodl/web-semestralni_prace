@@ -21,14 +21,29 @@
         }
 
         function reviewUpdate(){
+            if(!isset($_SESSION["user"]) || $_SESSION["user"]["role_id"] > ROLES["ROLE_ADMIN"])
+            {
+                echo "Nedostatečné oprávnění";
+                exit;
+            }
+
             $db = new ReviewModel();
-            $response = $db->addReview($_POST["id_article"], $_POST["id_user"]);
+            $response = null;
+
+            switch($_POST["action"]){
+                case "addReviewer":
+                    $response = $db->addReview($_POST["values"]["idArticle"], $_POST["values"]["idUser"]);
+                    break;
+                case "removeReview":
+                    $response = $db->removeReview($_POST["values"]["idReview"]);
+                    break;
+            }
 
             if ($response[0]) {
-                echo json_encode(["status" => "success", "message" => "Review added successfully."]);
+                echo json_encode(["status" => "success", "message" => "Review updated successfully."]);
                 http_response_code(200); // Success
             } else {
-                echo json_encode(["status" => "error", "message" => "Error adding review: " . $response[1][2]]);
+                echo json_encode(["status" => "error", "message" => "Error updating review: " . $response[1][2]]);
                 http_response_code(500); // Server error
             }
         }

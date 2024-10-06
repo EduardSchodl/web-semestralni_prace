@@ -39,3 +39,8 @@
 .mg-b{
     margin-bottom: 1rem;
 }
+
+.dp-f{
+    display: flex;
+    border-radius: 50%;
+}
