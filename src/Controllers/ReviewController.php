@@ -10,8 +10,13 @@
     class ReviewController extends BaseController
     {
         function submitReview($data = []){
-            echo $_POST["content"];
-            //$db = new ReviewModel();
-            //$db->submitReview($_POST);
+            if(!isset($_SESSION["user"]) || $_SESSION["user"]["role_id"] > ROLES["ROLE_REVIEWER"])
+            {
+                echo "Nedostatečné oprávnění";
+                exit;
+            }
+
+            $db = new ReviewModel();
+            $db->submitReview($_POST);
         }
     }

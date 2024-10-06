@@ -61,6 +61,7 @@
                             </div>
                             <div class="container mt-5">
                                 <div id="editor-${index}" class="editor"></div>
+                                <textarea name="editorContent" id="editorContent-${index}" style="display:none;"></textarea>
                             </div>
                         </form>
                     `;
@@ -69,7 +70,7 @@
                     formContainer.innerHTML = formHtml;
 
                     // Dynamically create and append the "Submit" button
-                    const submitButtonHtml = `<button type="submit" class="btn btn-success submit-button" form="form-${index}">Submit</button>`;
+                    const submitButtonHtml = `<button type="button" class="btn btn-success submit-button" form="form-${index}" onclick="submitForm(${index})">Submit</button>`;
                     buttonContainer.insertAdjacentHTML('beforeend', submitButtonHtml);
 
                     // Show the form and close button
@@ -119,6 +120,22 @@
                 reviewButton.style.display = 'inline-block';  // Show "Review" button
                 button.style.display = 'none';  // Hide "Close" button
             }
+
+            function submitForm(index) {
+                const editorElement = document.querySelector(`#editor-${index}`);
+                const hiddenTextarea = document.querySelector(`#editorContent-${index}`);
+
+                // Get the CKEditor instance from the map
+                const editor = initializedEditors.get(editorElement);
+
+                if (editor) {
+                    hiddenTextarea.value = editor.getData(); // Set the content to hidden textarea
+                    document.getElementById(`form-${index}`).submit();
+                } else {
+                    console.error('Editor instance not found for index:', index);
+                }
+            }
+
         </script>
     {% endfor %}
 {% endblock %}

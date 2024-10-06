@@ -36,8 +36,8 @@
         function submitReview($data){
             $pdo = self::getConnection();
 
-            $stmt = $pdo->prepare("");
-            $stmt->execute([]);
+            $stmt = $pdo->prepare("UPDATE reviews SET text=:text, content=:content, formality=:formality, up_to_date=:uptodate, language=:language WHERE id_review=:idReview");
+            $stmt->execute(["content" => $data["content"], "text" => $data["editorContent"], "formality" => $data["formality"], "uptodate" => $data["up_to_date"], "language" => $data["language"], "idReview" => $data["reviewId"]]);
 
             return $stmt->fetchAll(\PDO::FETCH_ASSOC);
         }
