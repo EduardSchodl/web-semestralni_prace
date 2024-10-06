@@ -35,7 +35,7 @@
         function getReviewsByUserId($id){
             $pdo = self::getConnection();
 
-            $stmt = $pdo->prepare("SELECT reviews.*, articles.slug, articles.title, articles.abstract, users.first_name, users.last_name FROM ((reviews INNER JOIN articles ON reviews.id_article = articles.id_article) INNER JOIN users ON articles.author_id = users.id_user) WHERE reviews.id_user=:id");
+            $stmt = $pdo->prepare("SELECT reviews.*, articles.slug, articles.title, articles.abstract, articles.status_id, users.first_name, users.last_name, status.status FROM (((reviews INNER JOIN articles ON reviews.id_article = articles.id_article) INNER JOIN users ON articles.author_id = users.id_user) INNER JOIN status ON articles.status_id=status.id_status) WHERE reviews.id_user=:id");
             $stmt->execute(["id" => $id]);
 
             return $stmt->fetchAll(\PDO::FETCH_ASSOC);
@@ -49,5 +49,14 @@
             $stmt->execute(["content" => $data["content"], "text" => $data["editorContent"], "formality" => $data["formality"], "uptodate" => $data["up_to_date"], "language" => $data["language"], "idReview" => $data["reviewId"], "date" => $date, "status" => 1]);
 
             return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        }
+
+        function getNumberOfPendingReviews($idUser){
+            $pdo = self::getConnection();
+
+            $stmt = $pdo->prepare("SELECT COUNT(*) FROM reviews WHERE id_user=:idUser AND status=:status");
+            $stmt->execute(["idUser" => $idUser, "status" => 0]);
+
+            return (int)$stmt->fetchColumn();
         }
     }

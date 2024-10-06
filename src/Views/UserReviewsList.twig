@@ -7,12 +7,35 @@
         <div class="col-sm-12">
             <div class="card">
                 <div class="card-body">
-                    <div class="float-end btn-div">
-                        <button type="button" class="btn btn-primary review-button" onclick="toggleForm(this, {{ loop.index }}, {{ review.id_review }})">Review</button>
-                        <button type="button" class="btn btn-danger close-button" style="display: none;" onclick="closeForm(this, {{ loop.index }})">Close</button>
-                    </div>
+                    {% if review.status_id == status.status_id.REVIEW_PROCESS %}
+                        <span class="badge bg-secondary mg-b">{{ review.status }}</span>
+                    {% elseif review.status_id == status.status_id.ACCEPTED_REVIEWED %}
+                        <span class="badge bg-success mg-b">{{ review.status }}</span>
+                    {% elseif review.status_id == status.status_id.REJECTED_REVIEWED %}
+                        <span class="badge bg-danger mg-b">{{ review.status }}</span>
+                    {% endif %}
+
+                    {% if review.status_id == status.status_id.REVIEW_PROCESS %}
+                        <div class="float-end btn-div">
+                            <button type="button" class="btn btn-primary review-button" onclick="toggleForm(this, {{ loop.index }}, {{ review.id_review }})">Review</button>
+                            <button type="button" class="btn btn-danger close-button" style="display: none;" onclick="closeForm(this, {{ loop.index }})">Close</button>
+                        </div>
+                    {% endif %}
                     <h5 id="noDecor" class="card-title"><a href="articles/{{ review.slug }}">{{ review.title }}, {{ review.first_name }} {{ review.last_name }}</a></h5>
                     <p class="card-text w-50 text-justify">{{ review.abstract|length > 255 ? review.abstract|slice(0, 255) ~ '...' : review.abstract }}</p>
+
+                    <div class="previous-reviews">
+                        <h6>Previous Reviews:</h6>
+                        {% if review.content is not empty %}
+                            <ul class="list-unstyled">
+                                <li>
+                                    <span>Content: {{ review.content }}, Formality: {{ review.formality }}, Up-to-date: {{ review.up_to_date }}, Language: {{ review.language }}</span>
+                                </li>
+                            </ul>
+                        {% else %}
+                            <p>No previous reviews found.</p>
+                        {% endif %}
+                    </div>
 
                     <div class="container mt-5 review-form" style="display: none;">
                     </div>

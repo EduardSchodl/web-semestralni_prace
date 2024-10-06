@@ -15,6 +15,8 @@
                         <span class="badge bg-secondary mg-b">{{ article.status }}</span>
                     {% elseif article.status_id == status.status_id.ACCEPTED_REVIEWED %}
                         <span class="badge bg-success mg-b">{{ article.status }}</span>
+                    {% elseif article.status_id == status.status_id.REJECTED_REVIEWED %}
+                        <span class="badge bg-danger mg-b">{{ article.status }}</span>
                     {% endif %}
                     <h5 class="card-title"><a id="noDecor" href="articles/{{ article.slug }}">{{ article.title }}, {{ article.user_first_name }} {{ article.user_last_name }}</a></h5>
                     <label for="users">Reviews:</label>

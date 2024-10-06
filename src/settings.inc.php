@@ -169,7 +169,7 @@
         "/profile/reviews" => array(
             "GET" => array(
                 "title" => "Reviews",
-                "controller_class_name" => Web\Project\Controllers\UserController::class,
+                "controller_class_name" => Web\Project\Controllers\ReviewController::class,
                 "function_name" => "showUserReviews"
             ),
             "POST" => array(
