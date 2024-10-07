@@ -106,4 +106,18 @@
             $data[8] = chr(ord($data[8]) & 0x3f | 0x80);
             return vsprintf('%s-%s-%s-%s-%s', str_split(bin2hex($data), 4));
         }
+
+        function updateArticleStatus($idArticle, $idStatus){
+            $pdo = self::getConnection();
+
+            $stmt = $pdo->prepare("UPDATE articles SET status_id=:idStatus WHERE id_article=:idArticle");
+            $success = $stmt->execute(["idStatus" => $idStatus, "idArticle" => $idArticle]);
+
+            if (!$success) {
+                $errorInfo = $stmt->errorInfo();
+                return [false, $errorInfo];
+            }
+
+            return [true, null];
+        }
     }

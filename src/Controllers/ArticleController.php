@@ -148,4 +148,57 @@
 
             $this->render("ArticlesManagementView.twig", ["title" => $data["title"], "articles" => $articles, "assignedReviews" => $assignedReviews]);
         }
+
+        function checkReviews(){
+            if(!isset($_SESSION["user"]) || $_SESSION["user"]["role_id"] > ROLES["ROLE_ADMIN"])
+            {
+                echo "Nedostatečné oprávnění";
+                exit;
+            }
+
+            if ($this->checkAllReviewsSubmitted($_POST["values"]["idArticle"])) {
+                echo json_encode(['status' => 'success']);
+            } else {
+                echo json_encode(['status' => 'error', 'message' => 'Not all reviews have been submitted or not enough reviewers.']);
+            }
+        }
+
+        function checkAllReviewsSubmitted($idArticle) {
+            $db = new ReviewModel();
+            $reviews = $db->getReviewsByArticleId($idArticle);
+
+            if(sizeof($reviews) < 3){
+                return false;
+            }
+
+            foreach ($reviews as $review) {
+                if ($review['status'] == 0) {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        function updateArticleStatus(){
+            $db = new ArticleModel();
+
+            $response = null;
+
+            switch($_POST["action"]){
+                case "acceptArticle":
+                    $response = $db->updateArticleStatus($_POST["idArticle"], STATUS["ACCEPTED_REVIEWED"]);
+                    break;
+                case "rejectArticle":
+                    $response = $db->updateArticleStatus($_POST["idArticle"], STATUS["REJECTED_REVIEWED"]);
+                    break;
+            }
+
+            if ($response[0]) {
+                echo json_encode(["status" => "success", "message" => "Review updated successfully."]);
+                http_response_code(200); // Success
+            } else {
+                echo json_encode(["status" => "error", "message" => "Error updating review: " . $response[1][2]]);
+                http_response_code(500); // Server error
+            }
+        }
     }

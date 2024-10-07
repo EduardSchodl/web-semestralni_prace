@@ -23,7 +23,7 @@
     const STATUS = array(
         "REVIEW_PROCESS" => 1,
         "ACCEPTED_REVIEWED" => 2,
-        "REJECTED_REVIEW" => 3
+        "REJECTED_REVIEWED" => 3
     );
 
     const BAN = array(
@@ -164,6 +164,20 @@
                 "title" => "Article Management",
                 "controller_class_name" => Web\Project\Controllers\ReviewController::class,
                 "function_name" => "reviewUpdate"
+            )
+        ),
+        "/articles-management/article-status-update" => array(
+            "POST" => array(
+                "title" => "Article Management",
+                "controller_class_name" => Web\Project\Controllers\ArticleController::class,
+                "function_name" => "checkReviews"
+            )
+        ),
+        "/articles-management/updateArticle" => array(
+            "POST" => array(
+                "title" => "Update Article",
+                "controller_class_name" => Web\Project\Controllers\ArticleController::class,
+                "function_name" => "updateArticleStatus"
             )
         ),
         "/profile/reviews" => array(
