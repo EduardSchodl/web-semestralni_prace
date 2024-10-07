@@ -7,8 +7,14 @@
     {
         function index($data = []){
             $db = new ArticleModel();
-            $articles = $db->getArticles(STATUS["ACCEPTED_REVIEWED"]);
 
-            $this->render("HomeView.twig", ["title" => $data["title"], "articles" => $articles]);
+            $page = isset($_GET["page"]) ? (int)$_GET["page"] : 1;
+            $limit = 6;
+            $offset = ($page - 1) * $limit;
+
+            [$totalArticles, $articles] = $db->getArticlesHomePage(STATUS["ACCEPTED_REVIEWED"], $limit, $offset);
+            $totalPages = ceil($totalArticles / $limit);
+
+            $this->render("HomeView.twig", ["title" => $data["title"], "articles" => $articles, "totalPages" => $totalPages, "page" => $page]);
         }
     }

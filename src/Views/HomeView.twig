@@ -3,31 +3,68 @@
 {% block title %} {{ title }} {% endblock %}
 
 {% block content %}
-    <div id="homeArticles">
-    {% for article in articles %}
-        {% if loop.index is divisible by(3) %}
-            </div>
-            <div class="row">
-        {% elseif loop.index == 1 %}
-            <div class="row">
-        {% endif %}
-        <div class="col">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">{{ article.title }}</h5>
-                    <p class="card-text">{{ article.abstract|length > 255 ? article.abstract|slice(0, 255) ~ '...' : article.abstract }}</p>
-                    <div class="row card-bottom">
-                        <a href="articles/{{ article.slug }}" class="btn btn-primary col-sm-4">Číst dále</a>
-                        <footer class="blockquote-footer col-sm-6">
+    <div id="homeArticles" class="container mt-4">
+        <div class="row">
+            {% for article in articles %}
+            <div class="col-md-4 mb-4">  <!-- Use col-md-4 for 3 cards per row -->
+                <div class="card h-100 shadow-sm">  <!-- Ensures the card fills the height -->
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title" style="font-size: 1rem;">{{ article.title }}</h5>  <!-- Adjusted font size -->
+                        <p class="card-text text-justify" style="font-size: 0.9rem;">  <!-- Adjusted font size -->
+                            {{ article.abstract|length > 150 ? article.abstract|slice(0, 150) ~ '...' : article.abstract }}
+                        </p>
+                        <footer class="blockquote-footer mt-auto">
                             <small class="text-muted">
-                                {{ article.create_time|date('F j, Y') }}
+                                {{ article.create_time|date('F j, Y') }}, <strong>{{ article.user_first_name }} {{ article.user_last_name }}</strong>
                             </small>
                         </footer>
                     </div>
+                    <div class="card-footer text-center">
+                        <a href="articles/{{ article.slug }}" class="btn btn-primary btn-sm">Číst dále</a>  <!-- Adjust button size -->
+                    </div>
                 </div>
             </div>
+            {% if loop.index % 3 == 0 %}  <!-- Close the row after every third article -->
         </div>
-    {% endfor %}
+        <div class="row">
+            {% endif %}
+            {% endfor %}
+        </div>  <!-- Closing the last row -->
+
+        <nav aria-label="Page navigation example" class="fixed">
+            <div class="d-flex justify-content-center mt-4">
+                <ul class="pagination">
+                    {% if page > 1 %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ page - 1 }}" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                    {% else %}
+                        <li class="page-item disabled">
+                            <span class="page-link" aria-hidden="true">&laquo;</span>
+                        </li>
+                    {% endif %}
+
+                    {% for i in 1..totalPages %}
+                        <li class="page-item {% if i == page %}active{% endif %}">
+                            <a class="page-link" href="?page={{ i }}">{{ i }}</a>
+                        </li>
+                    {% endfor %}
+
+                    {% if page < totalPages %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ page + 1 }}" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    {% else %}
+                        <li class="page-item disabled">
+                            <span class="page-link" aria-hidden="true">&raquo;</span>
+                        </li>
+                    {% endif %}
+                </ul>
             </div>
+        </nav>
     </div>
 {% endblock %}

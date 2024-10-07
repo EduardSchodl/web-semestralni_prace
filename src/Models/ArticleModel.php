@@ -23,6 +23,41 @@
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         }
 
+        function getArticlesHomePage($status, $limit, $offset){
+            $pdo = self::getConnection();
+
+            $stmt = $pdo->prepare("
+                SELECT articles.*, users.first_name AS user_first_name, users.last_name AS user_last_name 
+                FROM articles 
+                INNER JOIN users ON articles.author_id = users.id_user 
+                WHERE articles.status_id = :status_id 
+                LIMIT :limit OFFSET :offset
+            ");
+
+            $stmt->bindParam(':status_id', $status, PDO::PARAM_INT);
+            // Use bindValue for limit and offset to avoid issues with integer types
+            $stmt->bindValue(':limit', (int)$limit, PDO::PARAM_INT);
+            $stmt->bindValue(':offset', (int)$offset, PDO::PARAM_INT);
+
+            // Execute the statement
+            $stmt->execute();
+            $count = $this->countArticlesHomePage($status);
+
+            return [$count ,$stmt->fetchAll(PDO::FETCH_ASSOC)];
+        }
+
+        function countArticlesHomePage($status){
+            $pdo = self::getConnection();
+
+            $stmt = $pdo->prepare("
+                SELECT COUNT(*) FROM articles 
+                WHERE status_id = :status_id
+            ");
+
+            $stmt->execute(["status_id" => $status]);
+            return $stmt->fetchColumn();
+        }
+
         function getArticlesByUser($column, $value){
             $pdo = self::getConnection();
 
