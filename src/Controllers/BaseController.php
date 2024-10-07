@@ -43,6 +43,10 @@
 
             // In your PHP/Twig setup
             $this->twig->addFunction(new \Twig\TwigFunction('render_stars', function ($rating) {
+                if($rating === null){
+                    return null;
+                }
+
                 $fullStars = floor($rating);
                 $halfStar = ($rating - $fullStars) >= 0.5;
                 $emptyStars = 5 - $fullStars - ($halfStar ? 1 : 0);
