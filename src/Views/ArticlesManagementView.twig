@@ -8,8 +8,14 @@
             <div class="card">
                 <div class="card-body">
                     <div class="float-end">
-                        <button type="button" class="btn btn-success" onclick="acceptArticle({{ article.id_article }})">Accept</button>
-                        <button type="button" class="btn btn-danger" onclick="rejectArticle({{ article.id_article }})">Reject</button>
+                        {% if article.author_id != app.user.id_user %}
+                            {% if article.status_id == status.status_id.PROCCESS_REVIEW %}
+                                <button type="button" class="btn btn-secondary" onclick="reconsider({{ article.id_article }})">Reconsider</button>
+                            {% else %}
+                                <button type="button" class="btn btn-success" onclick="acceptArticle({{ article.id_article }})">Accept</button>
+                                <button type="button" class="btn btn-danger" onclick="rejectArticle({{ article.id_article }})">Reject</button>
+                            {% endif %}
+                        {% endif %}
                     </div>
                     {% if article.status_id == status.status_id.REVIEW_PROCESS %}
                         <span class="badge bg-secondary mg-b">{{ article.status }}</span>
@@ -75,7 +81,7 @@
                                 {% endif %}
                             {% else %}
                                 <tr>
-                                    <td class="table-warning" colspan="6">No reviews assigned</td>
+                                    <td class="table-warning" colspan="7">No reviews assigned</td>
                                 </tr>
                             {% endif %}
                         </tbody>
@@ -125,7 +131,6 @@
         }
 
         function acceptArticle(idArticle) {
-            // Perform an AJAX request to check if all reviews have been submitted
             $.ajax({
                 url: 'articles-management/article-status-update',  // Make sure this is your correct backend URL
                 method: 'POST',
@@ -200,6 +205,10 @@
                     alert("There was an error performing the action: " + errorThrown);
                 }
             });
+        }
+
+        function reconsider(idArticle){
+
         }
     </script>
 {% endblock %}

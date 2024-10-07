@@ -68,7 +68,7 @@
 
             $date = date("Y-m-d");
             $statusId = STATUS["REVIEW_PROCESS"];
-            $slug = $fileName."-".$this->generateUUIDv4()."-".$date;
+            $slug = str_replace(" ", "_",$fileName)."-".$this->generateUUIDv4()."-".$date;
 
             $stmt = $pdo->prepare("INSERT INTO articles (title, slug, abstract, filename, file, create_time, status_id, author_id) VALUES (:title, :slug, :abstract, :filename, :file, :create_time, :status_id, :author_id)");
             $stmt->bindParam(":title", $title);
@@ -93,8 +93,14 @@
             $pdo = self::getConnection();
 
             $stmt = $pdo->prepare("DELETE FROM articles WHERE id_article=:id");
-            $stmt->execute(["id" => $id]);
-            return $stmt->fetch(PDO::FETCH_ASSOC);
+            $success =$stmt->execute(["id" => $id]);
+
+            if (!$success) {
+                $errorInfo = $stmt->errorInfo();
+                return [false, $errorInfo];
+            }
+
+            return [true, null];
         }
 
         function generateUUIDv4()

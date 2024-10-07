@@ -113,8 +113,26 @@
         }
 
         function deleteArticle(){
-            $db = new ArticleModel();
-            $db->deleteArticle($_POST["article_id"]);
+            $articleId = $_POST["article_id"];
+
+            $db = new ReviewModel();
+            $successDeleteReview = $db->removeReviewByArticleId($articleId);
+
+            if ($successDeleteReview[0]) {
+                $db = new ArticleModel();
+                $successDeleteArticle = $db->deleteArticle($articleId);
+
+                if ($successDeleteArticle[0]) {
+                    echo json_encode(["status" => "success", "message" => "Article and associated reviews deleted successfully."]);
+                    http_response_code(200); // Success
+                } else {
+                    echo json_encode(["status" => "error", "message" => "Error deleting article: " . $successDeleteArticle[1][2]]);
+                    http_response_code(500); // Server Error
+                }
+            } else {
+                echo json_encode(["status" => "error", "message" => "Error deleting associated reviews."]);
+                http_response_code(500); // Server Error
+            }
         }
 
         function articlesManagementShow($data = []){

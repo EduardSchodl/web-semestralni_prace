@@ -9,7 +9,7 @@
 
             foreach (WEB_PAGES as $route => $handlers) {
                 // Convert the route pattern to a regex, replacing {id} or other parameters with a catch group
-                $regex = preg_replace('/\{([a-zA-Z_][a-zA-Z0-9_]*)}/', '([a-zA-Z0-9-_]+)', $route);
+                $regex = preg_replace('/\{([a-zA-Z_][a-zA-Z0-9_]*)}/', '([a-zA-Z0-9-_()]+)', $route);
 
                 // Make sure to check for an exact match of the path
                 if (preg_match("#^$regex$#", $path, $matches) && isset($handlers[$httpMethod])) {

@@ -17,7 +17,15 @@
             }
 
             $db = new ReviewModel();
-            $db->submitReview($_POST);
+
+            $response = $db->submitReview($_POST);;
+
+            if ($response[0]) {
+                http_response_code(200); // Success
+            } else {
+                http_response_code(500); // Server error
+            }
+            header("Refresh:0");
         }
 
         function reviewUpdate(){

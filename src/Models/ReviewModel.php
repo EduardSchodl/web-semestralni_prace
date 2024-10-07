@@ -46,6 +46,20 @@
             return [true, null];
         }
 
+        function removeReviewByArticleId($idArticle){
+            $pdo = self::getConnection();
+
+            $stmt = $pdo->prepare("DELETE FROM reviews WHERE id_article=:idArticle");
+            $success = $stmt->execute(["idArticle" => $idArticle]);
+
+            if (!$success) {
+                $errorInfo = $stmt->errorInfo();
+                return [false, $errorInfo];
+            }
+
+            return [true, null];
+        }
+
         function getReviewsByUserId($id){
             $pdo = self::getConnection();
 
@@ -60,9 +74,14 @@
 
             $date = date("Y-m-d");
             $stmt = $pdo->prepare("UPDATE reviews SET text=:text, content=:content, formality=:formality, up_to_date=:uptodate, language=:language, create_date=:date, status=:status WHERE id_review=:idReview");
-            $stmt->execute(["content" => $data["content"], "text" => $data["editorContent"], "formality" => $data["formality"], "uptodate" => $data["up_to_date"], "language" => $data["language"], "idReview" => $data["reviewId"], "date" => $date, "status" => 1]);
+            $success = $stmt->execute(["content" => $data["content"], "text" => $data["editorContent"], "formality" => $data["formality"], "uptodate" => $data["up_to_date"], "language" => $data["language"], "idReview" => $data["reviewId"], "date" => $date, "status" => 1]);
 
-            return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+            if (!$success) {
+                $errorInfo = $stmt->errorInfo();
+                return [false, $errorInfo];
+            }
+
+            return [true, null];
         }
 
         function getNumberOfPendingReviews($idUser){

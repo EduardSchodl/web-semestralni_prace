@@ -176,13 +176,24 @@
                     article_id: {{ article.id_article }}
                 },
                 success: function(response) {
-                    console.log("Article deleted successfully.");
-                    alert("Article deleted!");
-                    window.location.replace("profile/articles");
+                    try {
+                        console.log(response)
+                        const jsonResponse = JSON.parse(response);
+                        if (jsonResponse.status === "success") {
+                            console.log("Article deleted successfully.");
+                            alert("Article deleted!");
+                            window.location.replace("profile/articles");
+                        } else {
+                            alert("Error: " + jsonResponse.message);
+                        }
+                    } catch (error) {
+                        console.error("Error parsing JSON: ", error);
+                        alert("Unexpected response from the server.");
+                    }
                 },
-                error: function(error) {
-                    console.error("Error deleting article:", error);
-                    alert("There was an error deleting the article.");
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.error("Error performing action: ", errorThrown);
+                    alert("There was an error performing the action: " + errorThrown);
                 }
             });
         }
