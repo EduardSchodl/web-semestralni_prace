@@ -54,10 +54,10 @@
                                     <tr>
                                         <th class="align-middle" scope="row">{{ loop.index }}</th>
                                         <td class="align-middle">{{ review.first_name }} {{ review.last_name }}</td>
-                                        <td class="align-middle">{{ review.content }}</td>
-                                        <td class="align-middle">{{ review.formality }}</td>
-                                        <td class="align-middle">{{ review.up_to_date }}</td>
-                                        <td class="align-middle">{{ review.language }}</td>
+                                        <td class="align-middle">{{ render_stars(review.content)|raw }}</td>
+                                        <td class="align-middle">{{ render_stars(review.formality)|raw }}</td>
+                                        <td class="align-middle">{{ render_stars(review.up_to_date)|raw }}</td>
+                                        <td class="align-middle">{{ render_stars(review.language)|raw }}</td>
                                         <td class="align-middle">
                                             {% if article.status_id == status.status_id.REVIEW_PROCESS %}
                                                 <button type="button" class="btn btn-danger p-0 dp-f" onclick="removeReview({{ review.id_review }})">

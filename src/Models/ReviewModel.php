@@ -74,7 +74,7 @@
 
             $date = date("Y-m-d");
             $stmt = $pdo->prepare("UPDATE reviews SET text=:text, content=:content, formality=:formality, up_to_date=:uptodate, language=:language, create_date=:date, status=:status WHERE id_review=:idReview");
-            $success = $stmt->execute(["content" => $data["content"], "text" => $data["editorContent"], "formality" => $data["formality"], "uptodate" => $data["up_to_date"], "language" => $data["language"], "idReview" => $data["reviewId"], "date" => $date, "status" => 1]);
+            $success = $stmt->execute(["content" => $data["content"], "text" => strip_tags($data["editorContent"]), "formality" => $data["formality"], "uptodate" => $data["up_to_date"], "language" => $data["language"], "idReview" => $data["reviewId"], "date" => $date, "status" => 1]);
 
             if (!$success) {
                 $errorInfo = $stmt->errorInfo();

@@ -3,22 +3,13 @@
         'name' => 'web/project',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => 'ec55d53a362b5748cc23ac743861906d6c7df6e4',
+        'reference' => 'c53552ddbd26a496a1f3e095256e83d7ec5b2309',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
         'dev' => true,
     ),
     'versions' => array(
-        'ckeditor/ckeditor' => array(
-            'pretty_version' => '4.25.0',
-            'version' => '4.25.0.0',
-            'reference' => 'acc0804803dcf44d452deee74363f66e617c0fc4',
-            'type' => 'library',
-            'install_path' => __DIR__ . '/../ckeditor/ckeditor',
-            'aliases' => array(),
-            'dev_requirement' => false,
-        ),
         'symfony/deprecation-contracts' => array(
             'pretty_version' => 'v3.5.0',
             'version' => '3.5.0.0',
@@ -64,6 +55,15 @@
             'aliases' => array(),
             'dev_requirement' => false,
         ),
+        'twbs/bootstrap-icons' => array(
+            'pretty_version' => 'v1.11.3',
+            'version' => '1.11.3.0',
+            'reference' => '8d88686c03c3768a2d82ba4f20c3c4e1b100fa29',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../twbs/bootstrap-icons',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
         'twig/twig' => array(
             'pretty_version' => 'v3.14.0',
             'version' => '3.14.0.0',
@@ -82,7 +82,7 @@
         'web/project' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => 'ec55d53a362b5748cc23ac743861906d6c7df6e4',
+            'reference' => 'c53552ddbd26a496a1f3e095256e83d7ec5b2309',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

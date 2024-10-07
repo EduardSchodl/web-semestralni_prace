@@ -41,6 +41,22 @@
             $this->twig->addGlobal('min_reviewers', ['min_reviewers' => MINIMAL_REVIEWERS]);
             $this->twig->addGlobal("numOfReviews", ['num' => $numOfReviews]);
 
+            // In your PHP/Twig setup
+            $this->twig->addFunction(new \Twig\TwigFunction('render_stars', function ($rating) {
+                $fullStars = floor($rating);
+                $halfStar = ($rating - $fullStars) >= 0.5;
+                $emptyStars = 5 - $fullStars - ($halfStar ? 1 : 0);
+
+                $output = str_repeat('<i class="bi bi-star-fill text-warning"></i>', $fullStars);  // Full stars
+                if ($halfStar) {
+                    $output .= '<i class="bi bi-star-half text-warning"></i>';  // Half star
+                }
+                $output .= str_repeat('<i class="bi bi-star text-warning"></i>', $emptyStars);  // Empty stars
+
+                return $output;
+            }));
+
+
             $data['current_path'] = $path;
             echo $this->twig->render($view, $data);
         }

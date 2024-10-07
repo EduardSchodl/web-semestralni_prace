@@ -4,7 +4,8 @@
     "require": {
         "twig/twig": "^3.14",
       "ext-pdo": "*",
-        "twbs/bootstrap": "5.3.3"
+        "twbs/bootstrap": "5.3.3",
+        "twbs/bootstrap-icons": "^1.11"
     },
     "autoload": {
         "psr-4": {
