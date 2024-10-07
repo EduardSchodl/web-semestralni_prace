@@ -209,6 +209,9 @@
                 case "rejectArticle":
                     $response = $db->updateArticleStatus($_POST["idArticle"], STATUS["REJECTED_REVIEWED"]);
                     break;
+                case "reconsider":
+                    $response = $db->updateArticleStatus($_POST["idArticle"], STATUS["REVIEW_PROCESS"]);
+                    break;
             }
 
             if ($response[0]) {
