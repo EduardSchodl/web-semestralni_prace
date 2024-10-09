@@ -67,31 +67,49 @@
             $pdo = self::getConnection();
 
             $stmt = $pdo->prepare("UPDATE users SET role_id=:role_id WHERE id_user=:id");
-            $stmt->execute(["role_id" => $id_role , "id" => $id_user]);
-            return $stmt->fetch(\PDO::FETCH_ASSOC);
+            $success = $stmt->execute(["role_id" => $id_role , "id" => $id_user]);
+
+            if (!$success) {
+                $errorInfo = $stmt->errorInfo();
+                return [false, $errorInfo];
+            }
+
+            return [true, null];
         }
 
         function userBanStatusUpdate($id_user, $banStatus){
             $pdo = self::getConnection();
 
             $stmt = $pdo->prepare("UPDATE users SET banned=:banned WHERE id_user=:id");
-            $stmt->execute(["banned" => $banStatus, "id" => $id_user]);
-            return $stmt->fetch(\PDO::FETCH_ASSOC);
+            $success = $stmt->execute(["banned" => $banStatus, "id" => $id_user]);
+
+            if (!$success) {
+                $errorInfo = $stmt->errorInfo();
+                return [false, $errorInfo];
+            }
+
+            return [true, null];
         }
 
         function deleteUser($id_user){
             $pdo = self::getConnection();
 
             $stmt = $pdo->prepare("DELETE FROM users WHERE id_user=:id");
-            $stmt->execute(["id" => $id_user]);
-            return $stmt->fetch(\PDO::FETCH_ASSOC);
+            $success = $stmt->execute(["id" => $id_user]);
+
+            if (!$success) {
+                $errorInfo = $stmt->errorInfo();
+                return [false, $errorInfo];
+            }
+
+            return [true, null];
         }
 
         function getReviewers(){
             $pdo = self::getConnection();
 
             $stmt = $pdo->prepare("SELECT * FROM users WHERE users.role_id=:role_id AND users.banned = :ban");
-            $stmt->execute(["role_id" => ROLES["ROLE_REVIEWER"], "ban" => BAN["UNBANNED"]]);
+            $success =$stmt->execute(["role_id" => ROLES["ROLE_REVIEWER"], "ban" => BAN["UNBANNED"]]);
             return $stmt->fetchAll(\PDO::FETCH_ASSOC);
         }
     }

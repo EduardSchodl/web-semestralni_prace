@@ -60,8 +60,11 @@
                 return $output;
             }));
 
-
+            $flashMessage = isset($_SESSION['flash']) ? $_SESSION['flash'] : null;
             $data['current_path'] = $path;
+            $data['flash'] = $flashMessage;
             echo $this->twig->render($view, $data);
+
+            unset($_SESSION['flash']);
         }
     }

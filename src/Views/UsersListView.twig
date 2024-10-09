@@ -3,7 +3,10 @@
 {% block title %} {{ title }} {% endblock %}
 
 {% block content %}
-    <table class="table table-striped table-hover">
+    <div id="alertContainer">
+
+    </div>
+    <table id="tab" class="table table-striped table-hover">
         <thead>
         <tr>
             <th scope="col">#</th>
@@ -51,58 +54,5 @@
         </tbody>
     </table>
 
-    <script>
-        function updateRole(id_user, value){
-            $.ajax({
-                url: 'users',
-                method: 'POST',
-                data: {
-                    action: "update",
-                    id_user: id_user,
-                    id_role: value
-                },
-                success: function(response) {
-                    console.log("Role updated successfully.");
-                    alert("Role updated!");
-                    location.reload();
-                },
-                error: function(error) {
-                    console.error("Error updating role:", error);
-                    alert("There was an error updating the role.");
-                }
-            });
-        }
-
-        function updateUserAction(id_user, action) {
-            $.ajax({
-                url: 'users',
-                method: 'POST',
-                data: {
-                    action: action,
-                    id_user: id_user
-                },
-                success: function(response) {
-                    console.log("User " + action + " successfully.");
-                    alert("User " + action + " updated!");
-                    location.reload();
-                },
-                error: function(error) {
-                    console.error("Error updating user " + action + ":", error);
-                    alert("There was an error updating the user " + action + ".");
-                }
-            });
-        }
-
-        function banUser(id_user){
-            updateUserAction(id_user, "ban")
-        }
-
-        function unBanUser(id_user){
-            updateUserAction(id_user, "unban")
-        }
-
-        function deleteUser(id_user){
-            updateUserAction(id_user, "delete")
-        }
-    </script>
+    <script src="/web-semestralni_prace/src/js/UserManagement.js"></script>
 {% endblock %}

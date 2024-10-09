@@ -12,7 +12,11 @@
     class UserController extends BaseController {
         function index($data = []){
             if(!isset($_SESSION["user"])){
-                echo "Nejste přihlášen";
+                $_SESSION['flash'] = [
+                    'message' => 'You are not logged in!',
+                    'type' => 'info'
+                ];
+                header('Location: ' . $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . '/web-semestralni_prace/src');
                 exit;
             }
 
@@ -27,7 +31,11 @@
         function showUserProfile($data = []){
             if(!isset($_SESSION["user"]) || $_SESSION["user"]["role_id"] > ROLES["ROLE_ADMIN"])
             {
-                echo "Nedostatečné oprávnění";
+                $_SESSION['flash'] = [
+                    'message' => 'Insufficient authorisation!',
+                    'type' => 'warning'
+                ];
+                header('Location: ' . $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . '/web-semestralni_prace/src');
                 exit;
             }
 
@@ -40,9 +48,14 @@
         function showUsersList($data = []){
             if(!isset($_SESSION["user"]) || $_SESSION["user"]["role_id"] > ROLES["ROLE_ADMIN"])
             {
-                echo "Nedostatečné oprávnění";
+                $_SESSION['flash'] = [
+                    'message' => 'Insufficient authorisation!',
+                    'type' => 'warning'
+                ];
+                header('Location: ' . $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . '/web-semestralni_prace/src');
                 exit;
             }
+
 
             $db = new UserModel();
             $users = $db->getAllUsers();
@@ -56,25 +69,38 @@
         function updateUser($data = []){
             if(!isset($_SESSION["user"]) || $_SESSION["user"]["role_id"] > ROLES["ROLE_ADMIN"])
             {
-                echo "Nedostatečné oprávnění";
+                $_SESSION['flash'] = [
+                    'message' => 'Insufficient authorisation!',
+                    'type' => 'warning'
+                ];
+                header('Location: ' . $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . '/web-semestralni_prace/src');
                 exit;
             }
 
             $db = new UserModel();
+            $response = null;
 
             switch($_POST["action"]){
                 case "update":
-                    $db->updateRole($_POST["id_user"], $_POST["id_role"]);
+                    $response = $db->updateRole($_POST["id_user"], $_POST["id_role"]);
                     break;
                 case "ban":
-                    $db->userBanStatusUpdate($_POST["id_user"], BAN["BANNED"]);
+                    $response = $db->userBanStatusUpdate($_POST["id_user"], BAN["BANNED"]);
                     break;
                 case "unban":
-                    $db->userBanStatusUpdate($_POST["id_user"], BAN["UNBANNED"]);
+                    $response = $db->userBanStatusUpdate($_POST["id_user"], BAN["UNBANNED"]);
                     break;
                 case "delete":
-                    $db->deleteUser($_POST["id_user"]);
+                    $response = $db->deleteUser($_POST["id_user"]);
                     break;
+            }
+
+            if ($response[0]) {
+                echo json_encode(["status" => "success", "message" => "User updated successfully."]);
+                http_response_code(200);
+            } else {
+                echo json_encode(["status" => "error", "message" => "Error updating user: " . $response[1][2]]);
+                http_response_code(500);
             }
         }
     }

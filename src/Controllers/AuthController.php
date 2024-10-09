@@ -20,25 +20,36 @@
 
             if($user){
                 if($user["banned"] == BAN["BANNED"]){
-                    echo "zabanovan";
+                    $_SESSION['flash'] = [
+                        'message' => 'Your account is banned!',
+                        'type' => 'danger'
+                    ];
                     header("Location: login");
                     exit;
                 }
 
                 if(password_verify($_POST["password"], $user["password"])){
-                    //alert uspech
                     $_SESSION["user"] = $user;
+                    $_SESSION['flash'] = [
+                        'message' => 'Login successful!',
+                        'type' => 'success'
+                    ];
                     header('Location: ' . $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . '/web-semestralni_prace/src');
                 }
                 else{
-                    echo "spatne heslo";
+                    $_SESSION['flash'] = [
+                        'message' => 'Wrong password!',
+                        'type' => 'warning'
+                    ];
                     header("Location: login");
                 }
 
             }
             else{
-                //alert spatne heslo nebo mail
-                echo "invalid";
+                $_SESSION['flash'] = [
+                    'message' => 'Account does not exist!',
+                    'type' => 'info'
+                ];
                 header("Location: login");
             }
             exit;
@@ -46,15 +57,21 @@
 
         function register(){
             $db = new UserModel();
-            $exists =$db->checkUserExists($_POST["username"], $_POST["email"]);
+            $exists = $db->checkUserExists($_POST["username"], $_POST["email"]);
 
             if($exists == -1){
-                //alert username je jiz zabrany
+                $_SESSION['flash'] = [
+                    'message' => 'Username is already taken!',
+                    'type' => 'info'
+                ];
                 header("Location: register");
                 exit();
             }
             elseif($exists == -2){
-                //alert email je jiz zabrany
+                $_SESSION['flash'] = [
+                    'message' => 'Email is already taken!',
+                    'type' => 'info'
+                ];
                 header("Location: register");
                 exit();
             }
@@ -63,6 +80,11 @@
 
             if($userId) {
                 $_SESSION['user'] = $db->getUser($userId);
+
+                $_SESSION['flash'] = [
+                    'message' => 'Successfully registered!',
+                    'type' => 'success'
+                ];
 
                 header('Location: ' . $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . '/web-semestralni_prace/src');
                 exit();
@@ -73,8 +95,12 @@
         }
 
         function logout(){
+            $_SESSION['flash'] = [
+                'message' => 'Logged out successfully!',
+                'type' => 'success'
+            ];
+
             unset($_SESSION["user"]);
-            session_destroy();
 
             header('Location: ' . $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . '/web-semestralni_prace/src');
             exit();

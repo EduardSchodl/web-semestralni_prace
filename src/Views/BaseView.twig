@@ -55,6 +55,13 @@
         </div>
     </nav>
 
+    {% if flash %}
+        <div id="flashAlert" class="alert alert-{{ flash.type }} alert-dismissible fade show position-fixed top-0 start-50 translate-middle-x" role="alert">
+            {{ flash.message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% endif %}
+
     {%  block content %} {% endblock %}
     </body>
 </html>
@@ -62,3 +69,16 @@
 <script src="/web-semestralni_prace/vendor/twbs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 <script src="/web-semestralni_prace/node_modules/@ckeditor/ckeditor5-build-classic/build/ckeditor.js"></script>
 <script src="/web-semestralni_prace/node_modules/jquery/dist/jquery.js"></script>
+<script src="/web-semestralni_prace/src/js/General.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const flashAlert = document.getElementById("flashAlert");
+
+        if (flashAlert) {
+            setTimeout(function() {
+                const alert = new bootstrap.Alert(flashAlert);
+                alert.close();
+            }, 3000);
+        }
+    });
+</script>

@@ -92,18 +92,4 @@
 
             return (int)$stmt->fetchColumn();
         }
-
-        function checkReviews($idArticle){
-            $pdo = self::getConnection();
-
-            $stmt = $pdo->prepare("SELECT status FROM reviews WHERE id_article=:idArticle");
-            $success = $stmt->execute(["idArticle" => $idArticle]);
-
-            if (!$success) {
-                $errorInfo = $stmt->errorInfo();
-                return [false, $errorInfo];
-            }
-
-            return [true, null];
-        }
     }

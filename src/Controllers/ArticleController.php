@@ -16,7 +16,11 @@
             $article = $db->getArticle($data["params"][0]);
 
             if(!$article){
-                echo "Neexistující článek";
+                $_SESSION['flash'] = [
+                    'message' => 'Article does not exist!',
+                    'type' => 'info'
+                ];
+                header('Location: ' . $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . '/web-semestralni_prace/src');
                 exit;
             }
 
@@ -33,7 +37,11 @@
 
         function publishFormShow($data = []){
             if(!isset($_SESSION["user"])){
-                echo "Nejste přihlášen";
+                $_SESSION['flash'] = [
+                    'message' => 'You are not logged in!',
+                    'type' => 'info'
+                ];
+                header('Location: ' . $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . '/web-semestralni_prace/src');
                 exit;
             }
 
@@ -47,12 +55,18 @@
 
         function publishArticle(){
             if (!isset($_POST["title"]) || !isset($_POST["abstract"]) || !isset($_FILES["file"])) {
-                echo "Chybně vyplněný formulář";
+                $_SESSION['flash'] = [
+                    'message' => 'Incorrectly filled in form!',
+                    'type' => 'warning'
+                ];
                 exit;
             }
 
             if ($_FILES["file"]["error"] !== UPLOAD_ERR_OK) {
-                echo "Error uploading the file.";
+                $_SESSION['flash'] = [
+                    'message' => 'Error uploading file!',
+                    'type' => 'warning'
+                ];
                 exit;
             }
 
@@ -66,7 +80,10 @@
             $slug = $db->insertArticle($_POST["abstract"], $_POST["title"], $file_name, $file_content, $_SESSION["user"]["id_user"]);
 
             if($slug == -1){
-                echo "Chyba";
+                $_SESSION['flash'] = [
+                    'message' => 'Something went wrong publishing article!',
+                    'type' => 'warning'
+                ];
                 exit;
             }
 
@@ -84,7 +101,11 @@
 
         function getProfileArticles($data = []){
             if(!isset($_SESSION["user"])){
-                echo "Nejste přihlášen";
+                $_SESSION['flash'] = [
+                    'message' => 'You are not logged in!',
+                    'type' => 'info'
+                ];
+                header('Location: ' . $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . '/web-semestralni_prace/src');
                 exit;
             }
 
@@ -102,7 +123,11 @@
         function getUserArticles($data = []){
             if(!isset($_SESSION["user"]) || $_SESSION["user"]["role_id"] > ROLES["ROLE_ADMIN"])
             {
-                echo "Nedostatečné oprávnění";
+                $_SESSION['flash'] = [
+                    'message' => 'Insufficient authorisation!',
+                    'type' => 'warning'
+                ];
+                header('Location: ' . $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . '/web-semestralni_prace/src');
                 exit;
             }
 
@@ -138,7 +163,11 @@
         function articlesManagementShow($data = []){
             if(!isset($_SESSION["user"]) || $_SESSION["user"]["role_id"] > ROLES["ROLE_ADMIN"])
             {
-                echo "Nedostatečné oprávnění";
+                $_SESSION['flash'] = [
+                    'message' => 'Insufficient authorisation!',
+                    'type' => 'warning'
+                ];
+                header('Location: ' . $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . '/web-semestralni_prace/src');
                 exit;
             }
 
@@ -170,7 +199,11 @@
         function checkReviews(){
             if(!isset($_SESSION["user"]) || $_SESSION["user"]["role_id"] > ROLES["ROLE_ADMIN"])
             {
-                echo "Nedostatečné oprávnění";
+                $_SESSION['flash'] = [
+                    'message' => 'Insufficient authorisation!',
+                    'type' => 'warning'
+                ];
+                header('Location: ' . $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . '/web-semestralni_prace/src');
                 exit;
             }
 

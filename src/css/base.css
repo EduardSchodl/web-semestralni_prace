@@ -51,3 +51,23 @@
     left: 50%;
     transform: translateX(-50%);
 }
+
+.alert-success {
+    background-color: #28a745; /* Bright green */
+    color: white;
+}
+
+.alert-danger {
+    background-color: #dc3545; /* Bright red */
+    color: white;
+}
+
+.alert-warning {
+    background-color: #ffc107; /* Bright yellow */
+    color: black;
+}
+
+.alert-info {
+    background-color: #17a2b8; /* Bright blue */
+    color: white;
+}

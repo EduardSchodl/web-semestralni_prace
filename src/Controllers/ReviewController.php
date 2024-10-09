@@ -12,7 +12,11 @@
         function submitReview($data = []){
             if(!isset($_SESSION["user"]) || $_SESSION["user"]["role_id"] > ROLES["ROLE_REVIEWER"])
             {
-                echo "Nedostatečné oprávnění";
+                $_SESSION['flash'] = [
+                    'message' => 'Insufficient authorisation!',
+                    'type' => 'warning'
+                ];
+                header('Location: ' . $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . '/web-semestralni_prace/src');
                 exit;
             }
 
@@ -31,7 +35,11 @@
         function reviewUpdate(){
             if(!isset($_SESSION["user"]) || $_SESSION["user"]["role_id"] > ROLES["ROLE_ADMIN"])
             {
-                echo "Nedostatečné oprávnění";
+                $_SESSION['flash'] = [
+                    'message' => 'Insufficient authorisation!',
+                    'type' => 'warning'
+                ];
+                header('Location: ' . $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . '/web-semestralni_prace/src');
                 exit;
             }
 
@@ -59,7 +67,11 @@
         function showUserReviews($data = []){
             if(!isset($_SESSION["user"]) || $_SESSION["user"]["role_id"] > ROLES["ROLE_REVIEWER"])
             {
-                echo "Nedostatečné oprávnění";
+                $_SESSION['flash'] = [
+                    'message' => 'Insufficient authorisation!',
+                    'type' => 'warning'
+                ];
+                header('Location: ' . $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . '/web-semestralni_prace/src');
                 exit;
             }
 

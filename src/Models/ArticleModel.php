@@ -35,11 +35,9 @@
             ");
 
             $stmt->bindParam(':status_id', $status, PDO::PARAM_INT);
-            // Use bindValue for limit and offset to avoid issues with integer types
             $stmt->bindValue(':limit', (int)$limit, PDO::PARAM_INT);
             $stmt->bindValue(':offset', (int)$offset, PDO::PARAM_INT);
 
-            // Execute the statement
             $stmt->execute();
             $count = $this->countArticlesHomePage($status);
 
@@ -80,22 +78,21 @@
                 "slug" => $slug
             ]);
 
-            $article = $stmt->fetch(PDO::FETCH_ASSOC);
-
-            #$stmt = $pdo->prepare("SELECT articles.*, users.id_user, users.first_name, users.last_name, users.email FROM articles INNER JOIN users ON articles.author_id = users.id_user WHERE slug=:slug AND articles.status_id = :status");
-            #$stmt->execute([
-            #    "slug" => $slug,
-            #    "status" => ACCEPTED_REVIEWED
-            #]);
-            return $article;
+            return $stmt->fetch(PDO::FETCH_ASSOC);
         }
 
         function updateArticle($data){
             $pdo = self::getConnection();
 
             $stmt = $pdo->prepare("UPDATE articles SET title=:title, abstract=:content WHERE id_article=:id");
-            $stmt->execute(["title" => $data["title"], "content" => $data["content"],"id" => $data["article_id"]]);
-            return $stmt->fetch(PDO::FETCH_ASSOC);
+            $success = $stmt->execute(["title" => $data["title"], "content" => $data["content"],"id" => $data["article_id"]]);
+
+            if (!$success) {
+                $errorInfo = $stmt->errorInfo();
+                return [false, $errorInfo];
+            }
+
+            return [true, null];
         }
 
         function insertArticle($abstract, $title, $fileName, $fileContent, $user){
