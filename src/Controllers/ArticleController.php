@@ -124,14 +124,14 @@
 
                 if ($successDeleteArticle[0]) {
                     echo json_encode(["status" => "success", "message" => "Article and associated reviews deleted successfully."]);
-                    http_response_code(200); // Success
+                    http_response_code(200);
                 } else {
                     echo json_encode(["status" => "error", "message" => "Error deleting article: " . $successDeleteArticle[1][2]]);
-                    http_response_code(500); // Server Error
+                    http_response_code(500);
                 }
             } else {
                 echo json_encode(["status" => "error", "message" => "Error deleting associated reviews."]);
-                http_response_code(500); // Server Error
+                http_response_code(500);
             }
         }
 
@@ -216,10 +216,10 @@
 
             if ($response[0]) {
                 echo json_encode(["status" => "success", "message" => "Review updated successfully."]);
-                http_response_code(200); // Success
+                http_response_code(200);
             } else {
                 echo json_encode(["status" => "error", "message" => "Error updating review: " . $response[1][2]]);
-                http_response_code(500); // Server error
+                http_response_code(500);
             }
         }
     }
