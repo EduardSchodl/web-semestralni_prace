@@ -204,8 +204,20 @@
             $db = new ArticleModel();
             $article = $db->getArticleById($data["idArticle"]);
 
+            $db = new UserModel();
+            $reviewers = $db->getReviewers();
+
             $db = new ReviewModel();
             $assignedReviews[$article["id_article"]] = $db->getReviewsByArticleId($data["idArticle"]);
+
+
+            $assignedUserIds = array_map(function($review) {
+                return $review['id_user'];
+            }, $assignedReviews[$article['id_article']] ?? []);
+
+            $article['available_reviewers'] = array_filter($reviewers, function($reviewer) use ($article, $assignedUserIds) {
+                return !in_array($reviewer['id_user'], $assignedUserIds) && $reviewer['id_user'] != $article['author_id'];
+            });
 
 
             $this->render('partials/ReviewCard.twig', ["title" => $data["title"], "article" => $article, "assignedReviews" => $assignedReviews]);
