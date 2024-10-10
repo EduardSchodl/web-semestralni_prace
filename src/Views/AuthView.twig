@@ -4,7 +4,7 @@
 
 {% block content %}
     <div id="bodyDiv" class="container mt-5">
-        <div class="col-lg-6 col-md-8 col-12 mx-auto"> <!-- Set a custom width for larger screens -->
+        <div class="col-lg-6 col-md-8 col-12 mx-auto">
             {% if current_path == "/login" %}
                 <form id="authForm" method="post" class="row g-3">
                     <div class="col-12">
@@ -65,6 +65,6 @@
                     </div>
                 </form>
             {% endif %}
-        </div> <!-- End of column for form -->
+        </div>
     </div>
 {% endblock %}

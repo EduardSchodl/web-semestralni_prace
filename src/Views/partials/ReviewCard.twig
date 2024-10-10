@@ -54,7 +54,7 @@
                             <td class="align-middle">{{ render_stars(review.language)|raw }}</td>
                             <td class="align-middle">
                                 {% if article.status_id == status.status_id.REVIEW_PROCESS %}
-                                    <i class="bi bi-x-circle fs-5 text-danger" style="cursor: pointer;" onclick="removeReview({{ review.id_review }}, {{ article.id_article }})"></i>
+                                    <i class="bi bi-x-circle fs-5 text-danger cursor-pointer" onclick="removeReview({{ review.id_review }}, {{ article.id_article }})"></i>
                                 {% endif %}
                             </td>
                         </tr>

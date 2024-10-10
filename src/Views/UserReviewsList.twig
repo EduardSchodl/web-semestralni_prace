@@ -18,7 +18,7 @@
                     {% if review.status_id == status.status_id.REVIEW_PROCESS %}
                         <div class="float-end btn-div">
                             <button type="button" class="btn btn-primary review-button" onclick="toggleForm(this, {{ loop.index }}, {{ review.id_review }})">Review</button>
-                            <button type="button" class="btn btn-danger close-button" style="display: none;" onclick="closeForm(this, {{ loop.index }})">Close</button>
+                            <button type="button" class="btn btn-danger close-button" style="display: none" onclick="closeForm(this, {{ loop.index }})">Close</button>
                         </div>
                     {% endif %}
                     <h5 id="noDecor" class="card-title"><a href="articles/{{ review.slug }}">{{ review.title }}, {{ review.first_name }} {{ review.last_name }}</a></h5>
@@ -37,128 +37,12 @@
                         {% endif %}
                     </div>
 
-                    <div class="container mt-5 review-form" style="display: none;">
+                    <div class="container mt-5 review-form" style="display: none">
                     </div>
                 </div>
             </div>
         </div>
 
-        <script>
-            const initializedEditors = new Map();  // Declare the map for CKEditor instances
-
-            function toggleForm(button, index, reviewId) {
-                const formContainer = button.closest('.card-body').querySelector('.review-form');
-                const buttonContainer = button.closest('.card-body').querySelector('.btn-div');
-                const closeButton = button.closest('.float-end').querySelector('.close-button');
-
-                // Toggle form visibility
-                if (formContainer.style.display === 'none' || formContainer.innerHTML === '') {
-                    const formHtml = `
-                        <form id="form-${index}" method="post">
-                            <input type="hidden" name="reviewId" value="${reviewId}">
-                            <div class="row">
-                                <div class="col-md-3">
-                                    <div class="input-group mg-b">
-                                        <div class="input-group-text">Content</div>
-                                        <input type="number" class="form-control" name="content" max="5" min="0" step="0.5" value="0">
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="input-group mg-b">
-                                        <div class="input-group-text">Formality</div>
-                                        <input type="number" class="form-control" name="formality" max="5" min="0" step="0.5" value="0">
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="input-group mg-b">
-                                        <div class="input-group-text">Up-to-date</div>
-                                        <input type="number" class="form-control" name="up_to_date" max="5" min="0" step="0.5" value="0">
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="input-group mg-b">
-                                        <div class="input-group-text">Language</div>
-                                        <input type="number" class="form-control" name="language" max="5" min="0" step="0.5" value="0">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="container mt-5">
-                                <div id="editor-${index}" class="editor"></div>
-                                <textarea name="editorContent" id="editorContent-${index}" style="display:none;"></textarea>
-                            </div>
-                        </form>
-                    `;
-
-                    // Append the created form to the container
-                    formContainer.innerHTML = formHtml;
-
-                    // Dynamically create and append the "Submit" button
-                    const submitButtonHtml = `<button type="button" class="btn btn-success submit-button" form="form-${index}" onclick="submitForm(${index})">Submit</button>`;
-                    buttonContainer.insertAdjacentHTML('beforeend', submitButtonHtml);
-
-                    // Show the form and close button
-                    formContainer.style.display = 'block';
-                    closeButton.style.display = 'inline-block';  // Show "Close" button
-                    button.style.display = 'none';  // Hide "Review" button
-
-                    // Initialize CKEditor for this specific editor
-                    const editorElement = formContainer.querySelector(`#editor-${index}`);
-                    if (!initializedEditors.has(editorElement)) {
-                        ClassicEditor
-                            .create(editorElement)
-                            .then(editor => {
-                                initializedEditors.set(editorElement, editor); // Track the editor instance
-                            })
-                            .catch(error => {
-                                console.error('Error initializing CKEditor:', error);
-                            });
-                    }
-                }
-            }
-
-            function closeForm(button, index) {
-                const formContainer = button.closest('.card-body').querySelector('.review-form');
-                const submitButton = button.closest('.card-body').querySelector('.submit-button');
-                const reviewButton = button.closest('.float-end').querySelector('.review-button');
-                const editorElement = formContainer.querySelector(`#editor-${index}`);
-
-                // Destroy CKEditor instance if it exists
-                if (initializedEditors.has(editorElement)) {
-                    initializedEditors.get(editorElement).destroy()
-                        .then(() => {
-                            initializedEditors.delete(editorElement);  // Remove the editor from the map
-                            console.log('Editor destroyed successfully');
-                        })
-                        .catch(error => {
-                            console.error('Error destroying CKEditor:', error);
-                        });
-                }
-
-                // Clear and hide the form
-                formContainer.innerHTML = '';
-                formContainer.style.display = 'none';
-                submitButton.remove();
-
-                // Reset buttons
-                reviewButton.style.display = 'inline-block';  // Show "Review" button
-                button.style.display = 'none';  // Hide "Close" button
-            }
-
-            function submitForm(index) {
-                const editorElement = document.querySelector(`#editor-${index}`);
-                const hiddenTextarea = document.querySelector(`#editorContent-${index}`);
-
-                // Get the CKEditor instance from the map
-                const editor = initializedEditors.get(editorElement);
-
-                if (editor) {
-                    hiddenTextarea.value = editor.getData(); // Set the content to hidden textarea
-                    document.getElementById(`form-${index}`).submit();
-                } else {
-                    console.error('Editor instance not found for index:', index);
-                }
-            }
-
-        </script>
+        <script src="/web-semestralni_prace/src/js/ReviewsManagement.js"></script>
     {% endfor %}
 {% endblock %}

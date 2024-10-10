@@ -9,8 +9,8 @@
             <div class="col-md-4 mb-4">
                 <div class="card h-100 shadow-sm">
                     <div class="card-body d-flex flex-column">
-                        <h5 class="card-title" style="font-size: 1rem;">{{ article.title }}</h5>
-                        <p class="card-text text-justify" style="font-size: 0.9rem;">
+                        <h5 class="card-title fs-1rem">{{ article.title }}</h5>
+                        <p class="card-text text-justify fs-1rem">
                             {{ article.abstract|length > 150 ? article.abstract|slice(0, 150) ~ '...' : article.abstract }}
                         </p>
                         <footer class="blockquote-footer mt-auto">

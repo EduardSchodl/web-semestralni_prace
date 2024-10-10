@@ -71,3 +71,15 @@
     background-color: #17a2b8; /* Bright blue */
     color: white;
 }
+
+.fs-1rem{
+    font-size: 1rem;
+}
+
+.dp-none{
+    display: none;
+}
+
+.cursor-pointer{
+    cursor: pointer;
+}

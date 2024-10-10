@@ -24,6 +24,15 @@
                 exit;
             }
 
+            if($article["status_id"] == STATUS["REVIEW_PROCESS"] && !isset($_SESSION["user"])){
+                $_SESSION['flash'] = [
+                    'message' => 'Article does not exist!',
+                    'type' => 'info'
+                ];
+                header('Location: ' . $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . '/web-semestralni_prace/src');
+                exit;
+            }
+
             $db = new ReviewModel();
             $reviews = $db->getReviewsByArticleSlug($data["params"][0]);
 
@@ -202,13 +211,13 @@
         function updateArticleCard($data = [])
         {
             $db = new ArticleModel();
-            $article = $db->getArticleById($data["idArticle"]);
+            $article = $db->getArticleById($data["queryParams"]["idArticle"]);
 
             $db = new UserModel();
             $reviewers = $db->getReviewers();
 
             $db = new ReviewModel();
-            $assignedReviews[$article["id_article"]] = $db->getReviewsByArticleId($data["idArticle"]);
+            $assignedReviews[$article["id_article"]] = $db->getReviewsByArticleId($data["queryParams"]["idArticle"]);
 
 
             $assignedUserIds = array_map(function($review) {

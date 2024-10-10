@@ -38,7 +38,8 @@
 
                     if (method_exists($controller, $function_name)) {
                         $queryParams = $_GET;
-                        $controller->$function_name(array_merge(["title" => $title], $params, $queryParams));
+                        $controller->$function_name(["title" => $title, "params" => $params, "queryParams" => $queryParams]);
+                        //$controller->$function_name(["title" => $title, "params" => $params]);
                     } else {
                         echo "Method $function_name not found in controller $controller_class_name. <br>";
                     }
