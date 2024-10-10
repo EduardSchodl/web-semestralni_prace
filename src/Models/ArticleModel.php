@@ -121,6 +121,17 @@
             }
         }
 
+        function getArticleById($idArticle){
+            $pdo = self::getConnection();
+
+            $stmt = $pdo->prepare("SELECT articles.*, users.first_name AS user_first_name, users.last_name AS user_last_name, status.status FROM ((articles INNER JOIN users ON articles.author_id=users.id_user) INNER JOIN status ON articles.status_id=status.id_status) WHERE articles.id_article=:idArticle");
+            $stmt->execute([
+                "idArticle" => $idArticle
+            ]);
+
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        }
+
         function deleteArticle($id){
             $pdo = self::getConnection();
 

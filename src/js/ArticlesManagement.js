@@ -1,9 +1,13 @@
-function reloadReview() {
+function reloadReview(idArticle) {
     $.ajax({
-        url: 'articles-management',
+        url: 'articles-management/update-card',
         method: 'GET',
+        data:{
+            idArticle: idArticle
+        },
         success: function(response) {
-            $('#tab tbody').html(response);
+            console.log("Response received:", response);
+            $('#card-' + idArticle).html(response);
         },
         error: function(error) {
             console.error("Error loading user table:", error);
@@ -30,6 +34,7 @@ function update(data, action){
             if (jsonResponse.status === "success") {
                 console.log("Action was successful.");
                 showAlert("success", "Action was successful!")
+                reloadReview(data["idArticle"])
                 //location.reload();
             } else {
                 showAlert("danger", "Error: " + jsonResponse.message)
@@ -42,8 +47,8 @@ function update(data, action){
     });
 }
 
-function removeReview(idReview){
-    update({"idReview": idReview}, "removeReview")
+function removeReview(idReview, idArticle){
+    update({"idReview": idReview, "idArticle": idArticle}, "removeReview")
 }
 
 function addReviewer(idArticle, idUser){
@@ -95,6 +100,7 @@ function updateArticle(idArticle, action){
             if (jsonResponse.status === "success") {
                 console.log("Action was successful.");
                 showAlert("success", "Action was successful!")
+                reloadReview(idArticle)
                 //location.reload();
             } else {
                 showAlert("danger", "Error: " + jsonResponse.message)

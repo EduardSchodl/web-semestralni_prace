@@ -191,5 +191,12 @@
                 "controller_class_name" => Web\Project\Controllers\ReviewController::class,
                 "function_name" => "submitReview"
             )
+        ),
+        "/articles-management/update-card"=> array(
+            "GET" => array(
+                "title" => "",
+                "controller_class_name" => Web\Project\Controllers\ArticleController::class,
+                "function_name" => "updateArticleCard"
+            )
         )
     );

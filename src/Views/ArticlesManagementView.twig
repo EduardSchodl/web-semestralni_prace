@@ -3,90 +3,9 @@
 {% block title %} {{ title }} {% endblock %}
 
 {% block content %}
-    <div id="alertContainer"></div>
+    <div id="alertContainer" class="toast-container position-fixed top-0 end-0 p-3"></div>
     {% for article in articles %}
-        <div class="col-sm-12">
-            <div class="card">
-                <div class="card-body">
-                    <div class="float-end">
-                        {% if article.author_id != app.user.id_user %}
-                            {% if article.status_id != status.status_id.REVIEW_PROCESS %}
-                                <button type="button" class="btn btn-secondary" onclick="reconsider({{ article.id_article }})">Reconsider</button>
-                            {% else %}
-                                <button type="button" class="btn btn-success" onclick="acceptArticle({{ article.id_article }})">Accept</button>
-                                <button type="button" class="btn btn-danger" onclick="rejectArticle({{ article.id_article }})">Reject</button>
-                            {% endif %}
-                        {% endif %}
-                    </div>
-                    {% if article.status_id == status.status_id.REVIEW_PROCESS %}
-                        <span class="badge bg-secondary mg-b">{{ article.status }}</span>
-                    {% elseif article.status_id == status.status_id.ACCEPTED_REVIEWED %}
-                        <span class="badge bg-success mg-b">{{ article.status }}</span>
-                    {% elseif article.status_id == status.status_id.REJECTED_REVIEWED %}
-                        <span class="badge bg-danger mg-b">{{ article.status }}</span>
-                    {% endif %}
-                    <h5 class="card-title"><a id="noDecor" href="articles/{{ article.slug }}">{{ article.title }}, {{ article.user_first_name }} {{ article.user_last_name }}</a></h5>
-                    <label for="users">Reviews:</label>
-                    <div class="input-group mg-b">
-                        <div class="input-group-text">Add Reviewer</div>
-                        <select name="users" id="users_{{ article.id_article }}">
-                            <option value="" disabled selected>Select reviewer</option>
-                            {% for reviewer in article.available_reviewers %}
-                                <option value="{{ reviewer.id_user }}">{{ reviewer.first_name }} {{ reviewer.last_name }}</option>
-                            {% endfor %}
-                        </select>
-                        <button {% if assignedReviews[article.id_article] | length == min_reviewers.min_reviewers %}disabled{% endif %} type="button" class="btn btn-success" onclick="addReviewer({{ article.id_article }}, $('#users_{{ article.id_article }}').val())">Add</button>
-                    </div>
-                    <table class="table table-striped table-hover table-bordered w-50">
-                        <thead>
-                            <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">Reviewer</th>
-                                <th scope="col">Content</th>
-                                <th scope="col">Formality</th>
-                                <th scope="col">Up-to-date</th>
-                                <th scope="col">Language</th>
-                                <th scope="col">Remove</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% if assignedReviews[article.id_article] is not empty %}
-                                {% for review in assignedReviews[article.id_article] %}
-                                    <tr>
-                                        <th class="align-middle" scope="row">{{ loop.index }}</th>
-                                        <td class="align-middle">{{ review.first_name }} {{ review.last_name }}</td>
-                                        <td class="align-middle">{{ render_stars(review.content)|raw }}</td>
-                                        <td class="align-middle">{{ render_stars(review.formality)|raw }}</td>
-                                        <td class="align-middle">{{ render_stars(review.up_to_date)|raw }}</td>
-                                        <td class="align-middle">{{ render_stars(review.language)|raw }}</td>
-                                        <td class="align-middle">
-                                            {% if article.status_id == status.status_id.REVIEW_PROCESS %}
-                                                <i class="bi bi-x-circle fs-5 text-danger" style="cursor: pointer;" onclick="removeReview({{ review.id_review }})"></i>
-                                            {% endif %}
-                                        </td>
-                                    </tr>
-                                {% endfor %}
-                                {% if assignedReviews[article.id_article] | length < min_reviewers.min_reviewers %}
-                                    {% if min_reviewers.min_reviewers - (assignedReviews[article.id_article] | length) > 1 %}
-                                        <tr>
-                                            <td class="table-warning" colspan="7">Required another {{ min_reviewers.min_reviewers - (assignedReviews[article.id_article] | length) }} reviewers.</td>
-                                        </tr>
-                                    {% else %}
-                                        <tr>
-                                            <td class="table-warning" colspan="7">Required another {{ min_reviewers.min_reviewers - (assignedReviews[article.id_article] | length) }} reviewer.</td>
-                                        </tr>
-                                    {% endif %}
-                                {% endif %}
-                            {% else %}
-                                <tr>
-                                    <td class="table-warning" colspan="7">No reviews assigned</td>
-                                </tr>
-                            {% endif %}
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
+        {% include "partials/ReviewCard.twig" %}
     {% endfor %}
 
     <script src="/web-semestralni_prace/src/js/ArticlesManagement.js"></script>

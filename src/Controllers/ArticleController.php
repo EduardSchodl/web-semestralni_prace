@@ -183,7 +183,9 @@
                 $assignedReviews[$article['id_article']] = $db->getReviewsByArticleId($article['id_article']);
             }
 
-            foreach ($articles as &$article) {
+            $modifiedArticles = [];
+
+            foreach ($articles as $article) {
                 $assignedUserIds = array_map(function($review) {
                     return $review['id_user'];
                 }, $assignedReviews[$article['id_article']] ?? []);
@@ -191,9 +193,22 @@
                 $article['available_reviewers'] = array_filter($reviewers, function($reviewer) use ($article, $assignedUserIds) {
                     return !in_array($reviewer['id_user'], $assignedUserIds) && $reviewer['id_user'] != $article['author_id'];
                 });
+                $modifiedArticles[] = $article;
             }
 
-            $this->render("ArticlesManagementView.twig", ["title" => $data["title"], "articles" => $articles, "assignedReviews" => $assignedReviews]);
+            $this->render("ArticlesManagementView.twig", ["title" => $data["title"], "articles" => $modifiedArticles, "assignedReviews" => $assignedReviews]);
+        }
+
+        function updateArticleCard($data = [])
+        {
+            $db = new ArticleModel();
+            $article = $db->getArticleById($data["idArticle"]);
+
+            $db = new ReviewModel();
+            $assignedReviews[$article["id_article"]] = $db->getReviewsByArticleId($data["idArticle"]);
+
+
+            $this->render('partials/ReviewCard.twig', ["title" => $data["title"], "article" => $article, "assignedReviews" => $assignedReviews]);
         }
 
         function checkReviews(){
