@@ -3,7 +3,7 @@ function reloadUserTable() {
         url: 'users',
         method: 'GET',
         success: function(response) {
-            $('#tab tbody').html(response);
+            $('#tab').html(response);
         },
         error: function(error) {
             console.error("Error loading user table:", error);

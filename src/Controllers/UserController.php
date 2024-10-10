@@ -63,7 +63,7 @@
             $roles = $db->getRoles();
 
             if ($this->isAjaxRequest()) {
-                $this->render('partials/userTable.twig', ['users' => $users, 'roles' => $roles]);
+                $this->render('partials/UserTable.twig', ['users' => $users, 'roles' => $roles]);
             } else {
                 $this->render('UsersListView.twig', ['users' => $users, 'roles' => $roles]);
             }

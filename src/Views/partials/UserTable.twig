@@ -1,0 +1,35 @@
+
+{% for user in users %}
+    <tr class="{% if user.banned == ban.status.BANNED %}banned table-danger{% endif %}">
+        <th class="strike" scope="row">{{ loop.index }}</th>
+        <td class="strike">{{ user["first_name"] }} {{ user["last_name"] }}</td>
+        <td class="strike">{{ user["email"] }}</td>
+        {% if app.user.role_id >= user["role_id"] %}
+            <td>{{ user["role_name"] }}</td>
+        {% else %}
+            <td>
+                <select name="roles" id="roles" onchange="updateRole({{ user.id_user }}, this.value)">
+                    {% for role in roles %}
+                        <option {% if user["role_id"] == role.id_role %} selected {% endif %} value="{{ role.id_role }}">{{ role.name }}</option>
+                    {% endfor %}
+                </select>
+            </td>
+        {% endif %}
+        <td>
+            {% if app.user.id_user == user.id_user %}
+                <a class="btn btn-primary" href="profile">Profile</a>
+            {% else %}
+                <a class="btn btn-primary" href="users/{{ user.username }}">Profile</a>
+
+                {% if app.user.role_id < user.role_id %}
+                    {% if user.banned == ban.status.UNBANNED %}
+                        <button class="btn btn-danger" onclick="banUser({{ user.id_user }})">Ban</button>
+                    {% else %}
+                        <button class="btn btn-success" onclick="unBanUser({{ user.id_user }})">Unban</button>
+                    {% endif %}
+                    <button class="btn btn-danger" onclick="deleteUser({{ user.id_user }})">Delete</button>
+                {% endif %}
+            {% endif %}
+        </td>
+    </tr>
+{% endfor %}
