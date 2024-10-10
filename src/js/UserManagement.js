@@ -1,10 +1,9 @@
-//?????? duplikuje je se baseview
 function reloadUserTable() {
     $.ajax({
         url: 'users',
         method: 'GET',
         success: function(response) {
-            $('#tab').html(response);
+            $('#tab tbody').html(response);
         },
         error: function(error) {
             console.error("Error loading user table:", error);
@@ -26,7 +25,6 @@ function updateRole(id_user, value){
             console.log("Role updated successfully.");
             showAlert("success", "Role updated!");
             reloadUserTable();
-            //location.reload();
         },
         error: function(error) {
             console.error("Error updating role:", error);
@@ -47,7 +45,6 @@ function updateUserAction(id_user, action) {
             console.log("User " + action + " successfully.");
             showAlert("success", "User " + action + " updated!")
             reloadUserTable()
-            //location.reload()
         },
         error: function(error) {
             console.error("Error updating user " + action + ":", error);

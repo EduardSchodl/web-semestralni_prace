@@ -56,14 +56,21 @@
                 exit;
             }
 
-
             $db = new UserModel();
             $users = $db->getAllUsers();
 
             $db = new RolesModel();
             $roles = $db->getRoles();
 
-            $this->render("UsersListView.twig", ["title" => $data["title"], "users" => $users, "roles" => $roles]);
+            if ($this->isAjaxRequest()) {
+                $this->render('partials/userTable.twig', ['users' => $users, 'roles' => $roles]);
+            } else {
+                $this->render('UsersListView.twig', ['users' => $users, 'roles' => $roles]);
+            }
+        }
+
+        private function isAjaxRequest() {
+            return !empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest';
         }
 
         function updateUser($data = []){

@@ -1,6 +1,20 @@
+function reloadReview() {
+    $.ajax({
+        url: 'articles-management',
+        method: 'GET',
+        success: function(response) {
+            $('#tab tbody').html(response);
+        },
+        error: function(error) {
+            console.error("Error loading user table:", error);
+            showAlert("danger", "There was an error loading the user table.");
+        }
+    });
+}
+
 function update(data, action){
     if (action === "addReviewer" && !data["idUser"]) {
-        alert("Please select a reviewer.");
+        showAlert("info", "Please select a reviewer.")
         return;
     }
 
@@ -15,15 +29,15 @@ function update(data, action){
             const jsonResponse = JSON.parse(response);
             if (jsonResponse.status === "success") {
                 console.log("Action was successful.");
-                alert("Action was successful!");
-                location.reload();
+                showAlert("success", "Action was successful!")
+                //location.reload();
             } else {
-                alert("Error: " + jsonResponse.message);
+                showAlert("danger", "Error: " + jsonResponse.message)
             }
         },
         error: function(jqXHR, textStatus, errorThrown) {
             console.error("Error performing action: ", errorThrown);
-            alert("There was an error performing the action: " + errorThrown);
+            showAlert("danger", "There was an error performing the action: " + errorThrown)
         }
     });
 }
@@ -36,9 +50,9 @@ function addReviewer(idArticle, idUser){
     update({"idArticle": idArticle, "idUser": idUser}, "addReviewer")
 }
 
-function acceptArticle(idArticle) {
+function checkReviewsAndUpdateArticle(idArticle, action) {
     $.ajax({
-        url: 'articles-management/article-status-update',  // Make sure this is your correct backend URL
+        url: 'articles-management/article-status-update',
         method: 'POST',
         data: {
             values: {"idArticle": idArticle},
@@ -48,44 +62,24 @@ function acceptArticle(idArticle) {
             const jsonResponse = JSON.parse(response);
 
             if (jsonResponse.status === 'success') {
-                // All reviews are submitted, proceed with accepting the article
-                updateArticle(idArticle, "acceptArticle");
+                updateArticle(idArticle, action);
             } else {
-                // Display a message if not all reviews are submitted
-                alert(jsonResponse.message);
+                showAlert("danger", jsonResponse.message);
             }
         },
         error: function(jqXHR, textStatus, errorThrown) {
             console.error("Error: ", errorThrown);
-            alert("There was an error checking reviews: " + errorThrown);
+            showAlert("danger", "There was an error checking reviews: " + errorThrown);
         }
     });
 }
 
-function rejectArticle(idArticle){
-    $.ajax({
-        url: 'articles-management/article-status-update',  // Make sure this is your correct backend URL
-        method: 'POST',
-        data: {
-            values: {"idArticle": idArticle},
-            action: "checkReviews"
-        },
-        success: function(response) {
-            const jsonResponse = JSON.parse(response);
+function acceptArticle(idArticle) {
+    checkReviewsAndUpdateArticle(idArticle, "acceptArticle");
+}
 
-            if (jsonResponse.status === 'success') {
-                // All reviews are submitted, proceed with accepting the article
-                updateArticle(idArticle, "rejectArticle");
-            } else {
-                // Display a message if not all reviews are submitted
-                alert(jsonResponse.message);
-            }
-        },
-        error: function(jqXHR, textStatus, errorThrown) {
-            console.error("Error: ", errorThrown);
-            alert("There was an error checking reviews: " + errorThrown);
-        }
-    });
+function rejectArticle(idArticle) {
+    checkReviewsAndUpdateArticle(idArticle, "rejectArticle");
 }
 
 function updateArticle(idArticle, action){
@@ -100,15 +94,15 @@ function updateArticle(idArticle, action){
             const jsonResponse = JSON.parse(response);
             if (jsonResponse.status === "success") {
                 console.log("Action was successful.");
-                alert("Action was successful!");
-                location.reload();
+                showAlert("success", "Action was successful!")
+                //location.reload();
             } else {
-                alert("Error: " + jsonResponse.message);
+                showAlert("danger", "Error: " + jsonResponse.message)
             }
         },
         error: function(jqXHR, textStatus, errorThrown) {
             console.error("Error performing action: ", errorThrown);
-            alert("There was an error performing the action: " + errorThrown);
+            showAlert("danger", "There was an error performing the action: " + errorThrown)
         }
     });
 }
