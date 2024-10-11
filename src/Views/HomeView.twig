@@ -3,8 +3,8 @@
 {% block title %} {{ title }} {% endblock %}
 
 {% block content %}
-    <div id="homeArticles" class="container mt-4">
-        <div class="row">
+    <div id="homeArticles" class="container mt-4 d-flex flex-column">
+        <div class="row flex-grow-1">
             {% for article in articles %}
             <div class="col-md-4 mb-4">
                 <div class="card h-100 shadow-sm">
@@ -31,7 +31,8 @@
             {% endfor %}
         </div>  <!-- Closing the last row -->
 
-        <nav aria-label="Page navigation example" class="fixed">
+        <!-- Pagination at the bottom of the page -->
+        <nav aria-label="Page navigation example">
             <div class="d-flex justify-content-center mt-4">
                 <ul class="pagination">
                     {% if page > 1 %}
