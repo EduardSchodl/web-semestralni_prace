@@ -3,6 +3,7 @@
 {% block title %} {{ title }} {% endblock %}
 
 {% block content %}
+    <div id="alertContainer" class="position-fixed top-0 end-0 p-3"></div>
     {% for review in reviews %}
         <div class="col-sm-12">
             <div class="card">

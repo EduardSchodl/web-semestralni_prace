@@ -55,7 +55,7 @@
                     <div class="card mb-3">
                         <div class="card-body">
                             <h5 class="card-title">{{ review.first_name }} {{ review.last_name }}</h5>
-                            <p class="card-text text-justify">{{ review.text }}</p>
+                            <p class="card-text text-justify">{{ review.text|raw }}</p>
 
                             <p>
                                 <strong>Content: </strong> {{ render_stars(review.content)|raw }} <br>

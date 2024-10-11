@@ -11,7 +11,7 @@ function toggleForm(button, index, reviewId) {
                             <input type="hidden" name="reviewId" value="${reviewId}">
                             <div class="row">
                                 <div class="col-md-3">
-                                    <div class="input-group mg-b">
+                                    <div class="input-group mg-b bg-color">
                                         <div class="input-group-text">Content</div>
                                         <input type="number" class="form-control" name="content" max="5" min="0" step="0.5" value="0">
                                     </div>
@@ -54,7 +54,9 @@ function toggleForm(button, index, reviewId) {
         const editorElement = formContainer.querySelector(`#editor-${index}`);
         if (!initializedEditors.has(editorElement)) {
             ClassicEditor
-                .create(editorElement)
+                .create(editorElement,{
+                    toolbar: ['bold', 'italic', '|', 'undo', 'redo']
+                })
                 .then(editor => {
                     initializedEditors.set(editorElement, editor);
                 })
@@ -98,6 +100,10 @@ function submitForm(index) {
 
     if (editor) {
         hiddenTextarea.value = editor.getData();
+        if(!hiddenTextarea.value){
+            showAlert("warning", "Comment must not be empty!")
+            return;
+        }
         document.getElementById(`form-${index}`).submit();
     } else {
         console.error('Editor instance not found for index:', index);

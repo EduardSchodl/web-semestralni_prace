@@ -1,6 +1,8 @@
 <?php
     namespace Web\Project\Models;
 
+    use HTMLPurifier;
+    use HTMLPurifier_Config;
     use PDO;
 
     if(!isset($_SESSION))
@@ -9,6 +11,13 @@
     }
 
     class ArticleModel extends DatabaseModel{
+        private $purifier;
+
+        function __construct(){
+            $config = HTMLPurifier_Config::createDefault();
+            $this->purifier = new HTMLPurifier($config);
+        }
+
         function getArticles($status = null){
             $pdo = self::getConnection();
 
@@ -85,7 +94,8 @@
             $pdo = self::getConnection();
 
             $stmt = $pdo->prepare("UPDATE articles SET title=:title, abstract=:content WHERE id_article=:id");
-            $success = $stmt->execute(["title" => $data["title"], "content" => $data["content"],"id" => $data["article_id"]]);
+            $content = $this->purifier->purify($data["content"]);
+            $success = $stmt->execute(["title" => $data["title"], "content" => $content,"id" => $data["article_id"]]);
 
             if (!$success) {
                 $errorInfo = $stmt->errorInfo();
@@ -101,6 +111,9 @@
             $date = date("Y-m-d");
             $statusId = STATUS["REVIEW_PROCESS"];
             $slug = str_replace(" ", "_",$fileName)."-".$this->generateUUIDv4()."-".$date;
+
+            $title = $this->purifier->purify($title);
+            $abstract = $this->purifier->purify($abstract);
 
             $stmt = $pdo->prepare("INSERT INTO articles (title, slug, abstract, filename, file, create_time, status_id, author_id) VALUES (:title, :slug, :abstract, :filename, :file, :create_time, :status_id, :author_id)");
             $stmt->bindParam(":title", $title);

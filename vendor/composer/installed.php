@@ -3,13 +3,22 @@
         'name' => 'web/project',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => 'c53552ddbd26a496a1f3e095256e83d7ec5b2309',
+        'reference' => 'a580229863ac4c12e620e69527eea4a6d530c55c',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
         'dev' => true,
     ),
     'versions' => array(
+        'ezyang/htmlpurifier' => array(
+            'pretty_version' => 'v4.17.0',
+            'version' => '4.17.0.0',
+            'reference' => 'bbc513d79acf6691fa9cf10f192c90dd2957f18c',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../ezyang/htmlpurifier',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
         'symfony/deprecation-contracts' => array(
             'pretty_version' => 'v3.5.0',
             'version' => '3.5.0.0',
@@ -82,7 +91,7 @@
         'web/project' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => 'c53552ddbd26a496a1f3e095256e83d7ec5b2309',
+            'reference' => 'a580229863ac4c12e620e69527eea4a6d530c55c',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

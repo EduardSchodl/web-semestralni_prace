@@ -1,7 +1,17 @@
 <?php
     namespace Web\Project\Models;
 
+    use HTMLPurifier;
+    use HTMLPurifier_Config;
+
     class ReviewModel extends DatabaseModel{
+        private $purifier;
+
+        function __construct(){
+            $config = HTMLPurifier_Config::createDefault();
+            $this->purifier = new HTMLPurifier($config);
+        }
+
         function getReviewsByArticleId($articleId){
             $pdo = self::getConnection();
 
@@ -74,7 +84,10 @@
 
             $date = date("Y-m-d");
             $stmt = $pdo->prepare("UPDATE reviews SET text=:text, content=:content, formality=:formality, up_to_date=:uptodate, language=:language, create_date=:date, status=:status WHERE id_review=:idReview");
-            $success = $stmt->execute(["content" => $data["content"], "text" => strip_tags($data["editorContent"]), "formality" => $data["formality"], "uptodate" => $data["up_to_date"], "language" => $data["language"], "idReview" => $data["reviewId"], "date" => $date, "status" => 1]);
+
+            $editorContent = $this->purifier->purify($data["editorContent"]);
+
+            $success = $stmt->execute(["content" => $data["content"], "text" => $editorContent, "formality" => $data["formality"], "uptodate" => $data["up_to_date"], "language" => $data["language"], "idReview" => $data["reviewId"], "date" => $date, "status" => 1]);
 
             if (!$success) {
                 $errorInfo = $stmt->errorInfo();

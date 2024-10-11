@@ -131,3 +131,12 @@ header *{
     transform: translateX(-50%);
     z-index: 1050;
 }
+
+.ck-editor__editable {
+    min-height: 200px;
+}
+
+.review-form{
+    background-color: #acd2ff;
+    padding: 0.5vw;
+}
