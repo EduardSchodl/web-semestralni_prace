@@ -62,12 +62,13 @@ function saveChanges(id_article){
     let tempDiv = document.createElement("div");
     tempDiv.innerHTML = data;
 
-    let title = tempDiv.querySelector("h1") ? tempDiv.querySelector("h1").innerHTML : "";
+    let title = tempDiv.querySelector("h1") ? tempDiv.querySelector("h1") : "";
 
     let paragraphs = tempDiv.querySelectorAll("p");
-    let content = Array.from(paragraphs).map(p => p.innerHTML).join("\n\n");
-    alert(title)
-    alert(content)
+    //let content = Array.from(paragraphs).map(p => p.innerHTML).join("\n\n");
+
+    alert(data)
+    return;
 
     $.ajax({
         url: 'articles/update',

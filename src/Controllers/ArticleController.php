@@ -63,11 +63,12 @@
         }
 
         function publishArticle(){
-            if (!isset($_POST["title"]) || !isset($_POST["abstract"]) || !isset($_FILES["file"])) {
+            if (empty($_POST["title"]) || empty($_POST["abstract"]) || !isset($_FILES["file"])) {
                 $_SESSION['flash'] = [
-                    'message' => 'Incorrectly filled in form!',
+                    'message' => 'Please fill in all required fields!',
                     'type' => 'warning'
                 ];
+                header("Location: publish");
                 exit;
             }
 
@@ -76,6 +77,7 @@
                     'message' => 'Error uploading file!',
                     'type' => 'warning'
                 ];
+                header("Location: publish");
                 exit;
             }
 

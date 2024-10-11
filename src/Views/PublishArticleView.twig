@@ -3,23 +3,26 @@
 {% block title %} {{ title }} {% endblock %}
 
 {% block content %}
-    <div id="publishForm" class="container mt-5">
-        <form class="row g-3" method="post" enctype="multipart/form-data">
-            <div class="col-12">
-                <label for="titleInput" class="form-label">Title</label>
+    <div id="alertContainer" class="position-fixed top-0 end-0 p-3"></div>
+    <div class="container-fluid mt-5">
+        <form id="publishForm" class="g-3 justify-content-center" method="post" enctype="multipart/form-data">
+            <div class="col-12 col-sm-7 col-md-5 mb-3 mx-auto">
+                <label for="titleInput" class="form-label text-center">Title</label>
                 <input type="text" class="form-control" id="titleInput" name="title" required>
             </div>
-            <div class="col-12">
+            <div class="col-12 col-sm-6 col-md-8 mb-3 mx-auto">
                 <label for="abstract" class="form-label">Abstract</label>
-                <textarea class="form-control" id="abstract" name="abstract" required rows="3"></textarea>
+                <div id="editor" class="editor"></div>
+                <textarea name="abstract" id="abstract" style="display: none"></textarea>
             </div>
-            <div class="col-md-5 col-12">
-                <label for="file" class="form-label">File</label>
+            <div class="col-12 col-sm-6 col-md-3 mb-3 mx-auto">
+                <label for="file" class="form-label text-center">File</label>
                 <input type="file" class="form-control" id="file" name="file" required>
             </div>
-            <div class="col-12 text-center">
-                <button id="submitArticle" type="submit" class="btn btn-success">Publish Article</button>
+            <div class="col-12 text-center mb-3 mx-auto">
+                <button type="button" class="btn btn-success" onclick="publishArticle()">Publish Article</button>
             </div>
         </form>
     </div>
+    <script src="/web-semestralni_prace/src/js/PublishManagement.js"></script>
 {% endblock %}
