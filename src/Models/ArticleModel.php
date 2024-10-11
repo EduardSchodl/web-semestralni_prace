@@ -95,7 +95,8 @@
 
             $stmt = $pdo->prepare("UPDATE articles SET title=:title, abstract=:content WHERE id_article=:id");
             $content = $this->purifier->purify($data["content"]);
-            $success = $stmt->execute(["title" => $data["title"], "content" => $content,"id" => $data["article_id"]]);
+            $title = $this->purifier->purify($data["title"]);
+            $success = $stmt->execute(["title" => $title, "content" => $content,"id" => $data["article_id"]]);
 
             if (!$success) {
                 $errorInfo = $stmt->errorInfo();

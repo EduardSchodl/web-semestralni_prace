@@ -1,15 +1,16 @@
-document.getElementById("editor").style.display = "none";
-
 let editorInstance = null;
 
 let contentElement = document.getElementById("content");
 let titleElement = document.getElementById("headerDiv");
+let titleInp = document.getElementById("titleInput");
 let title = document.getElementById("title").textContent;
 
 function editArticle(id_article){
     if(editorInstance != null){
         return;
     }
+
+    titleInp.value = title;
 
     let editSaveButton = document.getElementById("editSave");
     editSaveButton.innerText = "Save";
@@ -36,14 +37,9 @@ function editArticle(id_article){
         .then(editor => {
             editorInstance = editor;
 
-            let paragraphs = contentElement.getElementsByTagName("p");
-            let content = '';
+            let content = document.getElementById("articleContent").innerHTML;
 
-            for (let i = 0; i < paragraphs.length; i++) {
-                content += '<p>' + paragraphs[i].innerHTML + '</p>';
-            }
-
-            editorInstance.setData('<h1>' + title + '</h1>' + content);
+            editorInstance.setData(content);
             console.log('Editor initialized successfully:', editor);
         })
         .catch(error => {
@@ -57,25 +53,24 @@ function saveChanges(id_article){
     }
 
     let data = editorInstance.getData();
-    data = data.replace(/<br\s*\/?>/gi, '\n');
+    let title = document.getElementById("titleInput").value;
 
-    let tempDiv = document.createElement("div");
-    tempDiv.innerHTML = data;
+    if(!title){
+        showAlert("warning", "Title is missing!")
+        return
+    }
 
-    let title = tempDiv.querySelector("h1") ? tempDiv.querySelector("h1") : "";
-
-    let paragraphs = tempDiv.querySelectorAll("p");
-    //let content = Array.from(paragraphs).map(p => p.innerHTML).join("\n\n");
-
-    alert(data)
-    return;
+    if(!data){
+        showAlert("warning", "Abstract text is missing!")
+        return
+    }
 
     $.ajax({
         url: 'articles/update',
         method: 'POST',
         data: {
             title: title,
-            content: content,
+            content: data,
             article_id: id_article
         },
         success: function(response) {

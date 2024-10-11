@@ -140,3 +140,22 @@ header *{
     background-color: #acd2ff;
     padding: 0.5vw;
 }
+
+#editorWrapper{
+    display: none;
+}
+
+#articleContent table{
+    width: 100%;
+    border-collapse: collapse;
+}
+
+#articleContent th, td{
+    border: 1px solid black;
+    padding: 8px;
+    text-align: left;
+}
+
+#articleContent th{
+    background-color: #f2f2f2;
+}

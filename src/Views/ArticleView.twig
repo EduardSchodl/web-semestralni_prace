@@ -4,7 +4,12 @@
 
 {% block content %}
     <div id="alertContainer" class="position-fixed top-0 end-0 p-3"></div>
+
     <div id="editorWrapper" class="container mt-5">
+        <label for="titleInput" class="form-label">Title:</label>
+        <input type="text" class="form-control w-50 mb-3" id="titleInput">
+
+        <label for="editor" class="form-label">Abstract:</label>
         <textarea name="editor" id="editor"></textarea>
     </div>
 
@@ -17,8 +22,8 @@
 
         <!-- Article Content -->
         <div id="content" class="row article-content">
-            <div class="col-md-8 offset-md-2">
-                <p class="text-justify">{{ article.abstract|raw }}</p>
+            <div id="articleContent" class="col-md-8 offset-md-2 text-justify">
+                {{ article.abstract|raw }}
             </div>
         </div>
 
