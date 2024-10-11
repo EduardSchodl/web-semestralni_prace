@@ -14,7 +14,16 @@
         function getUser($value, $byUsername = false) {
             $pdo = self::getConnection();
 
-            $column = $byUsername ? "username" : "id_user";
+            $column = null;
+
+            if($byUsername){
+                $column = "username";
+                $value = trim(strip_tags($value));
+            }
+            else{
+                $column = "id_user";
+            }
+
             $stmt = $pdo->prepare("SELECT users.*, roles.name AS role_name FROM users INNER JOIN roles ON users.role_id = roles.id_role WHERE $column = :value");
             $stmt->execute(["value" => $value]);
 
@@ -31,11 +40,16 @@
                 VALUES (:firstname, :lastname, :username, :email, :password, :roleid)
             ');
 
+            $firstName = trim(strip_tags($postData["fname"]));
+            $lastName = trim(strip_tags($postData["lname"]));
+            $username = trim(strip_tags($postData["username"]));
+            $email = trim(strip_tags($postData["email"]));
+
             $stmt->execute([
-                "firstname" => $postData["fname"],
-                "lastname" => $postData["lname"],
-                "username" => $postData["username"],
-                "email" => $postData["email"],
+                "firstname" => $firstName,
+                "lastname" => $lastName,
+                "username" => $username,
+                "email" => $email,
                 "password" => $hash_password,
                 "roleid" => ROLES["ROLE_USER"]
             ]);
@@ -47,11 +61,16 @@
             $pdo = self::getConnection();
 
             $stmt = $pdo->prepare("SELECT id_user FROM users WHERE username=:username");
+
+            $username = trim(strip_tags($username));
+
             $stmt->execute(["username" => $username]);
 
             if($stmt->fetchAll(\PDO::FETCH_ASSOC)){
                 return -1;
             }
+
+            $email = trim(strip_tags($email));
 
             $stmt = $pdo->prepare("SELECT id_user FROM users WHERE email=:email");
             $stmt->execute(["email" => $email]);

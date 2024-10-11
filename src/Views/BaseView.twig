@@ -40,10 +40,14 @@
             </div>
             <div id="rightAlign" class="navbar-nav ms-auto">
                 {% if not app.user %}
-                    <a class="nav-item nav-link fs-5 {% if current_path == '/login' or current_path == '/register' %}active{% endif %}" href="login">Log In</a>
+                    <a class="nav-item nav-link fs-5 {% if current_path == '/login' or current_path == '/register' %}active{% endif %}" href="login">
+                        <i class="bi bi-key-fill fs-5 text-light"></i>
+                        Log In
+                    </a>
                 {% else %}
                 {% if app.user.role_id != role.role_id.SUPERADMIN %}
                     <a class="nav-item nav-link fs-5 {% if current_path == '/profile' or current_path == '/profile/edit' %}active{% endif %} position-relative" href="profile">
+                        <i class="bi bi-person-fill fs-5 text-light"></i>
                         Profile
                         {% if numOfReviews.num != 0 %}
                             <span class="position-absolute top-20 start-100 translate-middle badge rounded-pill bg-danger">
