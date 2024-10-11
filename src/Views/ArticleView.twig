@@ -14,18 +14,10 @@
     </div>
 
     <div class="container mt-5">
-        <!-- Article Header -->
-        <div id="headerDiv" class="article-header text-center mb-4">
-            <h1 id="title" class="display-4">{{ article.title }}</h1>
-            <p class="lead">Published on: {{ article.create_time|date('F j, Y') }}</p>
+        <div id="reload">
+            {% include "partials/ArticleDetail.twig" %}
         </div>
 
-        <!-- Article Content -->
-        <div id="content" class="row article-content">
-            <div id="articleContent" class="col-md-8 offset-md-2 text-justify">
-                {{ article.abstract|raw }}
-            </div>
-        </div>
 
         <!-- Button Row -->
         <div class="row text-center mb-4">
@@ -34,7 +26,7 @@
                     Open PDF
                 </a>
                 {% if app.user.id_user == article.id_user and article.status_id == status.status_id.REVIEW_PROCESS %}
-                    <button id="editSave" onclick="editArticle({{ article.id_article }})" class="btn btn-success mx-1" type="button">Edit</button>
+                    <button id="editSave" data-article-id="{{ article.id_article }}" class="btn btn-success mx-1" type="button">Edit</button>
                     <button id="delete" onclick="deleteArticle({{ article.id_article }})" class="btn btn-danger mx-1" type="button">Delete</button>
                 {% endif %}
             </div>

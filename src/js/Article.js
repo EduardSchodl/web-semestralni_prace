@@ -1,22 +1,49 @@
 let editorInstance = null;
+let isEditing = false;
 
-let contentElement = document.getElementById("content");
-let titleElement = document.getElementById("headerDiv");
-let titleInp = document.getElementById("titleInput");
-let title = document.getElementById("title").textContent;
+let contentElement = null;
+let titleElement = null;
+let titleInp = null;
+let title = null;
 
-function editArticle(id_article){
+let editSaveButton = document.getElementById("editSave");
+
+function reloadArticle(){
+    $.ajax({
+        url: window.location.pathname,
+        method: 'GET',
+        success: function(response) {
+            $('#reload').html(response);
+        },
+        error: function(error) {
+            console.error("Error loading user table:", error);
+            showAlert("danger", "There was an error loading the user table.");
+        }
+    });
+}
+
+function toggleEditor(id_article) {
+    if (isEditing) {
+        saveChanges(id_article);
+    } else {
+        editArticle(id_article);
+    }
+}
+
+function editArticle(){
     if(editorInstance != null){
         return;
     }
 
+    contentElement = document.getElementById("content");
+    titleElement = document.getElementById("headerDiv");
+    titleInp = document.getElementById("titleInput");
+    title = document.getElementById("title").textContent;
+
     titleInp.value = title;
 
-    let editSaveButton = document.getElementById("editSave");
     editSaveButton.innerText = "Save";
-    editSaveButton.addEventListener("click", function (){
-        saveChanges(id_article)
-    });
+    isEditing = true;
 
     contentElement.style.display = "none";
     titleElement.style.display = "none";
@@ -44,6 +71,24 @@ function editArticle(id_article){
         })
         .catch(error => {
             console.error('Error initializing CKEditor:', error);
+        });
+}
+
+function hideEditor(){
+    editSaveButton.removeEventListener("click", saveChanges);
+
+    editSaveButton.innerText = "Edit";
+    isEditing = false;
+
+    document.getElementById("editorWrapper").style.display = "none";
+
+    editorInstance.destroy()
+        .then(() => {
+            console.log("Editor destroyed successfully");
+            editorInstance = null;
+        })
+        .catch(error => {
+            console.error("Error destroying editor:", error);
         });
 }
 
@@ -76,7 +121,8 @@ function saveChanges(id_article){
         success: function(response) {
             console.log("Article updated successfully.");
             showAlert("success", "Article updated!")
-            location.reload();
+            hideEditor(id_article)
+            reloadArticle()
         },
         error: function(error) {
             console.error("Error updating article:", error);
@@ -114,3 +160,8 @@ function deleteArticle(id_article){
         }
     });
 }
+
+editSaveButton.addEventListener("click", function() {
+    const id_article = this.getAttribute("data-article-id");
+    toggleEditor(id_article);
+});

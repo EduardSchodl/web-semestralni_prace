@@ -36,7 +36,16 @@
             $db = new ReviewModel();
             $reviews = $db->getReviewsByArticleSlug($data["params"][0]);
 
-            $this->render("ArticleView.twig", ["title" => $data["title"], "article" => $article, "reviews" => $reviews]);
+            if($this->isAjaxRequest()){
+                $this->render("partials/ArticleDetail.twig", ["title" => $data["title"], "article" => $article, "reviews" => $reviews]);
+            }
+            else{
+                $this->render("ArticleView.twig", ["title" => $data["title"], "article" => $article, "reviews" => $reviews]);
+            }
+        }
+
+        public function isAjaxRequest() {
+            return !empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest';
         }
 
         function updateArticle(){

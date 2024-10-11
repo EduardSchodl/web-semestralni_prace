@@ -1,0 +1,12 @@
+<!-- Article Header -->
+<div id="headerDiv" class="article-header text-center mb-4">
+    <h1 id="title" class="display-4">{{ article.title }}</h1>
+    <p class="lead">Published on: {{ article.create_time|date('F j, Y') }}</p>
+</div>
+
+<!-- Article Content -->
+<div id="content" class="row article-content">
+    <div id="articleContent" class="col-md-8 offset-md-2 text-justify">
+        {{ article.abstract|raw }}
+    </div>
+</div>
