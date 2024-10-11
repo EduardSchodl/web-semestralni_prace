@@ -1,6 +1,6 @@
 function showAlert(type, message) {
     const alertDiv = `
-                <div class="alert alert-${type} fade show position-fixed top-0 start-50 translate-middle-x" role="alert">
+                <div id="flashAlert" class="alert alert-${type} fade show position-fixed top-0 start-50 translate-middle-x" role="alert">
                     ${message}
                 </div>
             `;
