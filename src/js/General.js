@@ -1,4 +1,5 @@
 function showAlert(type, message) {
+    $('#flashAlert').remove();
     const alertDiv = `
                 <div id="flashAlert" class="alert alert-${type} fade show position-fixed top-0 start-50 translate-middle-x" role="alert">
                     ${message}

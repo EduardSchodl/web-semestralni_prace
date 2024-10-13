@@ -130,6 +130,7 @@ header *{
     left: 50%;
     transform: translateX(-50%);
     z-index: 1050;
+    width: auto;
 }
 
 .ck-editor__editable {
