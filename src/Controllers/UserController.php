@@ -5,30 +5,50 @@
     use Web\Project\Models\RolesModel;
     use Web\Project\Models\UserModel;
 
+    // Spustí relaci, pokud není nastavena
     if(!isset($_SESSION)){
         session_start();
     }
 
-    class UserController extends BaseController {
+    /**
+     * Třída UserController zpracovává operace spojené se správou uživatelů,
+     * včetně zobrazení profilu, správy uživatelských účtů a aktualizace jejich rolí.
+     */
+    class UserController extends BaseController{
+        /**
+         * Zobrazuje profil aktuálně přihlášeného uživatele.
+         * Pokud uživatel není přihlášen nebo má roli SUPERADMIN, přesměruje na domovskou stránku.
+         *
+         * @param array $data Data předávaná pro vykreslení.
+         * @return void
+         */
         function index($data = []){
+            // Kontrola, zda je uživatel přihlášen.
             if(!isset($_SESSION["user"])){
                 $_SESSION['flash'] = [
                     'message' => 'You are not logged in!',
                     'type' => 'info'
                 ];
                 header('Location: ' . $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . '/web-semestralni_prace/src');
-                exit;
+                return;
             }
 
             if($_SESSION["user"]["role_id"] == ROLES["SUPERADMIN"]){
                 header('Location: ' . $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . '/web-semestralni_prace/src');
-                exit;
+                return;
             }
 
             $this->render("ProfileView.twig", ["title" => $data["title"]]);
         }
 
+        /**
+         * Zobrazuje profil jiného uživatele.
+         *
+         * @param array $data Data předávaná pro vykreslení, včetně username uživatele.
+         * @return void
+         */
         function showUserProfile($data = []){
+            // Kontrola autorizace uživatele (administrátor)
             if(!isset($_SESSION["user"]) || $_SESSION["user"]["role_id"] > ROLES["ROLE_ADMIN"])
             {
                 $_SESSION['flash'] = [
@@ -36,7 +56,7 @@
                     'type' => 'warning'
                 ];
                 header('Location: ' . $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . '/web-semestralni_prace/src');
-                exit;
+                return;
             }
 
             $db = new UserModel();
@@ -45,7 +65,14 @@
             $this->render("UserView.twig", ["title" => $data["title"], "user" => $user]);
         }
 
+        /**
+         * Zobrazuje seznam všech uživatelů.
+         *
+         * @param array $data Data předávaná pro vykreslení.
+         * @return void
+         */
         function showUsersList($data = []){
+            // Kontrola autorizace uživatele (administrátor)
             if(!isset($_SESSION["user"]) || $_SESSION["user"]["role_id"] > ROLES["ROLE_ADMIN"])
             {
                 $_SESSION['flash'] = [
@@ -53,7 +80,7 @@
                     'type' => 'warning'
                 ];
                 header('Location: ' . $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . '/web-semestralni_prace/src');
-                exit;
+                return;
             }
 
             $db = new UserModel();
@@ -62,6 +89,7 @@
             $db = new RolesModel();
             $roles = $db->getRoles();
 
+            // Kontrola AJAX požadavku a vykreslení odpovídající šablony
             if ($this->isAjaxRequest()) {
                 $this->render('partials/UserTable.twig', ['users' => $users, 'roles' => $roles]);
             } else {
@@ -69,11 +97,23 @@
             }
         }
 
+        /**
+         * Zkontroluje, zda byl požadavek AJAX.
+         *
+         * @return bool Vrací true, pokud je požadavek AJAX, jinak false.
+         */
         public function isAjaxRequest() {
             return !empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest';
         }
 
+        /**
+         * Aktualizuje uživatele podle požadované akce (změna role, zabanování, odbanování, smazání).
+         *
+         * @param array $data Data pro vykreslení.
+         * @return void
+         */
         function updateUser($data = []){
+            // Kontrola autorizace uživatele (administrátor)
             if(!isset($_SESSION["user"]) || $_SESSION["user"]["role_id"] > ROLES["ROLE_ADMIN"])
             {
                 $_SESSION['flash'] = [
@@ -81,12 +121,13 @@
                     'type' => 'warning'
                 ];
                 header('Location: ' . $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . '/web-semestralni_prace/src');
-                exit;
+                return;
             }
 
             $db = new UserModel();
             $response = null;
 
+            // Zpracování akce podle POST parametru "action"
             switch($_POST["action"]){
                 case "update":
                     $response = $db->updateRole($_POST["id_user"], $_POST["id_role"]);
@@ -102,6 +143,7 @@
                     break;
             }
 
+            // Nastavení HTTP odpovědi a JSON odpovědi podle výsledku
             if ($response[0]) {
                 echo json_encode(["status" => "success", "message" => "User updated successfully."]);
                 http_response_code(200);
