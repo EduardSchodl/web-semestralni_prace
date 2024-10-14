@@ -6,6 +6,7 @@ let titleElement = null;
 let titleInp = null;
 let title = null;
 
+let editorWrapper = document.getElementById("editorWrapper");
 let editSaveButton = document.getElementById("editSave");
 
 function reloadArticle(){
@@ -35,6 +36,15 @@ function editArticle(){
         return;
     }
 
+    const editForm = '<label for="titleInput" class="form-label">Title:</label>\n' +
+        '                    <input type="text" class="form-control w-50 mb-3" id="titleInput">\n' +
+        '\n' +
+        '                    <label for="editor" class="form-label">Abstract:</label>\n' +
+        '                    <textarea name="editor" id="editor"></textarea>';
+
+    editorWrapper.innerHTML = editForm;
+    editorWrapper.style.display = "block";
+
     contentElement = document.getElementById("content");
     titleElement = document.getElementById("headerDiv");
     titleInp = document.getElementById("titleInput");
@@ -47,8 +57,6 @@ function editArticle(){
 
     contentElement.style.display = "none";
     titleElement.style.display = "none";
-
-    document.getElementById("editorWrapper").style.display = "block";
 
     ClassicEditor
         .create(document.querySelector('#editor'), {
@@ -99,6 +107,8 @@ function saveChanges(id_article){
 
     let data = editorInstance.getData();
     let title = document.getElementById("titleInput").value;
+
+    editorWrapper.innerHTML = "";
 
     if(!title){
         showAlert("warning", "Title is missing!")

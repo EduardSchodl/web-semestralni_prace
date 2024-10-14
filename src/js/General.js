@@ -1,3 +1,15 @@
+document.addEventListener("DOMContentLoaded", function() {
+    const flashAlert = document.getElementById("flashAlert");
+
+    if (flashAlert) {
+        setTimeout(function() {
+            $(flashAlert).fadeOut(300, function() {
+                $(flashAlert).remove();
+            });
+        }, 3000);
+    }
+});
+
 function showAlert(type, message) {
     $('#flashAlert').remove();
     const alertDiv = `
