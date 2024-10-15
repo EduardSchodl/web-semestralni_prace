@@ -4,14 +4,27 @@
     use HTMLPurifier;
     use HTMLPurifier_Config;
 
+    /**
+     * Třída ReviewModel spravuje operace s recenzemi v databázi.
+     * Včetně získávání, přidávání, mazání a aktualizace recenzí.
+     */
     class ReviewModel extends DatabaseModel{
         private $purifier;
 
+        /**
+         * Konstruktor inicializuje instanci HTMLPurifier s výchozími konfiguracemi.
+         */
         function __construct(){
             $config = HTMLPurifier_Config::createDefault();
             $this->purifier = new HTMLPurifier($config);
         }
 
+        /**
+         * Získá recenze podle ID článku.
+         *
+         * @param int $articleId ID článku, jehož recenze se mají získat.
+         * @return array Pole recenzí.
+         */
         function getReviewsByArticleId($articleId){
             $pdo = self::getConnection();
 
@@ -20,6 +33,12 @@
             return $stmt->fetchAll(\PDO::FETCH_ASSOC);
         }
 
+        /**
+         * Získá recenze podle slugu článku.
+         *
+         * @param string $slug Slug článku, jehož recenze se mají získat.
+         * @return array Pole recenzí.
+         */
         function getReviewsByArticleSlug($slug){
             $pdo = self::getConnection();
 
@@ -28,6 +47,13 @@
             return $stmt->fetchAll(\PDO::FETCH_ASSOC);
         }
 
+        /**
+         * Přidá recenzi k článku.
+         *
+         * @param int $idArticle ID článku, ke kterému se má přidat recenze.
+         * @param int $idUser ID uživatele, který přidává recenzi.
+         * @return array Pole obsahující true, pokud přidání proběhlo úspěšně, nebo false a chybovou zprávu, pokud došlo k chybě.
+         */
         function addReview($idArticle, $idUser){
             $pdo = self::getConnection();
 
@@ -42,6 +68,12 @@
             return [true, null];
         }
 
+        /**
+         * Odstraní recenzi podle jejího ID.
+         *
+         * @param int $idReview ID recenze, která se má odstranit.
+         * @return array Pole obsahující true, pokud odstranění proběhlo úspěšně, nebo false a chybovou zprávu, pokud došlo k chybě.
+         */
         function removeReview($idReview){
             $pdo = self::getConnection();
 
@@ -56,6 +88,12 @@
             return [true, null];
         }
 
+        /**
+         * Odstraní všechny recenze podle ID článku.
+         *
+         * @param int $idArticle ID článku, jehož recenze se mají odstranit.
+         * @return array Pole obsahující true, pokud odstranění proběhlo úspěšně, nebo false a chybovou zprávu, pokud došlo k chybě.
+         */
         function removeReviewByArticleId($idArticle){
             $pdo = self::getConnection();
 
@@ -70,6 +108,12 @@
             return [true, null];
         }
 
+        /**
+         * Získá recenze přidělené uživateli podle jeho ID.
+         *
+         * @param int $id ID uživatele, jehož recenze se mají získat.
+         * @return array Pole recenzí jako asociativní pole.
+         */
         function getReviewsByUserId($id){
             $pdo = self::getConnection();
 
@@ -79,6 +123,12 @@
             return $stmt->fetchAll(\PDO::FETCH_ASSOC);
         }
 
+        /**
+         * Odesílá recenzi a aktualizuje její obsah.
+         *
+         * @param array $data Pole obsahující údaje o recenzi.
+         * @return array Pole obsahující true, pokud aktualizace proběhla úspěšně, nebo false a chybovou zprávu, pokud došlo k chybě.
+         */
         function submitReview($data){
             $pdo = self::getConnection();
 
@@ -97,6 +147,12 @@
             return [true, null];
         }
 
+        /**
+         * Získá počet čekajících recenzí přidělených uživateli.
+         *
+         * @param int $idUser ID uživatele, pro kterého se má získat počet čekajících recenzí.
+         * @return int Počet čekajících recenzí.
+         */
         function getNumberOfPendingReviews($idUser){
             $pdo = self::getConnection();
 

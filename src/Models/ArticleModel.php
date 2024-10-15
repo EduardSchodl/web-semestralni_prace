@@ -5,19 +5,33 @@
     use HTMLPurifier_Config;
     use PDO;
 
+    // Spustí relaci, pokud není nastavena
     if(!isset($_SESSION))
     {
         session_start();
     }
 
+    /**
+     * ArticleModel spravuje články v databázi.
+     * Obsahuje metody pro práci s články, včetně vkládání, aktualizace, mazání a získávání článků.
+     */
     class ArticleModel extends DatabaseModel{
         private $purifier;
 
+        /**
+         * Konstruktor třídy ArticleModel.
+         * Inicializuje HTMLPurifier, který slouží k vyčištění uživatelských vstupů.
+         */
         function __construct(){
             $config = HTMLPurifier_Config::createDefault();
             $this->purifier = new HTMLPurifier($config);
         }
 
+        /**
+         * Získá všechny články nebo články podle statusu.
+         * @param int|null $status Status článku.
+         * @return array Seznam článků.
+         */
         function getArticles($status = null){
             $pdo = self::getConnection();
 
@@ -32,6 +46,13 @@
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         }
 
+        /**
+         * Získá omezený počet článků pro zobrazení na hlavní stránce.
+         * @param int $status Status článku.
+         * @param int $limit Maximální počet článků.
+         * @param int $offset Posun v seznamu článků.
+         * @return array Seznam článků a jejich počet.
+         */
         function getArticlesHomePage($status, $limit, $offset){
             $pdo = self::getConnection();
 
@@ -53,6 +74,11 @@
             return [$count ,$stmt->fetchAll(PDO::FETCH_ASSOC)];
         }
 
+        /**
+         * Získá počet článků na hlavní stránce podle statusu.
+         * @param int $status Status článku.
+         * @return int Počet článků.
+         */
         function countArticlesHomePage($status){
             $pdo = self::getConnection();
 
@@ -65,6 +91,12 @@
             return $stmt->fetchColumn();
         }
 
+        /**
+         * Získá články podle uživatele.
+         * @param string $column Název sloupce filtru.
+         * @param string|int $value Hodnota sloupce filtru.
+         * @return array Seznam článků.
+         */
         function getArticlesByUser($column, $value){
             $pdo = self::getConnection();
 
@@ -79,6 +111,11 @@
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         }
 
+        /**
+         * Získá konkrétní článek podle slugu.
+         * @param string $slug Slug článku.
+         * @return array Článek a informace o autorovi.
+         */
         function getArticle($slug){
             $pdo = self::getConnection();
 
@@ -90,6 +127,11 @@
             return $stmt->fetch(PDO::FETCH_ASSOC);
         }
 
+        /**
+         * Aktualizuje článek v databázi.
+         * @param array $data Data článku.
+         * @return array [status, errorInfo|null] Stav a chybové informace.
+         */
         function updateArticle($data){
             $pdo = self::getConnection();
 
@@ -98,6 +140,7 @@
             $title = $this->purifier->purify($data["title"]);
             $success = $stmt->execute(["title" => $title, "content" => $content,"id" => $data["article_id"]]);
 
+            // Vrátí chybu, pokud nastane chyba
             if (!$success) {
                 $errorInfo = $stmt->errorInfo();
                 return [false, $errorInfo];
@@ -106,11 +149,23 @@
             return [true, null];
         }
 
+        /**
+         * Vloží nový článek do databáze.
+         * @param string $abstract Abstrakt článku.
+         * @param string $title Titulek článku.
+         * @param string $fileName Název souboru.
+         * @param string $fileContent Obsah souboru.
+         * @param int $user ID autora článku.
+         * @return string|int Slug článku nebo -1 při chybě.
+         */
         function insertArticle($abstract, $title, $fileName, $fileContent, $user){
             $pdo = self::getConnection();
 
+            // Vytvoří datum a status pro nový článek
             $date = date("Y-m-d");
             $statusId = STATUS["REVIEW_PROCESS"];
+
+            // Vygeneruje unikátní slug pro článek
             $slug = str_replace(" ", "_",$fileName)."-".$this->generateUUIDv4()."-".$date;
 
             $title = $this->purifier->purify($title);
@@ -126,6 +181,7 @@
             $stmt->bindParam(":status_id", $statusId);
             $stmt->bindParam(":author_id", $user);
 
+            // Vrátí slug, pokud projde, jinak -1
             if ($stmt->execute()) {
                 echo "File uploaded successfully!";
                 return $slug;
@@ -135,6 +191,12 @@
             }
         }
 
+        /**
+         * Získá článek podle jeho ID.
+         *
+         * @param int $idArticle ID článku, který se má získat.
+         * @return array|false Podrobnosti o článku včetně jména a příjmení autora a stavu, nebo false, pokud nebyl nalezen.
+         */
         function getArticleById($idArticle){
             $pdo = self::getConnection();
 
@@ -146,12 +208,19 @@
             return $stmt->fetch(PDO::FETCH_ASSOC);
         }
 
+        /**
+         * Smaže článek podle jeho ID.
+         *
+         * @param int $id ID článku, který se má smazat.
+         * @return array Pole obsahující true, pokud smazání proběhlo úspěšně, nebo false a chybovou zprávu, pokud došlo k chybě.
+         */
         function deleteArticle($id){
             $pdo = self::getConnection();
 
             $stmt = $pdo->prepare("DELETE FROM articles WHERE id_article=:id");
             $success =$stmt->execute(["id" => $id]);
 
+            // Pokud smazání selhalo, vrátí chybovou zprávu
             if (!$success) {
                 $errorInfo = $stmt->errorInfo();
                 return [false, $errorInfo];
@@ -160,22 +229,37 @@
             return [true, null];
         }
 
+        /**
+         * Generuje UUID verze 4.
+         *
+         * @return string Vygenerované UUID ve formátu verze 4.
+         */
         function generateUUIDv4()
         {
+            // Vytvoření 16 náhodných bajtů
             $data = random_bytes(16);
-            // Set the version to 0100 (4)
+            // Nastavení verze na 0100 (verze 4)
             $data[6] = chr(ord($data[6]) & 0x0f | 0x40);
-            // Set the variant to 10 (RFC 4122)
+            // Nastavení varianty na 10 (RFC 4122)
             $data[8] = chr(ord($data[8]) & 0x3f | 0x80);
+            // Formátování UUID ve standardním formátu
             return vsprintf('%s-%s-%s-%s-%s', str_split(bin2hex($data), 4));
         }
 
+        /**
+         * Aktualizuje stav článku.
+         *
+         * @param int $idArticle ID článku, jehož stav se má aktualizovat.
+         * @param int $idStatus Nový stav článku.
+         * @return array Pole obsahující true, pokud aktualizace proběhla úspěšně, nebo false a chybovou zprávu, pokud došlo k chybě.
+         */
         function updateArticleStatus($idArticle, $idStatus){
             $pdo = self::getConnection();
 
             $stmt = $pdo->prepare("UPDATE articles SET status_id=:idStatus WHERE id_article=:idArticle");
             $success = $stmt->execute(["idStatus" => $idStatus, "idArticle" => $idArticle]);
 
+            // Pokud aktualizace selhala, vrátí chybovou zprávu
             if (!$success) {
                 $errorInfo = $stmt->errorInfo();
                 return [false, $errorInfo];

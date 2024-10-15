@@ -13,6 +13,7 @@
     //// Konstanty ////
     define("MINIMAL_REVIEWERS", 3);
 
+    //// Role ////
     const ROLES = array(
         "SUPERADMIN" => 1,
         "ROLE_ADMIN" => 2,
@@ -20,12 +21,14 @@
         "ROLE_USER" => 4
     );
 
+    //// Statusy článků ////
     const STATUS = array(
         "REVIEW_PROCESS" => 1,
         "ACCEPTED_REVIEWED" => 2,
         "REJECTED_REVIEWED" => 3
     );
 
+    //// Ban status ////
     const BAN = array(
         "BANNED" => 1,
         "UNBANNED" => 0
@@ -35,6 +38,7 @@
     define("TABLE_USERS", "users");
     define("TABLE_ROLES", "roles");
 
+    //// Cesty ////
     const WEB_PAGES = array(
         "/" => array(
             "GET" => array(

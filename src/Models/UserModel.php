@@ -1,8 +1,17 @@
 <?php
     namespace Web\Project\Models;
 
+    /**
+     * Třída UserModel spravuje operace související s uživateli v databázi,
+     * včetně získávání, přidávání, aktualizace a mazání uživatelů.
+     */
     class UserModel extends DatabaseModel
     {
+        /**
+         * Získá všechny uživatele včetně jejich rolí.
+         *
+         * @return array Pole uživatelů.
+         */
         function getAllUsers(){
             $pdo = self::getConnection();
 
@@ -11,11 +20,19 @@
             return $stmt->fetchAll(\PDO::FETCH_ASSOC);
         }
 
+        /**
+         * Získá uživatele podle ID nebo uživatelského jména.
+         *
+         * @param mixed $value ID uživatele nebo uživatelské jméno.
+         * @param bool $byUsername Indikátor, zda hledat podle uživatelského jména (výchozí: false).
+         * @return array|null Uživatel nebo null, pokud nebyl nalezen.
+         */
         function getUser($value, $byUsername = false) {
             $pdo = self::getConnection();
 
             $column = null;
 
+            // Nastavení sloupce, podle kterého se bude hledat
             if($byUsername){
                 $column = "username";
                 $value = trim(strip_tags($value));
@@ -30,9 +47,16 @@
             return $stmt->fetch(\PDO::FETCH_ASSOC);
         }
 
+        /**
+         * Přidá nového uživatele do databáze.
+         *
+         * @param array $postData Data o uživateli (jméno, příjmení, uživatelské jméno, email, heslo).
+         * @return int ID nově vytvořeného uživatele.
+         */
         function addUser($postData){
             $pdo = self::getConnection();
 
+            // Hash hesla pro uložení do databáze
             $hash_password = password_hash($postData["password"], PASSWORD_BCRYPT);
 
             $stmt = $pdo->prepare('
@@ -40,6 +64,7 @@
                 VALUES (:firstname, :lastname, :username, :email, :password, :roleid)
             ');
 
+            // Čistění vstupních dat
             $firstName = trim(strip_tags($postData["fname"]));
             $lastName = trim(strip_tags($postData["lname"]));
             $username = trim(strip_tags($postData["username"]));
@@ -57,21 +82,27 @@
             return $pdo->lastInsertId();
         }
 
+        /**
+         * Zkontroluje, zda uživatel s daným uživatelským jménem nebo emailem již existuje.
+         *
+         * @param string $username Uživatelské jméno.
+         * @param string $email Email.
+         * @return int 0 - uživatel neexistuje, -1 - uživatel s tímto uživatelským jménem existuje, -2 - uživatel s tímto emailem existuje.
+         */
         function checkUserExists($username, $email){
             $pdo = self::getConnection();
 
+            // Kontrola existence uživatele podle uživatelského jména
             $stmt = $pdo->prepare("SELECT id_user FROM users WHERE username=:username");
-
             $username = trim(strip_tags($username));
-
             $stmt->execute(["username" => $username]);
 
             if($stmt->fetchAll(\PDO::FETCH_ASSOC)){
                 return -1;
             }
 
+            // Kontrola existence uživatele podle emailu
             $email = trim(strip_tags($email));
-
             $stmt = $pdo->prepare("SELECT id_user FROM users WHERE email=:email");
             $stmt->execute(["email" => $email]);
 
@@ -82,6 +113,13 @@
             return 0;
         }
 
+        /**
+         * Aktualizuje roli uživatele.
+         *
+         * @param int $id_user ID uživatele, jehož role se aktualizuje.
+         * @param int $id_role Nová ID role.
+         * @return array Pole obsahující true, pokud aktualizace proběhla úspěšně, nebo false a chybovou zprávu, pokud došlo k chybě.
+         */
         function updateRole($id_user, $id_role){
             $pdo = self::getConnection();
 
@@ -96,6 +134,13 @@
             return [true, null];
         }
 
+        /**
+         * Aktualizuje stav banu uživatele.
+         *
+         * @param int $id_user ID uživatele.
+         * @param bool $banStatus Nový stav zákazu (0 - ne, 1 - ano).
+         * @return array Pole obsahující true, pokud aktualizace proběhla úspěšně, nebo false a chybovou zprávu, pokud došlo k chybě.
+         */
         function userBanStatusUpdate($id_user, $banStatus){
             $pdo = self::getConnection();
 
@@ -110,6 +155,12 @@
             return [true, null];
         }
 
+        /**
+         * Smaže uživatele podle ID.
+         *
+         * @param int $id_user ID uživatele, kterého je třeba smazat.
+         * @return array Pole obsahující true, pokud smazání proběhlo úspěšně, nebo false a chybovou zprávu, pokud došlo k chybě.
+         */
         function deleteUser($id_user){
             $pdo = self::getConnection();
 
@@ -124,6 +175,11 @@
             return [true, null];
         }
 
+        /**
+         * Získá všechny uživatele s rolí recenzenta, kteří nejsou zakázáni.
+         *
+         * @return array Pole recenzentů.
+         */
         function getReviewers(){
             $pdo = self::getConnection();
 

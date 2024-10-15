@@ -1,13 +1,23 @@
 <?php
     namespace Web\Project\Models;
 
+    // Spustí relaci, pokud není nastavena
     if(!isset($_SESSION))
     {
         session_start();
     }
 
+    /**
+     * Třída RolesModel spravuje operace související s rolemi uživatelů v databázi.
+     * Včetně získávání dostupných rolí z databáze.
+     */
     class RolesModel extends DatabaseModel
     {
+        /**
+         * Získá všechny role, které jsou nižší než role aktuálně přihlášeného uživatele.
+         *
+         * @return array Pole rolí.
+         */
         function getRoles(){
             $pdo = self::getConnection();
 
