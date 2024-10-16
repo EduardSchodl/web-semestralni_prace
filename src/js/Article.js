@@ -9,6 +9,7 @@ let title = null;
 let editorWrapper = document.getElementById("editorWrapper");
 let editSaveButton = document.getElementById("editSave");
 
+// Aktualizace článku pomocí AJAXu
 function reloadArticle(){
     $.ajax({
         url: window.location.pathname,
@@ -23,6 +24,7 @@ function reloadArticle(){
     });
 }
 
+// Funkce pro přepínání mezi režimy úprav a ukládání
 function toggleEditor(id_article) {
     if (isEditing) {
         saveChanges(id_article);
@@ -31,11 +33,14 @@ function toggleEditor(id_article) {
     }
 }
 
+// Funkce pro spuštění úpravy článku
 function editArticle(){
+    // Kontrola, zda existuje instance editoru
     if(editorInstance != null){
         return;
     }
 
+    // Vytvoří HTML formulář pro úpravu
     const editForm = '<label for="titleInput" class="form-label">Title:</label>\n' +
         '                    <input type="text" class="form-control w-50 mb-3" id="titleInput">\n' +
         '\n' +
@@ -43,8 +48,9 @@ function editArticle(){
         '                    <textarea name="editor" id="editor"></textarea>';
 
     editorWrapper.innerHTML = editForm;
-    editorWrapper.style.display = "block";
+    editorWrapper.style.display = "block"; // Zobrazí editor
 
+    // Původní obsah
     contentElement = document.getElementById("content");
     titleElement = document.getElementById("headerDiv");
     titleInp = document.getElementById("titleInput");
@@ -55,9 +61,11 @@ function editArticle(){
     editSaveButton.innerText = "Save";
     isEditing = true;
 
+    // Skryje původní obsah
     contentElement.style.display = "none";
     titleElement.style.display = "none";
 
+    // Inicializuje CKEditor
     ClassicEditor
         .create(document.querySelector('#editor'), {
             heading: {
@@ -82,6 +90,7 @@ function editArticle(){
         });
 }
 
+// Funkce pro skrytí editoru
 function hideEditor(){
     editSaveButton.removeEventListener("click", saveChanges);
 
@@ -90,6 +99,7 @@ function hideEditor(){
 
     document.getElementById("editorWrapper").style.display = "none";
 
+    // Zničí instanci CKEditoru
     editorInstance.destroy()
         .then(() => {
             console.log("Editor destroyed successfully");
@@ -100,16 +110,20 @@ function hideEditor(){
         });
 }
 
+// Funkce pro uložení změn článku
 function saveChanges(id_article){
     if(!editorInstance){
         return;
     }
 
+    // Získání hodnot
     let data = editorInstance.getData();
     let title = document.getElementById("titleInput").value;
 
+    // Odstraní obsah obalu editoru
     editorWrapper.innerHTML = "";
 
+    // Kontrola, zda nejsou pole prázdná
     if(!title){
         showAlert("warning", "Title is missing!")
         return
@@ -120,6 +134,7 @@ function saveChanges(id_article){
         return
     }
 
+    // Odešle AJAX požadavek pro uložení změn
     $.ajax({
         url: 'articles/update',
         method: 'POST',
@@ -141,6 +156,7 @@ function saveChanges(id_article){
     });
 }
 
+// Funkce pro smazání článku
 function deleteArticle(id_article){
     $.ajax({
         url: 'articles/delete',
@@ -171,7 +187,11 @@ function deleteArticle(id_article){
     });
 }
 
+// Přidá událost na kliknutí tlačítka pro úpravu/uložení
 editSaveButton.addEventListener("click", function() {
+    // Získá ID článku z atributu tlačítka
     const id_article = this.getAttribute("data-article-id");
+
+    // Přepíná mezi režimem úprav a ukládání
     toggleEditor(id_article);
 });

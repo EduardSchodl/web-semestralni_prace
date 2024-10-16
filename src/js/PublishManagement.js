@@ -1,6 +1,8 @@
 let editorInstance = null
 
+// Funkce se spustí, jakmile je načtena celá stránka (DOM)
 document.addEventListener('DOMContentLoaded', function() {
+    // Inicializace CKEditoru na elementu s id 'editor'
     ClassicEditor
         .create(document.querySelector('#editor'), {
             heading: {
@@ -11,6 +13,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     { model: 'heading3', view: 'h3', title: 'Heading 3', class: 'ck-heading_heading3' }
                 ]
             },
+            // Definice toolbaru s možnostmi (tučné, kurzíva, zpět, znovu)
             toolbar: ['bold', 'italic', '|', 'undo', 'redo']
         })
         .then(editor => {
@@ -22,13 +25,16 @@ document.addEventListener('DOMContentLoaded', function() {
         });
 });
 
+// Funkce pro publikování článku
 function publishArticle(){
     const hiddenTextarea = document.querySelector(`#abstract`);
     const title = document.getElementById("titleInput").value.trim()
     const file = document.getElementById("file").files.length
 
+    // Nastaví obsah CKEditoru do skrytého textarea pro odeslání
     hiddenTextarea.value = editorInstance.getData();
 
+    // Kontrola polí formuláře
     if (!title) {
         showAlert("warning", "Title must not be empty!");
         return;
@@ -44,5 +50,6 @@ function publishArticle(){
         return;
     }
 
+    // Pokud jsou všechny podmínky splněny, odešle formulář
     document.getElementById(`publishForm`).submit();
 }

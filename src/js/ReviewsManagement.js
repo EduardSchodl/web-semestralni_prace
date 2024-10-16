@@ -1,10 +1,13 @@
+// Uchovává mapu inicializovaných CKEditor instancí podle jejich elementů
 const initializedEditors = new Map();
 
+// Funkce pro dynamické zobrazení formuláře a inicializaci editoru
 function toggleForm(button, index, reviewId) {
     const formContainer = button.closest('.card-body').querySelector('.review-form');
     const buttonContainer = button.closest('.card-body').querySelector('.btn-div');
     const closeButton = button.closest('.float-end').querySelector('.close-button');
 
+    // Pokud je formulář skrytý nebo není naplněn HTML obsahem, zobrazí formulář
     if (formContainer.style.display === 'none' || formContainer.innerHTML === '') {
         const formHtml = `
                         <form id="form-${index}" method="post">
@@ -45,13 +48,16 @@ function toggleForm(button, index, reviewId) {
         formContainer.innerHTML = formHtml;
 
         const submitButtonHtml = `<button type="button" class="btn btn-success submit-button" form="form-${index}" onclick="submitForm(${index})">Submit</button>`;
+        // Přidá tlačítko pro odeslání formuláře
         buttonContainer.insertAdjacentHTML('beforeend', submitButtonHtml);
 
         formContainer.style.display = 'block';
         closeButton.style.display = 'inline-block';
         button.style.display = 'none';
 
+        // Vybere příslušný element pro CKEditor
         const editorElement = formContainer.querySelector(`#editor-${index}`);
+        // Pokud CKEditor ještě není inicializován pro daný element, tak ho vytvoří
         if (!initializedEditors.has(editorElement)) {
             ClassicEditor
                 .create(editorElement,{
@@ -67,12 +73,14 @@ function toggleForm(button, index, reviewId) {
     }
 }
 
+// Funkce pro zavření formuláře a odstranění editoru
 function closeForm(button, index) {
     const formContainer = button.closest('.card-body').querySelector('.review-form');
     const submitButton = button.closest('.card-body').querySelector('.submit-button');
     const reviewButton = button.closest('.float-end').querySelector('.review-button');
     const editorElement = formContainer.querySelector(`#editor-${index}`);
 
+    // Pokud je CKEditor inicializován, zníčí ho a odstraní z mapy
     if (initializedEditors.has(editorElement)) {
         initializedEditors.get(editorElement).destroy()
             .then(() => {
@@ -92,18 +100,23 @@ function closeForm(button, index) {
     button.style.display = 'none';
 }
 
+// Funkce pro odeslání formuláře
 function submitForm(index) {
     const editorElement = document.querySelector(`#editor-${index}`);
+    // Skrytá textarea pro uložení obsahu editoru
     const hiddenTextarea = document.querySelector(`#editorContent-${index}`);
 
+    // Získá instanci CKEditoru
     const editor = initializedEditors.get(editorElement);
 
     if (editor) {
+        // Nastaví hodnotu skrytého textarea na obsah editoru
         hiddenTextarea.value = editor.getData();
         if(!hiddenTextarea.value){
             showAlert("warning", "Comment must not be empty!")
             return;
         }
+        // Odeslání formuláře "ručně"
         document.getElementById(`form-${index}`).submit();
     } else {
         console.error('Editor instance not found for index:', index);

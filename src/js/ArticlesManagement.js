@@ -1,3 +1,4 @@
+// Funkce pro znovunačtení recenze článku na základě ID článku
 function reloadReview(idArticle) {
     $.ajax({
         url: 'articles-management/update-card',
@@ -16,7 +17,9 @@ function reloadReview(idArticle) {
     });
 }
 
+// Obecná funkce pro aktualizaci článku nebo recenze na základě dat a akce
 function update(data, action){
+    // Zobrazení upozornění, pokud nebyl vybrán recenzent
     if (action === "addReviewer" && !data["idUser"]) {
         showAlert("info", "Please select a reviewer.")
         return;
@@ -47,14 +50,17 @@ function update(data, action){
     });
 }
 
+// Funkce pro odstranění recenze na základě ID recenze a ID článku
 function removeReview(idReview, idArticle){
     update({"idReview": idReview, "idArticle": idArticle}, "removeReview")
 }
 
+// Funkce pro přidání recenzenta na článek
 function addReviewer(idArticle, idUser){
     update({"idArticle": idArticle, "idUser": idUser}, "addReviewer")
 }
 
+// Funkce pro kontrolu stavu recenzí před aktualizací článku
 function checkReviewsAndUpdateArticle(idArticle, action) {
     $.ajax({
         url: 'articles-management/article-status-update',
@@ -66,6 +72,7 @@ function checkReviewsAndUpdateArticle(idArticle, action) {
         success: function(response) {
             const jsonResponse = JSON.parse(response);
 
+            // Pokud jsou recenze v pořádku, pokračuje s aktualizací článku
             if (jsonResponse.status === 'success') {
                 updateArticle(idArticle, action);
             } else {
@@ -79,14 +86,17 @@ function checkReviewsAndUpdateArticle(idArticle, action) {
     });
 }
 
+// Funkce pro přijetí článku na základě recenzí
 function acceptArticle(idArticle) {
     checkReviewsAndUpdateArticle(idArticle, "acceptArticle");
 }
 
+// Funkce pro odmítnutí článku na základě recenzí
 function rejectArticle(idArticle) {
     checkReviewsAndUpdateArticle(idArticle, "rejectArticle");
 }
 
+// Funkce pro aktualizaci karty správy článku na základě jeho ID a akce
 function updateArticle(idArticle, action){
     $.ajax({
         url: 'articles-management/updateArticle',
@@ -101,7 +111,6 @@ function updateArticle(idArticle, action){
                 console.log("Action was successful.");
                 showAlert("success", "Action was successful!")
                 reloadReview(idArticle)
-                //location.reload();
             } else {
                 showAlert("danger", "Error: " + jsonResponse.message)
             }
@@ -113,6 +122,7 @@ function updateArticle(idArticle, action){
     });
 }
 
+// Funkce pro přehodnocení článku, např. vrácení do fáze recenze
 function reconsider(idArticle){
     updateArticle(idArticle, "reconsider")
 }

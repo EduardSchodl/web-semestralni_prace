@@ -1,3 +1,4 @@
+// Funkce pro aktualizace tabulky uživatelů
 function reloadUserTable() {
     $.ajax({
         url: 'users',
@@ -12,6 +13,7 @@ function reloadUserTable() {
     });
 }
 
+// Funkce pro aktualizaci role uživatele
 function updateRole(id_user, value){
     $.ajax({
         url: 'users',
@@ -33,6 +35,7 @@ function updateRole(id_user, value){
     });
 }
 
+// Aktualizace stavu uživatele (ban, unban, delete)
 function updateUserAction(id_user, action) {
     $.ajax({
         url: 'users',
@@ -53,14 +56,17 @@ function updateUserAction(id_user, action) {
     });
 }
 
+// Funkce pro banování uživatele
 function banUser(id_user){
     updateUserAction(id_user, "ban")
 }
 
+// Funkce pro odbanování uživatele
 function unBanUser(id_user){
     updateUserAction(id_user, "unban")
 }
 
+// Funkce pro smazání uživatele
 function deleteUser(id_user){
     updateUserAction(id_user, "delete")
 }
