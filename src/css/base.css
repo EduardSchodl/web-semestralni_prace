@@ -99,7 +99,7 @@ html, body {
 
 .bg-image {
     position: relative;
-    background-image: url('/web-semestralni_prace/src/pic.jpg');
+    background-image: url('/web-semestralni_prace/src/images/background.jpg');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
