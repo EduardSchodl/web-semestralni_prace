@@ -32,40 +32,49 @@
         </div>  <!-- Closing the last row -->
 
         <!-- Pagination at the bottom of the page -->
-        <nav aria-label="Page navigation example">
-            <div class="d-flex justify-content-center mt-4">
-                <ul class="pagination">
-                    {% if page > 1 %}
-                        <li class="page-item">
-                            <a class="page-link" href="?page={{ page - 1 }}" aria-label="Previous">
-                                <span aria-hidden="true">&laquo;</span>
-                            </a>
-                        </li>
-                    {% else %}
-                        <li class="page-item disabled">
-                            <span class="page-link" aria-hidden="true">&laquo;</span>
-                        </li>
-                    {% endif %}
+        {% if totalPages != 0 %}
+            <nav aria-label="Page navigation example">
+                <div class="d-flex justify-content-center mt-4">
+                    <ul class="pagination">
+                        {% if page > 1 %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ page - 1 }}" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+                        {% else %}
+                            <li class="page-item disabled">
+                                <span class="page-link" aria-hidden="true">&laquo;</span>
+                            </li>
+                        {% endif %}
 
-                    {% for i in 1..totalPages %}
-                        <li class="page-item {% if i == page %}active{% endif %}">
-                            <a class="page-link" href="?page={{ i }}">{{ i }}</a>
-                        </li>
-                    {% endfor %}
+                        {% for i in 1..totalPages %}
+                            <li class="page-item {% if i == page %}active{% endif %}">
+                                <a class="page-link" href="?page={{ i }}">{{ i }}</a>
+                            </li>
+                        {% endfor %}
 
-                    {% if page < totalPages %}
-                        <li class="page-item">
-                            <a class="page-link" href="?page={{ page + 1 }}" aria-label="Next">
-                                <span aria-hidden="true">&raquo;</span>
-                            </a>
-                        </li>
-                    {% else %}
-                        <li class="page-item disabled">
-                            <span class="page-link" aria-hidden="true">&raquo;</span>
-                        </li>
-                    {% endif %}
-                </ul>
+                        {% if page < totalPages %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ page + 1 }}" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                        {% else %}
+                            <li class="page-item disabled">
+                                <span class="page-link" aria-hidden="true">&raquo;</span>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </nav>
+        {% else %}
+            <div class="container text-center mt-5">
+                <div class="alert alert-warning d-flex align-items-center justify-content-center">
+                    <span>Ajaj, je tu prázdno... </span>
+                    <i class="bi bi-emoji-frown"></i>
+                </div>
             </div>
-        </nav>
+        {% endif %}
     </div>
 {% endblock %}

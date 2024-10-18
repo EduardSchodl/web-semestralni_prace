@@ -93,7 +93,7 @@
                     'type' => 'info'
                 ];
                 header("Location: register");
-                return;
+                exit;
             }
             // Pokud je email již obsazen.
             elseif($exists == -2){

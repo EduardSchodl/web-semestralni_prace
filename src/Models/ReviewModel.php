@@ -161,4 +161,24 @@
 
             return (int)$stmt->fetchColumn();
         }
+
+        /**
+         * Smaže všechny zveřejněné recenze uživatele.
+         *
+         * @param int $idUser ID uživatele, jehož recenze se mají smazat.
+         * @return array Pole obsahující true, pokud smazání proběhlo úspěšně, nebo false a chybovou zprávu, pokud došlo k chybě.
+         */
+        function removeAllUserReviews($idUser){
+            $pdo = self::getConnection();
+
+            $stmt = $pdo->prepare("DELETE FROM reviews WHERE id_user=:idUser");
+            $success = $stmt->execute(["idUser" => $idUser]);
+
+            if (!$success) {
+                $errorInfo = $stmt->errorInfo();
+                return [false, $errorInfo];
+            }
+
+            return [true, null];
+        }
     }

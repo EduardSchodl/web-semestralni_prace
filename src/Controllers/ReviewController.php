@@ -21,8 +21,8 @@
          * @return void
          */
         function submitReview($data = []){
-            // Kontrola autorizace uživatele (administrátor)
-            if(!isset($_SESSION["user"]) || $_SESSION["user"]["role_id"] != ROLES["ROLE_ADMIN"])
+            // Kontrola autorizace uživatele (recenzent)
+            if(!isset($_SESSION["user"]) || $_SESSION["user"]["role_id"] != ROLES["ROLE_REVIEWER"])
             {
                 $_SESSION['flash'] = [
                     'message' => 'Insufficient authorisation!',

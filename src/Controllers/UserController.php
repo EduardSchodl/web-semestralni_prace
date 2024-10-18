@@ -139,6 +139,9 @@
                     $response = $db->userBanStatusUpdate($_POST["id_user"], BAN["UNBANNED"]);
                     break;
                 case "delete":
+                    $db = new ReviewModel();
+                    $db->removeAllUserReviews($_POST["id_user"]);
+                    $db = new UserModel();
                     $response = $db->deleteUser($_POST["id_user"]);
                     break;
             }

@@ -28,7 +28,7 @@
                         <option value="{{ reviewer.id_user }}">{{ reviewer.first_name }} {{ reviewer.last_name }}</option>
                     {% endfor %}
                 </select>
-                <button {% if assignedReviews[article.id_article] | length == min_reviewers.min_reviewers %}disabled{% endif %} type="button" class="btn btn-success" onclick="addReviewer({{ article.id_article }}, $('#users_{{ article.id_article }}').val())">Add</button>
+                <button {% if article.status_id != status.status_id["REVIEW_PROCESS"] %}disabled{% endif %} type="button" class="btn btn-success" onclick="addReviewer({{ article.id_article }}, $('#users_{{ article.id_article }}').val())">Add</button>
             </div>
             <table class="table table-striped table-hover table-bordered w-50">
                 <thead>
@@ -39,7 +39,9 @@
                     <th scope="col">Formality</th>
                     <th scope="col">Up-to-date</th>
                     <th scope="col">Language</th>
-                    <th scope="col">Delete</th>
+                    {% if article.status_id == status.status_id["REVIEW_PROCESS"] %}
+                        <th scope="col">Delete</th>
+                    {% endif %}
                 </tr>
                 </thead>
                 <tbody>
@@ -52,11 +54,13 @@
                             <td class="align-middle">{{ render_stars(review.formality)|raw }}</td>
                             <td class="align-middle">{{ render_stars(review.up_to_date)|raw }}</td>
                             <td class="align-middle">{{ render_stars(review.language)|raw }}</td>
-                            <td class="align-middle">
-                                {% if article.status_id == status.status_id.REVIEW_PROCESS %}
-                                    <i class="bi bi-x-circle fs-5 text-danger cursor-pointer" onclick="removeReview({{ review.id_review }}, {{ article.id_article }})"></i>
-                                {% endif %}
-                            </td>
+                            {% if article.status_id == status.status_id["REVIEW_PROCESS"] %}
+                                <td class="align-middle">
+                                    {% if article.status_id == status.status_id.REVIEW_PROCESS %}
+                                        <i class="bi bi-x-circle fs-5 text-danger cursor-pointer" onclick="removeReview({{ review.id_review }}, {{ article.id_article }})"></i>
+                                    {% endif %}
+                                </td>
+                            {% endif %}
                         </tr>
                     {% endfor %}
                     {% if assignedReviews[article.id_article] | length < min_reviewers.min_reviewers %}
