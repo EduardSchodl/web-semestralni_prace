@@ -12,3 +12,10 @@
 #noDecor:hover{
     text-decoration: underline;
 }
+
+.wrong .bi-check-circle-fill {
+    display: none;
+}
+.good .bi-x-circle-fill {
+    display: none;
+}

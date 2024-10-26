@@ -30,7 +30,7 @@
                     </div>
                 </form>
             {% else %}
-                <form method="post" id="authForm" class="row g-3">
+                <form method="post" id="authForm" class="row g-3 needs-validation" novalidate>
                     <div class="col-md-6 col-12">
                         <label for="fname" class="form-label">First name</label>
                         <input type="text" name="fname" class="form-control" id="fname" placeholder="John" required>
@@ -49,8 +49,40 @@
                     </div>
                     <div class="col-12">
                         <label for="psswd" class="form-label">Password</label>
-                        <input type="password" name="password" class="form-control" id="psswd" required>
+                        <input type="password" name="password" class="form-control" id="psswd_reg" required>
                     </div>
+                    <div class="col-6 mt-4 mt-xxl-0 w-auto h-auto">
+                        <div
+                                data-mdb-alert-init class="alert px-4 py-3 mb-0"
+                                role="alert"
+                                data-mdb-color="warning"
+                                id="password-alert"
+                        >
+                            <ul class="list-unstyled mb-0">
+                                <li class="requirements leng">
+                                    <i class="bi bi-check-circle-fill text-success me-2"></i>
+                                    <i class="bi bi-x-circle-fill text-danger me-3"></i>
+                                    Your password must have at least 8 chars
+                                </li>
+                                <li class="requirements big-letter">
+                                    <i class="bi bi-check-circle-fill text-success me-2"></i>
+                                    <i class="bi bi-x-circle-fill text-danger me-3"></i>
+                                    Your password must have at least 1 big letter.
+                                </li>
+                                <li class="requirements num">
+                                    <i class="bi bi-check-circle-fill text-success me-2"></i>
+                                    <i class="bi bi-x-circle-fill text-danger me-3"></i>
+                                    Your password must have at least 1 number.
+                                </li>
+                                <li class="requirements special-char">
+                                    <i class="bi bi-check-circle-fill text-success me-2"></i>
+                                    <i class="bi bi-x-circle-fill text-danger me-3"></i>
+                                    Your password must have at least 1 special char.
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
                     <div id="submitButton" class="col-12 text-center">
                         <button type="submit" class="btn btn-success">
                             <i class="bi bi-person-plus-fill fs-5 text-light"></i>
@@ -67,4 +99,6 @@
             {% endif %}
         </div>
     </div>
+
+    <script src="/web-semestralni_prace/src/js/Auth.js"></script>
 {% endblock %}
