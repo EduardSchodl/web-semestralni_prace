@@ -61,6 +61,7 @@
             $this->twig->addGlobal('ban', ['status' => BAN]);
             $this->twig->addGlobal('min_reviewers', ['min_reviewers' => MINIMAL_REVIEWERS]);
             $this->twig->addGlobal("numOfReviews", ['num' => $numOfReviews]);
+            $this->twig->addGlobal("currentYear", date("Y"));
 
             // Přidání Twig funkce pro zobrazení hodnocení pomocí hvězdiček.
             $this->twig->addFunction(new \Twig\TwigFunction('render_stars', function ($rating) {

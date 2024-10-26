@@ -1,12 +1,26 @@
 <?php
     namespace Web\Project\Models;
 
+    use HTMLPurifier;
+    use HTMLPurifier_Config;
+
     /**
      * Třída UserModel spravuje operace související s uživateli v databázi,
      * včetně získávání, přidávání, aktualizace a mazání uživatelů.
      */
     class UserModel extends DatabaseModel
     {
+        private $purifier;
+
+        /**
+         * Konstruktor třídy UserModel.
+         * Inicializuje HTMLPurifier, který slouží k vyčištění uživatelských vstupů.
+         */
+        function __construct(){
+            $config = HTMLPurifier_Config::createDefault();
+            $this->purifier = new HTMLPurifier($config);
+        }
+
         /**
          * Získá všechny uživatele včetně jejich rolí.
          *
@@ -35,7 +49,7 @@
             // Nastavení sloupce, podle kterého se bude hledat
             if($byUsername){
                 $column = "username";
-                $value = trim(strip_tags($value));
+                $value = $this->purifier->purify($value);
             }
             else{
                 $column = "id_user";
@@ -57,7 +71,7 @@
             $pdo = self::getConnection();
 
             // Hash hesla pro uložení do databáze
-            $hash_password = password_hash($postData["password"], PASSWORD_BCRYPT);
+            $hash_password = password_hash($this->purifier->purify($postData["password"]), PASSWORD_BCRYPT);
 
             $stmt = $pdo->prepare('
                 INSERT INTO users (first_name, last_name, username, email, password, role_id) 
@@ -65,10 +79,10 @@
             ');
 
             // Čistění vstupních dat
-            $firstName = trim(strip_tags($postData["fname"]));
-            $lastName = trim(strip_tags($postData["lname"]));
-            $username = trim(strip_tags($postData["username"]));
-            $email = trim(strip_tags($postData["email"]));
+            $firstName = $this->purifier->purify($postData["fname"]);
+            $lastName = $this->purifier->purify($postData["lname"]);
+            $username = $this->purifier->purify($postData["username"]);
+            $email = $this->purifier->purify($postData["email"]);
 
             $stmt->execute([
                 "firstname" => $firstName,
@@ -94,7 +108,7 @@
 
             // Kontrola existence uživatele podle uživatelského jména
             $stmt = $pdo->prepare("SELECT id_user FROM users WHERE username=:username");
-            $username = trim(strip_tags($username));
+            $username = $this->purifier->purify($username);
             $stmt->execute(["username" => $username]);
 
             if($stmt->fetchAll(\PDO::FETCH_ASSOC)){
@@ -102,7 +116,7 @@
             }
 
             // Kontrola existence uživatele podle emailu
-            $email = trim(strip_tags($email));
+            $email = $this->purifier->purify($email);
             $stmt = $pdo->prepare("SELECT id_user FROM users WHERE email=:email");
             $stmt->execute(["email" => $email]);
 

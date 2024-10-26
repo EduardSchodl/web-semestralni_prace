@@ -75,9 +75,21 @@
     {% endif %}
 
     {%  block content %} {% endblock %}
+
+    <footer class="text-center bg-dark text-white" style="width: 100%">
+        <div class="container p-2 d-flex justify-content-between align-items-center">
+            <p class="mb-0">Contact: schodle@gapps.zcu.cz</p>
+            <a class="btn btn-floating" style="background-color: #8a8a8a;" href="https://github.com/EduardSchodl" target="_blank">
+            <i class="bi bi-github"></i>
+            </a>
+        </div>
+        <div class="text-center p-2" style="background-color: rgba(0, 0, 0, 0.1);">
+            <small>© {{ currentYear }} Faculty of Applied Sciences. All rights reserved.</small>
+        </div>
+    </footer>
+
+    <script src="/web-semestralni_prace/vendor/twbs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/web-semestralni_prace/node_modules/@ckeditor/ckeditor5-build-classic/build/ckeditor.js"></script>
+    <script src="/web-semestralni_prace/src/js/General.js"></script>
     </body>
 </html>
-
-<script src="/web-semestralni_prace/vendor/twbs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-<script src="/web-semestralni_prace/node_modules/@ckeditor/ckeditor5-build-classic/build/ckeditor.js"></script>
-<script src="/web-semestralni_prace/src/js/General.js"></script>
