@@ -14,82 +14,84 @@
         <title>{% block title %}My Application{% endblock %}</title>
         <base href="http://localhost/web-semestralni_prace/src/">
     </head>
-    <body id="body">
-    <header class="bg-image bg-primary text-white text-center">
-        <div class="dark-overlay"></div>
-        <div class="container">
-            <h1 class="display-4">Innovations in Technology and Future Trends 2024</h1>
-            <p class="lead mb-0">Exploring the Future of Technology, AI, and Innovation</p>
-        </div>
-    </header>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
-            <div class="navbar-nav">
-                <a class="nav-item nav-link fs-5 {% if current_path == '/' %}active{% endif %}" href="">Home</a>
-                {% if app.user %}
-                    {% if app.user.role_id <= role.role_id.ROLE_ADMIN %}
-                        <a class="nav-item nav-link fs-5 {% if current_path == '/users' %}active{% endif %}" href="users">Users list</a>
-                        <a class="nav-item nav-link fs-5 {% if current_path == '/articles-management' %}active{% endif %}" href="articles-management">Articles management</a>
-                    {% endif %}
-                    {% if app.user.role_id != role.role_id.SUPERADMIN %}
-                        <a href="publish" class="nav-item nav-link fs-5">Publish article</a>
-                    {% endif %}
-                {% endif %}
+    <body id="body" class="d-flex flex-column min-vh-100">
+        <header class="bg-image bg-primary text-white text-center">
+            <div class="dark-overlay"></div>
+            <div class="container">
+                <h1 class="display-4">Innovations in Technology and Future Trends 2024</h1>
+                <p class="lead mb-0">Exploring the Future of Technology, AI, and Innovation</p>
             </div>
-            <div id="rightAlign" class="navbar-nav ms-auto">
-                {% if not app.user %}
-                    <a class="nav-item nav-link fs-5 {% if current_path == '/login' or current_path == '/register' %}active{% endif %}" href="login">
-                        <i class="bi bi-key-fill fs-5 text-light"></i>
-                        Log In
-                    </a>
-                {% else %}
-                {% if app.user.role_id != role.role_id.SUPERADMIN %}
-                    <a class="nav-item nav-link fs-5 {% if current_path == '/profile' or current_path == '/profile/edit' %}active{% endif %} position-relative" href="profile">
-                        <i class="bi bi-person-fill fs-5 text-light"></i>
-                        Profile
-                        {% if numOfReviews.num != 0 %}
-                            <span class="position-absolute top-20 start-100 translate-middle badge rounded-pill bg-danger">
-                                {{ numOfReviews.num }}
-                            </span>
+        </header>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+                <div class="navbar-nav">
+                    <a class="nav-item nav-link fs-5 {% if current_path == '/' %}active{% endif %}" href="">Home</a>
+                    {% if app.user %}
+                        {% if app.user.role_id <= role.role_id.ROLE_ADMIN %}
+                            <a class="nav-item nav-link fs-5 {% if current_path == '/users' %}active{% endif %}" href="users">Users list</a>
+                            <a class="nav-item nav-link fs-5 {% if current_path == '/articles-management' %}active{% endif %}" href="articles-management">Articles management</a>
                         {% endif %}
-                    </a>
-                {% endif %}
-                    <p id="loggedUser">{{ app.user["first_name"] }} {{ app.user["last_name"] }}</p>
-                    <a id="logoutButton" class="nav-item nav-link fs-5" href="logout">
-                        <i class="bi bi-door-open-fill fs-5 text-light"></i>
-                        Log Out
-                    </a>
-                {% endif %}
+                        {% if app.user.role_id != role.role_id.SUPERADMIN %}
+                            <a href="publish" class="nav-item nav-link fs-5">Publish article</a>
+                        {% endif %}
+                    {% endif %}
+                </div>
+                <div id="rightAlign" class="navbar-nav ms-auto">
+                    {% if not app.user %}
+                        <a class="nav-item nav-link fs-5 {% if current_path == '/login' or current_path == '/register' %}active{% endif %}" href="login">
+                            <i class="bi bi-key-fill fs-5 text-light"></i>
+                            Log In
+                        </a>
+                    {% else %}
+                        {% if app.user.role_id != role.role_id.SUPERADMIN %}
+                            <a class="nav-item nav-link fs-5 {% if current_path == '/profile' or current_path == '/profile/edit' %}active{% endif %} position-relative" href="profile">
+                                <i class="bi bi-person-fill fs-5 text-light"></i>
+                                Profile
+                                {% if numOfReviews.num != 0 %}
+                                    <span class="position-absolute top-20 start-100 translate-middle badge rounded-pill bg-danger">
+                                            {{ numOfReviews.num }}
+                                        </span>
+                                {% endif %}
+                            </a>
+                        {% endif %}
+                        <p id="loggedUser">{{ app.user["first_name"] }} {{ app.user["last_name"] }}</p>
+                        <a id="logoutButton" class="nav-item nav-link fs-5" href="logout">
+                            <i class="bi bi-door-open-fill fs-5 text-light"></i>
+                            Log Out
+                        </a>
+                    {% endif %}
+                </div>
             </div>
-        </div>
-    </nav>
+        </nav>
 
-    {% if flash %}
-        <div id="flashAlert" class="alert alert-{{ flash.type }} alert-dismissible fade show position-fixed top-0 start-50 translate-middle-x" role="alert">
-            {{ flash.message }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    {% endif %}
+        {% if flash %}
+            <div id="flashAlert" class="alert alert-{{ flash.type }} alert-dismissible fade show position-fixed top-0 start-50 translate-middle-x" role="alert">
+                {{ flash.message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endif %}
 
-    {%  block content %} {% endblock %}
+        <main class="flex-fill">
+            {% block content %} {% endblock %}
+        </main>
 
-    <footer class="text-center bg-dark text-white" style="width: 100%">
-        <div class="container p-2 d-flex justify-content-between align-items-center">
-            <p class="mb-0">Contact: schodle@gapps.zcu.cz</p>
-            <a class="btn btn-floating" style="background-color: #8a8a8a;" href="https://github.com/EduardSchodl" target="_blank">
-            <i class="bi bi-github"></i>
-            </a>
-        </div>
-        <div class="text-center p-2" style="background-color: rgba(0, 0, 0, 0.1);">
-            <small>© {{ currentYear }} Faculty of Applied Sciences. All rights reserved.</small>
-        </div>
-    </footer>
+        <footer class="text-center bg-dark text-white mt-auto">
+            <div class="container p-2 d-flex justify-content-between align-items-center">
+                <p class="mb-0">Contact: schodle@gapps.zcu.cz</p>
+                <a class="btn btn-floating" style="background-color: #8a8a8a;" href="https://github.com/EduardSchodl" target="_blank">
+                    <i class="bi bi-github"></i>
+                </a>
+            </div>
+            <div class="text-center p-2" style="background-color: rgba(0, 0, 0, 0.1);">
+                <small>© {{ currentYear }} Faculty of Applied Sciences. All rights reserved.</small>
+            </div>
+        </footer>
 
-    <script src="/web-semestralni_prace/vendor/twbs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="/web-semestralni_prace/node_modules/@ckeditor/ckeditor5-build-classic/build/ckeditor.js"></script>
-    <script src="/web-semestralni_prace/src/js/General.js"></script>
+        <script src="/web-semestralni_prace/vendor/twbs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="/web-semestralni_prace/node_modules/@ckeditor/ckeditor5-build-classic/build/ckeditor.js"></script>
+        <script src="/web-semestralni_prace/src/js/General.js"></script>
     </body>
 </html>
