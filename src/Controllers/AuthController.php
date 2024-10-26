@@ -49,6 +49,9 @@
                 if(password_verify($_POST["password"], $user["password"])){
                     // Uložení uživatele do session.
                     $_SESSION["user"] = $user;
+
+                    unset($_SESSION["user"]["password"]);
+
                     $_SESSION['flash'] = [
                         'message' => 'Login successful!',
                         'type' => 'success'
@@ -110,6 +113,8 @@
             // Pokud byla registrace úspěšná, načti uživatele do session.
             if($userId) {
                 $_SESSION['user'] = $db->getUser($userId);
+
+                unset($_SESSION["user"]["password"]);
 
                 $_SESSION['flash'] = [
                     'message' => 'Successfully registered!',
